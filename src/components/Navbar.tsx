@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -12,37 +12,51 @@ const links = [
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 20);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 bg-dark h-16 flex items-center"
+      className={`fixed top-0 left-0 right-0 z-50 h-16 flex items-center transition-all duration-300 ${
+        scrolled
+          ? "bg-surface/80 backdrop-blur-md shadow-sm"
+          : "bg-transparent"
+      }`}
       aria-label="Navegação principal"
     >
       <div className="w-full max-w-6xl mx-auto px-6 flex items-center justify-between">
-        <a href="#" className="text-xl font-heading font-semibold text-white">
+        <a href="#" className="text-xl font-heading font-semibold text-primary">
           ciudad<span className="text-accent">.dev</span>
         </a>
 
-        <div className="hidden md:flex items-center gap-8">
-          {links.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              className="text-sm text-white/65 hover:text-white transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
+        <div className="hidden md:flex items-center gap-2">
+          <div className="flex items-center gap-1 bg-black/[0.04] rounded-full px-2 py-1.5">
+            {links.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                className="text-sm text-muted font-medium px-3.5 py-1.5 rounded-full hover:text-primary hover:bg-white/60 transition-all duration-200"
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
           <a
             href="#contato"
-            className="text-sm border border-accent text-accent px-4 py-2 rounded-md hover:bg-accent hover:text-white transition-colors"
+            className="ml-3 text-sm bg-accent text-white font-medium px-5 py-2 rounded-full hover:brightness-110 transition-all duration-200"
           >
             Começar projeto
           </a>
         </div>
 
         <button
-          className="md:hidden text-white"
+          className="md:hidden text-primary"
           onClick={() => setOpen(!open)}
           aria-label={open ? "Fechar menu" : "Abrir menu"}
         >
@@ -56,14 +70,15 @@ export function Navbar() {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            className="absolute top-16 left-0 right-0 bg-dark border-t border-white/10 md:hidden"
+            transition={{ duration: 0.2 }}
+            className="absolute top-16 left-0 right-0 bg-surface/95 backdrop-blur-md border-t border-divider md:hidden shadow-lg"
           >
-            <div className="flex flex-col px-6 py-4 gap-4">
+            <div className="flex flex-col px-6 py-4 gap-3">
               {links.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
-                  className="text-sm text-white/65 hover:text-white transition-colors"
+                  className="text-sm text-muted font-medium hover:text-primary transition-colors py-1"
                   onClick={() => setOpen(false)}
                 >
                   {link.label}
@@ -71,7 +86,7 @@ export function Navbar() {
               ))}
               <a
                 href="#contato"
-                className="text-sm border border-accent text-accent px-4 py-2 rounded-md hover:bg-accent hover:text-white transition-colors text-center"
+                className="text-sm bg-accent text-white font-medium px-5 py-2.5 rounded-full hover:brightness-110 transition-all duration-200 text-center mt-1"
                 onClick={() => setOpen(false)}
               >
                 Começar projeto
