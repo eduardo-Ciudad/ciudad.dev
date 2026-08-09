@@ -55,7 +55,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="font-heading font-bold text-4xl md:text-5xl lg:text-[56px] leading-[1.15] tracking-[-0.03em]"
+            className="font-heading font-bold text-4xl md:text-5xl lg:text-5xl leading-[1.15] tracking-[-0.03em]"
           >
             <span className="text-neutral-900">
               Seu negócio não é igual aos outros.
