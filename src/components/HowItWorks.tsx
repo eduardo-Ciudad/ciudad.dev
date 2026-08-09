@@ -49,7 +49,7 @@ function DesktopTimeline() {
             <div key={step.number}>
               {/* Circle */}
               <motion.div
-                className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-accent-light border-2 border-accent flex items-center justify-center mx-auto md:mx-0"
+                className="relative z-10 w-10 h-10 md:w-12 md:h-12 rounded-full bg-surface border-2 border-accent flex items-center justify-center mx-auto md:mx-0"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={
                   inView
