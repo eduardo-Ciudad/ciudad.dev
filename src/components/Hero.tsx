@@ -65,26 +65,28 @@ function CodeLine({ line }: { line: (typeof codeLines)[number] }) {
 
 export function Hero() {
   return (
-    <section className="pt-24 pb-16 md:pt-32 md:pb-24 min-h-[85vh] flex items-center">
+    <section className="pt-24 pb-16 md:pt-32 md:pb-24 min-h-[80vh] flex items-center">
       <div className="max-w-6xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
         <div className="flex-1 text-center lg:text-left">
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="font-heading font-semibold text-[42px] md:text-[56px] lg:text-[76px] leading-[0.92] tracking-[-1px]"
+            className="font-heading font-bold text-5xl md:text-6xl lg:text-[64px] leading-[1.0] tracking-[-0.03em]"
           >
-            Da ideia <span className="text-accent">ao ar.</span>
+            Seu negócio.
+            <br />
+            <span className="text-accent">No ar.</span>
           </motion.h1>
 
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="mt-5 text-[17px] md:text-[19px] font-medium text-[#2a2a2a] max-w-lg mx-auto lg:mx-0"
+            className="mt-5 text-lg font-medium text-neutral-800 max-w-md mx-auto lg:mx-0"
           >
-            Sites, lojas e sistemas sob medida — prontos pra rodar. Sem template
-            genérico, sem intermediário.
+            Software sob medida para transformar suas ideias em soluções que
+            realmente funcionam.
           </motion.p>
 
           <motion.div
@@ -95,7 +97,7 @@ export function Hero() {
           >
             <a
               href="#contato"
-              className="inline-flex items-center gap-2 bg-accent text-white px-7 py-3 rounded-full text-sm font-medium hover:brightness-110 transition-all duration-300"
+              className="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-full text-base font-semibold hover:brightness-110 transition-all duration-300"
             >
               Começar meu projeto
               <span aria-hidden="true">→</span>
@@ -109,7 +111,7 @@ export function Hero() {
           transition={{ duration: 0.7, delay: 0.4 }}
           className="flex-1 w-full max-w-md lg:max-w-lg"
         >
-          <div className="rounded-lg overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.06)] border border-card-border">
+          <div className="rounded-lg overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.06)] border border-card-border rotate-1 hover:rotate-0 hover:shadow-xl transition-all duration-500">
             <div className="bg-[#161b22] px-4 py-3 flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-[#ff5f56]" />
               <span className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
