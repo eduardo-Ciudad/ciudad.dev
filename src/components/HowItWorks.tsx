@@ -49,7 +49,7 @@ function DesktopTimeline() {
             <div key={step.number}>
               {/* Circle */}
               <motion.div
-                className="relative z-10 w-10 h-10 md:w-12 md:h-12 rounded-full bg-surface border-2 border-accent flex items-center justify-center mx-auto md:mx-0"
+                className="relative z-10 w-10 h-10 md:w-12 md:h-12 rounded-full bg-white border-2 border-accent flex items-center justify-center mx-auto md:mx-0"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={
                   inView
@@ -135,7 +135,7 @@ function MobileTimeline() {
             <div key={step.number} className="relative">
               {/* Circle */}
               <motion.div
-                className="absolute -left-12 top-0 w-10 h-10 rounded-full bg-accent-light border-2 border-accent flex items-center justify-center"
+                className="absolute -left-12 top-0 w-10 h-10 rounded-full bg-white border-2 border-accent flex items-center justify-center"
                 initial={{ scale: 0, opacity: 0 }}
                 animate={
                   inView
@@ -201,7 +201,7 @@ function MobileTimeline() {
 
 export function HowItWorks() {
   return (
-    <section className="py-20 md:py-24 bg-surface">
+    <section className="py-20 md:py-24 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
