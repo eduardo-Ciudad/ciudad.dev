@@ -72,11 +72,12 @@ export function Hero() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
-            className="font-heading font-bold text-5xl md:text-6xl lg:text-[64px] leading-[1.0] tracking-[-0.03em]"
+            className="font-heading font-bold text-4xl md:text-5xl lg:text-[56px] leading-[1.15] tracking-[-0.03em]"
           >
-            Seu negócio.
+            <span className="text-neutral-900">Seu negócio não é igual aos outros.</span>
             <br />
-            <span className="text-accent">No ar.</span>
+            <span className="text-neutral-900">Seu software também </span>
+            <span className="text-accent">não deveria ser.</span>
           </motion.h1>
 
           <motion.p
