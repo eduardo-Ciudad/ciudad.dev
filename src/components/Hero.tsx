@@ -1,64 +1,47 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useMotionValue, animate } from "framer-motion";
+import { useState, useEffect } from "react";
 
-const codeLines = [
-  { text: "// construindo produto.ts", type: "comment" as const },
-  { text: "", type: "blank" as const },
-  { text: 'const produto = await build({', type: "keyword" as const },
-  { text: '  escopo:    "definido",', type: "prop" as const },
-  { text: '  prazo:     "travado",', type: "prop" as const },
-  { text: '  preco:     "fechado",', type: "prop" as const },
-  { text: '  garantia:  "90 dias"', type: "prop" as const },
-  { text: "});", type: "keyword" as const },
+const metrics = [
+  { label: "projetos entregues", value: 6, decimals: 0 },
+  { label: "em produção agora", value: 3, decimals: 0 },
+  { label: "testes escritos", value: 170, decimals: 0, suffix: "+" },
+  { label: "uptime médio", value: 99.9, decimals: 1, suffix: "%" },
 ];
 
-const deployLines = [
-  { text: "> deploying...", hasCheck: false },
-  { text: "escopo travado", hasCheck: true },
-  { text: "em produção", hasCheck: true },
-  { text: "garantia ativa", hasCheck: true },
-];
+function AnimatedNumber({
+  value,
+  decimals = 0,
+  suffix = "",
+}: {
+  value: number;
+  decimals?: number;
+  suffix?: string;
+}) {
+  const [display, setDisplay] = useState("0");
+  const motionValue = useMotionValue(0);
 
-function CodeLine({ line }: { line: (typeof codeLines)[number] }) {
-  if (line.type === "blank") return <br />;
-
-  if (line.type === "comment") {
-    return <span className="text-[#8b949e]">{line.text}</span>;
-  }
-
-  if (line.type === "prop") {
-    const parts = line.text.split(/"([^"]*)"/);
-    return (
-      <span className="text-[#e6edf3]">
-        {parts.map((part, j) =>
-          j % 2 === 1 ? (
-            <span key={j} className="text-[#7ee787]">
-              &quot;{part}&quot;
-            </span>
-          ) : (
-            <span key={j}>{part}</span>
-          )
-        )}
-      </span>
-    );
-  }
-
-  const keywords = ["const", "await", "build"];
-  const regex = new RegExp(`\\b(${keywords.join("|")})\\b`);
-  const parts = line.text.split(regex);
+  useEffect(() => {
+    const controls = animate(motionValue, value, {
+      duration: 1.5,
+      ease: "easeOut",
+    });
+    const unsubscribe = motionValue.on("change", (v) => {
+      setDisplay(
+        decimals > 0 ? v.toFixed(decimals) : Math.round(v).toString()
+      );
+    });
+    return () => {
+      controls.stop();
+      unsubscribe();
+    };
+  }, [motionValue, value, decimals]);
 
   return (
-    <span className="text-[#e6edf3]">
-      {parts.map((part, j) =>
-        keywords.includes(part) ? (
-          <span key={j} className="text-[#ff7b72]">
-            {part}
-          </span>
-        ) : (
-          <span key={j}>{part}</span>
-        )
-      )}
+    <span className="text-green-400 font-mono font-semibold text-sm">
+      {display}
+      {suffix}
     </span>
   );
 }
@@ -74,7 +57,9 @@ export function Hero() {
             transition={{ duration: 0.6 }}
             className="font-heading font-bold text-4xl md:text-5xl lg:text-[56px] leading-[1.15] tracking-[-0.03em]"
           >
-            <span className="text-neutral-900">Seu negócio não é igual aos outros.</span>
+            <span className="text-neutral-900">
+              Seu negócio não é igual aos outros.
+            </span>
             <br />
             <span className="text-neutral-900">Seu software também </span>
             <span className="text-accent">não deveria ser.</span>
@@ -110,55 +95,80 @@ export function Hero() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.4 }}
-          className="flex-1 w-full max-w-md lg:max-w-lg"
+          className="w-[320px] md:w-[340px]"
         >
           <div className="rounded-lg overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.06)] border border-card-border rotate-1 hover:rotate-0 hover:shadow-xl transition-all duration-500">
             <div className="bg-[#161b22] px-4 py-3 flex items-center gap-2">
               <span className="w-3 h-3 rounded-full bg-[#ff5f56]" />
               <span className="w-3 h-3 rounded-full bg-[#ffbd2e]" />
               <span className="w-3 h-3 rounded-full bg-[#27c93f]" />
-              <span className="ml-3 text-xs text-[#8b949e]">produto.ts</span>
+              <span className="ml-3 text-xs text-[#8b949e]">status</span>
             </div>
 
-            <div className="bg-[#0d1117] px-5 py-5 font-mono text-[13px] leading-relaxed overflow-x-auto">
-              {codeLines.map((line, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.5 + i * 0.08 }}
-                >
-                  <CodeLine line={line} />
-                </motion.div>
-              ))}
+            <div className="bg-[#0d1117] p-7 md:p-8 font-mono">
+              <p className="text-neutral-500 text-xs tracking-wide mb-6">
+                ciudad.dev — status
+              </p>
 
-              <div className="mt-4 border-t border-[#21262d] pt-4">
-                {deployLines.map((line, i) => (
+              <div className="space-y-3">
+                {metrics.map((m, i) => (
                   <motion.div
-                    key={i}
-                    initial={{ opacity: 0, x: -5 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.4, delay: 1.5 + i * 0.4 }}
-                    className="text-[#e6edf3]"
+                    key={m.label}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3, delay: 0.5 + i * 0.1 }}
+                    className="flex justify-between items-center"
                   >
-                    {line.hasCheck ? (
-                      <>
-                        <span className="text-[#7ee787]">✓</span> {line.text}
-                      </>
-                    ) : (
-                      <span className="text-[#8b949e]">{line.text}</span>
-                    )}
+                    <span className="text-neutral-400 text-sm">{m.label}</span>
+                    <AnimatedNumber
+                      value={m.value}
+                      decimals={m.decimals}
+                      suffix={m.suffix}
+                    />
                   </motion.div>
                 ))}
+              </div>
 
-                <motion.span
+              <div className="border-t border-neutral-700/50 my-5" />
+
+              <div className="space-y-3">
+                <motion.p
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  transition={{ delay: 3.2 }}
-                  className="inline-block w-2 h-4 bg-[#e6edf3] mt-1"
-                  style={{ animation: "blink 1s infinite" }}
-                />
+                  transition={{ duration: 0.3, delay: 1.2 }}
+                  className="text-neutral-400 text-sm"
+                >
+                  último deploy: há 2 dias
+                </motion.p>
+                <motion.p
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3, delay: 1.4 }}
+                  className="text-neutral-400 text-sm"
+                >
+                  próxima entrega: 12 dias
+                </motion.p>
               </div>
+
+              <motion.p
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5, delay: 1.8 }}
+                className="mt-5 text-green-400 text-sm"
+              >
+                <motion.span
+                  animate={{ opacity: [1, 0] }}
+                  transition={{
+                    duration: 0.8,
+                    repeat: Infinity,
+                    repeatType: "reverse",
+                  }}
+                  className="inline-block"
+                >
+                  █
+                </motion.span>{" "}
+                todos os sistemas operacionais
+              </motion.p>
             </div>
           </div>
         </motion.div>
