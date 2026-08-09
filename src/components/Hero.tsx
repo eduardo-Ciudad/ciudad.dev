@@ -65,11 +65,11 @@ function CodeLine({ line }: { line: (typeof codeLines)[number] }) {
 
 export function Hero() {
   return (
-    <section className="pt-28 pb-20 md:pt-36 md:pb-28">
-      <div className="max-w-6xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+    <section className="pt-24 pb-16 md:pt-32 md:pb-24 min-h-[85vh] flex items-center">
+      <div className="max-w-6xl mx-auto px-6 flex flex-col lg:flex-row items-center gap-10 lg:gap-14">
         <div className="flex-1 text-center lg:text-left">
           <motion.h1
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             className="font-heading font-semibold text-[42px] md:text-[56px] lg:text-[76px] leading-[0.92] tracking-[-1px]"
@@ -78,24 +78,24 @@ export function Hero() {
           </motion.h1>
 
           <motion.p
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.15 }}
-            className="mt-6 text-[17px] md:text-[19px] font-medium text-[#2a2a2a] max-w-lg mx-auto lg:mx-0"
+            className="mt-5 text-[17px] md:text-[19px] font-medium text-[#2a2a2a] max-w-lg mx-auto lg:mx-0"
           >
             Sites, lojas e sistemas sob medida — prontos pra rodar. Sem template
             genérico, sem intermediário.
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.3 }}
-            className="mt-8"
+            className="mt-7"
           >
             <a
               href="#contato"
-              className="inline-flex items-center gap-2 border border-accent text-accent px-6 py-3 rounded-md text-sm font-medium hover:bg-accent hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 bg-accent text-white px-7 py-3 rounded-full text-sm font-medium hover:brightness-110 transition-all duration-300"
             >
               Começar meu projeto
               <span aria-hidden="true">→</span>
@@ -106,7 +106,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
           className="flex-1 w-full max-w-md lg:max-w-lg"
         >
           <div className="rounded-lg overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.06)] border border-card-border">

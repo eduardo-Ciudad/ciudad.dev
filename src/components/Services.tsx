@@ -32,9 +32,9 @@ const services = [
 
 export function Services() {
   return (
-    <section id="servicos" className="py-20 md:py-28">
+    <section id="servicos" className="py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-6">
-        <ScrollReveal className="text-center mb-14">
+        <ScrollReveal className="text-center mb-10 md:mb-12">
           <h2 className="font-heading font-semibold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-1px]">
             O que construímos
           </h2>

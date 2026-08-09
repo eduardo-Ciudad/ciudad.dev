@@ -4,7 +4,7 @@ import { ScrollReveal } from "./ScrollReveal";
 
 export function CtaFinal() {
   return (
-    <section id="contato" className="py-20 md:py-28">
+    <section id="contato" className="py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-6 text-center">
         <ScrollReveal>
           <h2 className="font-heading font-semibold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-1px]">
@@ -17,7 +17,7 @@ export function CtaFinal() {
           <div className="mt-8">
             <a
               href="mailto:contato@ciudad.dev"
-              className="inline-flex items-center gap-2 border border-accent text-accent px-6 py-3 rounded-md text-sm font-medium hover:bg-accent hover:text-white transition-colors"
+              className="inline-flex items-center gap-2 bg-accent text-white px-7 py-3 rounded-full text-sm font-medium hover:brightness-110 transition-all duration-300"
             >
               Entrar em contato
               <span aria-hidden="true">→</span>

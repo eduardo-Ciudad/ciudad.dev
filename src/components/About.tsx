@@ -5,9 +5,9 @@ import { ScrollReveal } from "./ScrollReveal";
 
 export function About() {
   return (
-    <section id="sobre" className="py-20 md:py-28 bg-card">
+    <section id="sobre" className="py-16 md:py-24 bg-card">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center gap-12 md:gap-16">
+        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-12">
           <ScrollReveal className="shrink-0">
             <div className="w-[240px] h-[300px] md:w-[280px] md:h-[340px] rounded-lg bg-surface border border-card-border flex items-center justify-center overflow-hidden">
               <span className="text-muted text-sm">foto</span>

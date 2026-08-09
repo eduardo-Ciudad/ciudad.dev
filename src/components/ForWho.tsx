@@ -26,9 +26,9 @@ const personas = [
 
 export function ForWho() {
   return (
-    <section className="py-20 md:py-28 bg-card">
+    <section className="py-16 md:py-24 bg-card">
       <div className="max-w-6xl mx-auto px-6">
-        <ScrollReveal className="text-center mb-14">
+        <ScrollReveal className="text-center mb-10 md:mb-12">
           <h2 className="font-heading font-semibold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-1px]">
             Para quem é o nosso projeto?
           </h2>
