@@ -1,0 +1,38 @@
+@import "tailwindcss";
+
+:root {
+  --accent: #2563eb;
+  --accent-light: rgba(37, 99, 235, 0.07);
+  --accent-border: rgba(37, 99, 235, 0.18);
+}
+
+:root[data-accent="purple"] {
+  --accent: #7c3aed;
+  --accent-light: rgba(124, 58, 237, 0.07);
+  --accent-border: rgba(124, 58, 237, 0.18);
+}
+
+@theme inline {
+  --color-accent: var(--accent);
+  --color-accent-light: var(--accent-light);
+  --color-accent-border: var(--accent-border);
+  --color-surface: #f5f0e8;
+  --color-dark: #1c1c1c;
+  --color-primary: #1a1a1a;
+  --color-muted: #6b6b6b;
+  --color-card: #ffffff;
+  --color-card-border: rgba(0, 0, 0, 0.06);
+  --color-divider: rgba(0, 0, 0, 0.08);
+  --font-heading: var(--font-cormorant);
+  --font-body: var(--font-dm-sans);
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-primary);
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
