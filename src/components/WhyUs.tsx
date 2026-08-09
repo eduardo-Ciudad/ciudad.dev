@@ -61,7 +61,7 @@ export function WhyUs() {
                   : ""
               }
             >
-              <div className="group relative overflow-hidden bg-card border border-card-border rounded-lg px-8 py-10 h-full cursor-default transition-all duration-300 hover:border-accent-border hover:shadow-md">
+              <div className="group relative overflow-hidden bg-card border border-card-border rounded-lg px-8 py-10 h-full cursor-default transition-all duration-300 hover:border-accent-border hover:shadow-md hover:scale-[1.02]">
                 <div className="absolute left-0 top-0 h-full w-0 group-hover:w-1 bg-accent rounded-l-lg transition-all duration-300 ease-out" />
                 <div className="w-10 h-10 rounded-md bg-accent-light border border-accent-border flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110">
                   <card.icon size={20} className="text-accent" />
