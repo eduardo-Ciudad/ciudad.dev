@@ -1,32 +1,52 @@
 "use client";
 
-import { Layout, ShoppingCart, Building2 } from "lucide-react";
 import { ScrollReveal } from "./ScrollReveal";
 
 const services = [
   {
-    icon: Layout,
+    kicker: "PÁGINA",
     title: "Landing Page",
     description:
-      "Página de conversão personalizada, responsiva e otimizada. Ideal pra captar leads ou lançar um produto.",
-    price: "R$ 500",
-    popular: false,
+      "Página de conversão sob medida, responsiva e otimizada pra captar leads ou lançar um produto. Design personalizado, não template com logo trocada.",
+    bullets: [
+      "Design responsivo (mobile, tablet, desktop)",
+      "Formulário de contato ou captura de lead",
+      "SEO básico configurado",
+      "Deploy incluso",
+    ],
+    timeline: "1–2 semanas",
+    price: "R$ 500–800",
+    cta: "Quero uma Landing Page",
   },
   {
-    icon: ShoppingCart,
+    kicker: "LOJA",
     title: "E-commerce",
     description:
-      "Loja completa com catálogo, carrinho, checkout e integração de pagamento real.",
-    price: "R$ 2.500",
-    popular: true,
+      "Loja completa com catálogo, carrinho e checkout integrado a pagamento real. Você vende sem depender de marketplace e sem mensalidade de plataforma.",
+    bullets: [
+      "Catálogo com categorias e filtros",
+      "Checkout com Pix, cartão e boleto (Mercado Pago)",
+      "Painel administrativo pra gerenciar produtos",
+      "Infraestrutura própria com deploy incluso",
+    ],
+    timeline: "3–4 semanas",
+    price: "R$ 2.500–4.000",
+    cta: "Quero meu E-commerce",
   },
   {
-    icon: Building2,
-    title: "Site Institucional",
+    kicker: "SOB MEDIDA",
+    title: "Sistema personalizado",
     description:
-      "Presença profissional com páginas de serviço, sobre e contato.",
-    price: "R$ 800",
-    popular: false,
+      "MVP, automação, painel interno, integração com API externa — qualquer software que o seu negócio precise e que não existe pronto no mercado.",
+    bullets: [
+      "Arquitetura definida pro seu caso de uso",
+      "Integrações com APIs externas (pagamento, IA, WhatsApp)",
+      "Autenticação e controle de acesso",
+      "Documentação técnica entregue",
+    ],
+    timeline: "2–4 semanas",
+    price: "Sob consulta",
+    cta: "Quero um orçamento",
   },
 ];
 
@@ -38,37 +58,50 @@ export function Services() {
           <h2 className="font-heading font-semibold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-1px]">
             O que construímos
           </h2>
+          <p className="mt-3 text-muted text-[15px] max-w-xl mx-auto">
+            Escopo e preço definidos antes de começar.
+          </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {services.map((service, i) => (
-            <ScrollReveal key={service.title} delay={i * 0.1}>
-              <div
-                className={`bg-card rounded-lg p-7 md:p-8 h-full flex flex-col hover:scale-[1.02] hover:shadow-md transition-all duration-300 ${
-                  service.popular
-                    ? "border-2 border-accent relative"
-                    : "border border-card-border"
-                }`}
-              >
-                {service.popular && (
-                  <span className="absolute -top-3 left-1/2 -translate-x-1/2 bg-accent text-white text-xs font-semibold px-3 py-1 rounded-full">
-                    POPULAR
-                  </span>
-                )}
-                <div className="w-10 h-10 rounded-md bg-accent-light border border-accent-border flex items-center justify-center mb-5">
-                  <service.icon size={20} className="text-accent" />
-                </div>
-                <h3 className="font-heading font-semibold text-[17px] tracking-[-0.5px] mb-2">
+            <ScrollReveal key={service.title} delay={i * 0.15}>
+              <div className="bg-card border border-card-border rounded-2xl p-8 md:p-10 h-full flex flex-col hover:shadow-lg hover:border-accent-border transition-all duration-300">
+                <span className="text-[11px] tracking-[0.1em] uppercase font-semibold text-accent mb-4">
+                  {service.kicker}
+                </span>
+                <h3 className="font-heading font-semibold text-2xl md:text-3xl mb-4">
                   {service.title}
                 </h3>
-                <p className="text-muted text-[14px] leading-relaxed flex-1">
+                <p className="text-sm leading-relaxed text-muted mb-6">
                   {service.description}
                 </p>
-                <div className="border-t border-divider mt-6 pt-4">
-                  <p className="text-muted text-xs">A partir de</p>
-                  <p className="text-primary font-heading font-semibold text-2xl mt-1">
-                    {service.price}
-                  </p>
+
+                <div className="space-y-2.5 mb-6">
+                  {service.bullets.map((bullet) => (
+                    <div key={bullet} className="flex gap-2.5 text-sm">
+                      <span className="text-muted/50 shrink-0">→</span>
+                      <span className="text-primary/80">{bullet}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-auto">
+                  <div className="border-t border-divider pt-6 flex justify-between items-center">
+                    <span className="text-sm text-muted">
+                      {service.timeline}
+                    </span>
+                    <span className="text-lg font-heading font-semibold text-accent">
+                      {service.price}
+                    </span>
+                  </div>
+
+                  <a
+                    href="#contato"
+                    className="block w-full mt-6 py-3.5 bg-primary text-card text-sm font-medium rounded-full hover:bg-primary/85 transition-colors text-center"
+                  >
+                    {service.cta}
+                  </a>
                 </div>
               </div>
             </ScrollReveal>
