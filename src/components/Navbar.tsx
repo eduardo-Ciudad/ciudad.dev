@@ -6,7 +6,6 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const links = [
   { label: "Serviços", href: "#servicos" },
-  { label: "Sobre", href: "#sobre" },
   { label: "Contato", href: "#contato" },
 ];
 
@@ -30,26 +29,27 @@ export function Navbar() {
       }`}
       aria-label="Navegação principal"
     >
-      <div className="w-full max-w-6xl mx-auto px-6 flex items-center justify-between">
-        <a href="#" className="text-xl font-heading font-semibold text-primary">
+      <div className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 flex items-center justify-between">
+        <a
+          href="#"
+          className="text-2xl md:text-[26px] font-heading font-bold text-primary"
+        >
           ciudad<span className="text-accent">.dev</span>
         </a>
 
-        <div className="hidden md:flex items-center gap-2">
-          <div className="flex items-center gap-1 bg-black/[0.04] rounded-full px-2 py-1.5">
-            {links.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm text-muted font-medium px-3.5 py-1.5 rounded-full hover:text-primary hover:bg-white/60 transition-all duration-200"
-              >
-                {link.label}
-              </a>
-            ))}
-          </div>
+        <div className="hidden md:flex items-center gap-1">
+          {links.map((link) => (
+            <a
+              key={link.href}
+              href={link.href}
+              className="px-4 py-2 text-sm font-medium text-muted hover:text-primary hover:bg-primary/[0.06] rounded-lg transition-all duration-200"
+            >
+              {link.label}
+            </a>
+          ))}
           <a
             href="#contato"
-            className="ml-3 text-sm bg-accent text-white font-medium px-5 py-2 rounded-full hover:brightness-110 transition-all duration-200"
+            className="ml-3 text-sm font-semibold bg-accent text-white px-6 py-2.5 rounded-full hover:brightness-110 transition-all duration-200"
           >
             Começar projeto
           </a>
@@ -86,7 +86,7 @@ export function Navbar() {
               ))}
               <a
                 href="#contato"
-                className="text-sm bg-accent text-white font-medium px-5 py-2.5 rounded-full hover:brightness-110 transition-all duration-200 text-center mt-1"
+                className="text-sm font-semibold bg-accent text-white px-6 py-2.5 rounded-full hover:brightness-110 transition-all duration-200 text-center mt-1"
                 onClick={() => setOpen(false)}
               >
                 Começar projeto
