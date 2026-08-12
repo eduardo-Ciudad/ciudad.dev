@@ -1,8 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import { ScrollReveal } from "./ScrollReveal";
+import { ServiceDetailModal, type ServiceDetail } from "./ServiceDetailModal";
 
-const services = [
+const services: {
+  kicker: string;
+  title: string;
+  description: string;
+  bullets: string[];
+  timeline: string;
+  price: string;
+  cta: string;
+  details: ServiceDetail;
+}[] = [
   {
     kicker: "PÁGINA",
     title: "Landing Page",
@@ -17,6 +28,21 @@ const services = [
     timeline: "1–2 semanas",
     price: "R$ 500–800",
     cta: "Quero uma Landing Page",
+    details: {
+      benefits: [
+        "Site rápido, sem CMS pesado — carregamento instantâneo",
+        "Mobile-first com scroll reveal e animações leves, sem dependências",
+        "Foco total em conversão: um único caminho de saída (ex: WhatsApp)",
+        "SEO básico configurado e acessibilidade cuidada",
+      ],
+      example: {
+        title: "Landing Page — Vinicius Mascagni",
+        description:
+          "Página para consultoria de treino e dieta, com hero, prova social, depoimentos e CTA único pro WhatsApp.",
+        url: "https://vinicius-masc.vercel.app/",
+        hasImagePreview: true,
+      },
+    },
   },
   {
     kicker: "LOJA",
@@ -32,6 +58,22 @@ const services = [
     timeline: "3–4 semanas",
     price: "R$ 2.500–4.000",
     cta: "Quero meu E-commerce",
+    details: {
+      benefits: [
+        "Catálogo com variações por tamanho, estoque e preço individuais",
+        "Checkout real com Mercado Pago (Pix + cartão), webhook validado por HMAC-SHA256",
+        "Frete calculado em tempo real via API dos Correios (PAC/SEDEX)",
+        "Autenticação JWT com verificação de email e controle de acesso por papel",
+        "100+ testes automatizados e auditoria de segurança antes de ir ao ar",
+      ],
+      inProgress:
+        "Integração com ERP (Bling) para sincronizar catálogo automaticamente — em desenvolvimento.",
+      example: {
+        title: "E-commerce — GabiKids",
+        description: "Loja de roupas infantil em produção.",
+        url: "https://gabikids.vercel.app/",
+      },
+    },
   },
   {
     kicker: "SOB MEDIDA",
@@ -47,10 +89,33 @@ const services = [
     timeline: "2–4 semanas",
     price: "Sob consulta",
     cta: "Quero um orçamento",
+    details: {
+      benefits: [
+        "Arquitetura definida sob medida pro seu caso de uso",
+        "Integrações com APIs externas (pagamento, IA, WhatsApp)",
+        "Documentação técnica e testes cobrindo as regras de negócio",
+      ],
+      example: {
+        title: "Sistema Financeiro Multi-Tenant",
+        description:
+          "Isolamento de dados por usuário, lançamentos append-only, dashboard com extrato mensal.",
+        url: "https://controle-financeiro-lab-frontend.vercel.app/",
+      },
+      highlight: {
+        title: "PromoBot",
+        description:
+          "Bot de IA em arquitetura hexagonal que monitora promoções, gera legendas automaticamente e distribui via WhatsApp — rodando 24/7 em infraestrutura própria.",
+      },
+      otherProjects:
+        "Veja também o StudyMind, plataforma de estudos com IA, entre outros projetos do portfólio.",
+    },
   },
 ];
 
 export function Services() {
+  const [openModal, setOpenModal] = useState<string | null>(null);
+  const activeService = services.find((s) => s.title === openModal);
+
   return (
     <section id="servicos" className="py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-6">
@@ -86,6 +151,14 @@ export function Services() {
                   ))}
                 </div>
 
+                <button
+                  onClick={() => setOpenModal(service.title)}
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline self-start mb-6"
+                >
+                  Saiba mais
+                  <span aria-hidden="true">+</span>
+                </button>
+
                 <div className="mt-auto">
                   <div className="border-t border-divider pt-6 flex justify-between items-center">
                     <span className="text-sm text-muted">
@@ -108,6 +181,14 @@ export function Services() {
           ))}
         </div>
       </div>
+
+      {activeService && (
+        <ServiceDetailModal
+          title={activeService.title}
+          details={activeService.details}
+          onClose={() => setOpenModal(null)}
+        />
+      )}
     </section>
   );
 }
