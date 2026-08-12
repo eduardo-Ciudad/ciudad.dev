@@ -41,7 +41,10 @@ export function WhyUs() {
     <section className="py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-6">
         <ScrollReveal className="text-center mb-10 md:mb-12">
-          <h2 className="font-heading font-semibold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-1px]">
+          <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">
+            Diferenciais
+          </span>
+          <h2 className="font-heading font-bold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-0.5px] text-primary">
             Por que a ciudad.dev?
           </h2>
           <p className="mt-3 text-muted text-[15px] max-w-xl mx-auto">
@@ -61,9 +64,9 @@ export function WhyUs() {
                   : ""
               }
             >
-              <div className="group relative overflow-hidden bg-card border border-card-border rounded-lg px-8 py-10 h-full cursor-default transition-all duration-300 hover:border-accent-border hover:shadow-md hover:scale-[1.02]">
-                <div className="absolute left-0 top-0 h-full w-0 group-hover:w-1 bg-accent rounded-l-lg transition-all duration-300 ease-out" />
-                <div className="w-10 h-10 rounded-md bg-accent-light border border-accent-border flex items-center justify-center mb-5 transition-transform duration-300 group-hover:scale-110">
+              <div className="group relative overflow-hidden bg-card border border-card-border rounded-lg px-8 py-10 h-full cursor-default transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)] hover:ring-1 hover:ring-accent-border">
+                <div className="absolute left-0 top-0 h-0 w-[3px] bg-accent rounded-l-lg group-hover:h-full transition-[height] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                <div className="w-10 h-10 rounded-md bg-accent-light border border-accent-border flex items-center justify-center mb-5 transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-accent-border">
                   <card.icon size={20} className="text-accent" />
                 </div>
                 <h3 className="font-body font-semibold text-lg mb-3">
