@@ -32,7 +32,10 @@ export function ForWho() {
     <section className="py-16 md:py-24 bg-card">
       <div className="max-w-6xl mx-auto px-6">
         <ScrollReveal className="text-center mb-12">
-          <h2 className="font-heading font-semibold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-1px]">
+          <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">
+            Para quem
+          </span>
+          <h2 className="font-heading font-bold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-0.5px] text-primary">
             Para quem é o nosso projeto?
           </h2>
           <p className="mt-3 text-muted text-[15px] max-w-xl mx-auto">
@@ -43,9 +46,9 @@ export function ForWho() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {personas.map((persona, i) => (
             <ScrollReveal key={persona.title} delay={i * 0.15}>
-              <div className="group relative overflow-hidden bg-surface border border-card-border rounded-xl px-8 py-10 h-full flex flex-col cursor-default transition-all duration-300 hover:border-accent-border hover:shadow-md hover:scale-[1.02]">
-                <div className="absolute left-0 top-0 h-full w-0 group-hover:w-1 bg-accent rounded-l-xl transition-all duration-300 ease-out" />
-                <div className="w-12 h-12 rounded-xl bg-accent-light flex items-center justify-center mb-6">
+              <div className="group relative overflow-hidden bg-surface border border-card-border rounded-xl px-8 py-10 h-full flex flex-col cursor-default transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)]">
+                <div className="absolute left-0 top-0 h-0 w-[3px] bg-accent rounded-l-xl group-hover:h-full transition-[height] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                <div className="w-12 h-12 rounded-xl bg-accent-light flex items-center justify-center mb-6 transition-all duration-300 ease-out group-hover:bg-accent-border">
                   <persona.icon size={22} className="text-accent" />
                 </div>
                 <h3 className="font-body font-semibold text-xl mb-3">
