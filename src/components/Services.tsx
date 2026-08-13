@@ -1,10 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 import { ScrollReveal } from "./ScrollReveal";
 import { ServiceDetailModal, type ServiceDetail } from "./ServiceDetailModal";
 
 const services: {
+  slug: string;
   kicker: string;
   title: string;
   description: string;
@@ -15,6 +18,7 @@ const services: {
   details: ServiceDetail;
 }[] = [
   {
+    slug: "landing-page",
     kicker: "PÁGINA",
     title: "Landing Page",
     description:
@@ -45,6 +49,7 @@ const services: {
     },
   },
   {
+    slug: "ecommerce",
     kicker: "LOJA",
     title: "E-commerce",
     description:
@@ -76,6 +81,7 @@ const services: {
     },
   },
   {
+    slug: "sistema-personalizado",
     kicker: "SOB MEDIDA",
     title: "Sistema personalizado",
     description:
@@ -175,6 +181,17 @@ export function Services() {
                   >
                     {service.cta}
                   </a>
+
+                  <Link
+                    href={`/servicos/${service.slug}`}
+                    className="group/doc w-full mt-4 py-2.5 px-5 border border-card-border rounded-full text-sm font-medium text-accent hover:bg-accent-light hover:border-accent-border transition-colors flex items-center justify-center gap-1.5"
+                  >
+                    Ver documentação
+                    <ArrowRight
+                      size={15}
+                      className="transition-transform duration-200 group-hover/doc:translate-x-1"
+                    />
+                  </Link>
                 </div>
               </div>
             </ScrollReveal>
