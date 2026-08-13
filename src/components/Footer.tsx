@@ -1,3 +1,5 @@
+import Link from "next/link";
+import { Mail } from "lucide-react";
 import { LinkedinIcon, GithubIcon } from "./icons";
 
 export function Footer() {
@@ -51,10 +53,40 @@ export function Footer() {
           </div>
 
           <div>
+            <h4 className="text-white text-sm font-semibold mb-3">Legal</h4>
+            <ul className="space-y-2">
+              <li>
+                <Link
+                  href="/privacidade"
+                  className="text-white/50 text-[13px] hover:text-white transition-colors"
+                >
+                  Política de Privacidade
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/cookies"
+                  className="text-white/50 text-[13px] hover:text-white transition-colors"
+                >
+                  Política de Cookies
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/termos"
+                  className="text-white/50 text-[13px] hover:text-white transition-colors"
+                >
+                  Termos de Uso
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          <div>
             <h4 className="text-white text-sm font-semibold mb-3">Social</h4>
             <div className="flex items-center gap-4">
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/eduardociudadf/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/50 hover:text-white transition-colors"
@@ -63,7 +95,7 @@ export function Footer() {
                 <LinkedinIcon size={20} />
               </a>
               <a
-                href="https://github.com"
+                href="https://github.com/eduardo-Ciudad"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-white/50 hover:text-white transition-colors"
@@ -71,13 +103,23 @@ export function Footer() {
               >
                 <GithubIcon size={20} />
               </a>
+              <a
+                href="mailto:eduardo.ciudad.dev@gmail.com"
+                className="text-white/50 hover:text-white transition-colors"
+                aria-label="E-mail"
+              >
+                <Mail size={20} />
+              </a>
             </div>
           </div>
         </div>
 
-        <div className="border-t border-white/10 mt-10 pt-6">
+        <div className="border-t border-white/10 mt-10 pt-6 flex flex-col items-center gap-1.5">
           <p className="text-white/30 text-xs text-center">
             © 2026 ciudad.dev — Todos os direitos reservados
+          </p>
+          <p className="text-white/30 text-[11px] text-center">
+            CNPJ em processo de formalização
           </p>
         </div>
       </div>
