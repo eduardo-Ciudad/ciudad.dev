@@ -46,20 +46,7 @@ export default async function ServiceDocPage(
         </div>
       </header>
 
-      <ScrollReveal className="max-w-3xl mx-auto px-6 pt-14 pb-10 text-center">
-        <h1 className="font-heading font-bold text-4xl md:text-5xl tracking-[-0.5px] text-primary mb-4">
-          {doc.title}
-        </h1>
-        <p className="text-muted text-lg leading-relaxed max-w-xl mx-auto">
-          {doc.tagline}
-        </p>
-      </ScrollReveal>
-
-      <div className="max-w-3xl mx-auto px-6 mb-14">
-        <DocImagePlaceholder label={`Screenshot geral — ${doc.title}`} />
-      </div>
-
-      <div className="max-w-6xl mx-auto px-6 pb-20 md:pb-28 lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
+      <div className="max-w-6xl mx-auto px-6 pt-14 pb-20 md:pb-28 lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
         <aside className="hidden lg:block">
           <nav className="sticky top-24 flex flex-col gap-1 text-sm">
             {doc.sections.map((section) => (
@@ -75,6 +62,19 @@ export default async function ServiceDocPage(
         </aside>
 
         <div className="max-w-[720px]">
+          <ScrollReveal className="mb-10">
+            <h1 className="font-heading font-bold text-4xl md:text-5xl tracking-[-0.5px] text-primary mb-4">
+              {doc.title}
+            </h1>
+            <p className="text-muted text-lg leading-relaxed">
+              {doc.tagline}
+            </p>
+          </ScrollReveal>
+
+          <div className="mb-14">
+            <DocImagePlaceholder label={`Screenshot geral — ${doc.title}`} />
+          </div>
+
           {doc.sections.map((section) => (
             <ScrollReveal
               key={section.id}
@@ -93,11 +93,11 @@ export default async function ServiceDocPage(
 
                 {section.id === "processo" && (
                   <div className="relative pl-10">
-                    <div className="absolute left-[15px] top-2 bottom-2 w-[2px] bg-divider" />
+                    <div className="absolute left-[15px] top-2 bottom-2 w-[2px] bg-divider z-0" />
                     <div className="flex flex-col gap-9">
                       {section.steps.map((step) => (
                         <div key={step.number} className="relative">
-                          <div className="absolute -left-10 top-0 w-8 h-8 rounded-full bg-accent-light border-2 border-accent flex items-center justify-center text-accent text-sm font-semibold">
+                          <div className="absolute -left-10 top-0 z-10 w-8 h-8 rounded-full bg-[#e8f0fe] border-2 border-accent flex items-center justify-center text-accent text-sm font-semibold">
                             {step.number}
                           </div>
                           <h3 className="font-body font-semibold text-lg mb-2">
