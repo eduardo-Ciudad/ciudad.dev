@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowLeft, Check, ExternalLink } from "lucide-react";
+import { Check, ExternalLink } from "lucide-react";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { DocImagePlaceholder } from "@/components/DocImagePlaceholder";
+import { BackToSiteHeader } from "@/components/BackToSiteHeader";
+import { Footer } from "@/components/Footer";
 import { getServiceDoc, servicesDocs } from "@/data/services-docs";
 
 export async function generateStaticParams() {
@@ -34,17 +35,7 @@ export default async function ServiceDocPage(
 
   return (
     <div className="min-h-screen bg-surface">
-      <header className="sticky top-0 z-20 border-b border-divider bg-card/90 backdrop-blur-sm">
-        <div className="max-w-6xl mx-auto px-6 h-16 flex items-center">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted hover:text-accent transition-colors"
-          >
-            <ArrowLeft size={16} />
-            Voltar ao site
-          </Link>
-        </div>
-      </header>
+      <BackToSiteHeader />
 
       <div className="max-w-6xl mx-auto px-6 pt-14 pb-20 md:pb-28 lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
         <aside className="hidden lg:block">
@@ -248,6 +239,8 @@ export default async function ServiceDocPage(
           </div>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }
