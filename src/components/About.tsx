@@ -15,6 +15,9 @@ export function About() {
           </ScrollReveal>
 
           <ScrollReveal delay={0.15} className="flex-1 text-center md:text-left">
+            <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">
+              Conheça o founder
+            </span>
             <h2 className="font-heading font-semibold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-1px]">
               Eduardo Ciudad
             </h2>
@@ -23,16 +26,36 @@ export function About() {
             </p>
             <div className="mt-6 space-y-4 text-[14px] md:text-[15px] leading-relaxed text-muted">
               <p>
-                Criador do GabiKids — e-commerce em produção com pagamento real
-                via Mercado Pago — e de projetos com IA integrada como o PromoBot
-                (monitoramento e automação com Gemini) e o StudyMind (plataforma
-                de estudos com IA da Anthropic).
+                Sou Eduardo Ciudad, desenvolvedor de software e founder da
+                Ciudad.dev.
               </p>
               <p>
-                Desenvolvedor backend autodidata que documenta o processo de
-                construção publicamente no LinkedIn. Cada projeto da ciudad.dev
-                nasce da mesma mentalidade: resolver o problema real, não vender
-                feature.
+                Meu trabalho é transformar necessidades de negócio em produtos
+                digitais que realmente funcionam, de sites e e-commerces a
+                sistemas personalizados. Já desenvolvi aplicações em produção
+                com pagamentos online, APIs, autenticação, bancos de dados,
+                infraestrutura própria, Docker, Nginx e integrações com IA.
+              </p>
+              <p>
+                No desenvolvimento, trabalho principalmente com{" "}
+                <span className="text-primary font-medium">Java</span>,{" "}
+                <span className="text-primary font-medium">Spring Boot</span>{" "}
+                e <span className="text-primary font-medium">PostgreSQL</span>
+                , aplicando conceitos de{" "}
+                <span className="text-primary font-medium">DDD</span>, APIs
+                REST, arquitetura em camadas e segurança com{" "}
+                <span className="text-primary font-medium">
+                  Spring Security/JWT
+                </span>
+                . Acompanho o projeto desde o código até a infraestrutura,
+                utilizando <span className="text-primary font-medium">Docker</span>,{" "}
+                <span className="text-primary font-medium">Linux</span>,
+                Docker Compose,{" "}
+                <span className="text-primary font-medium">CI/CD</span> e{" "}
+                <span className="text-primary font-medium">GitHub Actions</span>
+                , com mais de 200 testes automatizados entre{" "}
+                <span className="text-primary font-medium">JUnit</span> e{" "}
+                <span className="text-primary font-medium">Mockito</span>.
               </p>
             </div>
             <div className="mt-6 flex items-center gap-4 justify-center md:justify-start">
