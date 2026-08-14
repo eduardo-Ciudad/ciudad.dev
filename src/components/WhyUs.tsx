@@ -1,6 +1,15 @@
 "use client";
 
-import { FileCheck, ShieldCheck, Clock, MessageCircle, Code2 } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  FileCheck,
+  ShieldCheck,
+  Clock,
+  MessageCircle,
+  Code2,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { ScrollReveal } from "./ScrollReveal";
 
 const cards = [
@@ -37,6 +46,62 @@ const cards = [
 ];
 
 export function WhyUs() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [atStart, setAtStart] = useState(true);
+  const [atEnd, setAtEnd] = useState(false);
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  const getStep = () => {
+    const track = trackRef.current;
+    if (!track || !track.firstElementChild) return 0;
+    const card = track.firstElementChild as HTMLElement;
+    const gap = parseFloat(getComputedStyle(track).columnGap || "0");
+    return card.getBoundingClientRect().width + gap;
+  };
+
+  const updateScrollState = () => {
+    const track = trackRef.current;
+    if (!track) return;
+    const { scrollLeft, scrollWidth, clientWidth } = track;
+
+    const isAtEnd = scrollLeft + clientWidth >= scrollWidth - 4;
+    setAtStart(scrollLeft <= 4);
+    setAtEnd(isAtEnd);
+
+    if (isAtEnd) {
+      // The last card's snap point can exceed the max scrollable distance
+      // when it doesn't divide evenly into the track width, so scrollLeft
+      // never quite reaches it — treat "can't scroll further" as the tell.
+      setActiveIndex(cards.length - 1);
+      return;
+    }
+
+    const step = getStep();
+    if (step > 0) {
+      setActiveIndex(Math.round(scrollLeft / step));
+    }
+  };
+
+  useEffect(() => {
+    updateScrollState();
+    window.addEventListener("resize", updateScrollState);
+    return () => window.removeEventListener("resize", updateScrollState);
+  }, []);
+
+  const scrollByStep = (direction: 1 | -1) => {
+    trackRef.current?.scrollBy({
+      left: getStep() * direction,
+      behavior: "smooth",
+    });
+  };
+
+  const scrollToIndex = (index: number) => {
+    trackRef.current?.scrollTo({
+      left: getStep() * index,
+      behavior: "smooth",
+    });
+  };
+
   return (
     <section className="py-16 md:py-24">
       <div className="max-w-6xl mx-auto px-6">
@@ -52,31 +117,76 @@ export function WhyUs() {
           </p>
         </ScrollReveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {cards.map((card, i) => (
-            <ScrollReveal
-              key={card.title}
-              delay={i * 0.1}
-              className={
-                i >= 3
-                  ? "md:col-span-1 lg:col-span-1 " +
-                    (i === 3 ? "lg:col-start-1" : "lg:col-start-2")
-                  : ""
-              }
-            >
-              <div className="group relative overflow-hidden bg-card border border-card-border rounded-lg px-8 py-10 h-full cursor-default transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)] hover:ring-1 hover:ring-accent-border">
-                <div className="absolute left-0 top-0 h-0 w-[3px] bg-accent rounded-l-lg group-hover:h-full transition-[height] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                <div className="w-10 h-10 rounded-md bg-accent-light border border-accent-border flex items-center justify-center mb-5 transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-accent-border">
-                  <card.icon size={20} className="text-accent" />
+        <div className="relative">
+          <div
+            className="pointer-events-none absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-surface to-transparent transition-opacity duration-300"
+            style={{ opacity: atStart ? 0 : 1 }}
+          />
+          <div
+            className="pointer-events-none absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-surface to-transparent transition-opacity duration-300"
+            style={{ opacity: atEnd ? 0 : 1 }}
+          />
+
+          <button
+            type="button"
+            onClick={() => scrollByStep(-1)}
+            disabled={atStart}
+            aria-label="Card anterior"
+            className="hidden md:flex absolute -left-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-card border border-card-border shadow-md items-center justify-center text-primary transition-opacity duration-300 disabled:opacity-0 disabled:pointer-events-none hover:border-accent-border hover:text-accent"
+          >
+            <ChevronLeft size={18} />
+          </button>
+          <button
+            type="button"
+            onClick={() => scrollByStep(1)}
+            disabled={atEnd}
+            aria-label="Próximo card"
+            className="hidden md:flex absolute -right-5 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-card border border-card-border shadow-md items-center justify-center text-primary transition-opacity duration-300 disabled:opacity-0 disabled:pointer-events-none hover:border-accent-border hover:text-accent"
+          >
+            <ChevronRight size={18} />
+          </button>
+
+          <div
+            ref={trackRef}
+            onScroll={updateScrollState}
+            className="no-scrollbar flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2"
+          >
+            {cards.map((card, i) => (
+              <ScrollReveal
+                key={card.title}
+                delay={i * 0.1}
+                className="snap-start shrink-0 w-[280px] md:w-[300px]"
+              >
+                <div className="group relative overflow-hidden bg-card border border-card-border rounded-lg px-8 py-10 h-full cursor-default transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)] hover:ring-1 hover:ring-accent-border">
+                  <div className="absolute left-0 top-0 h-0 w-[3px] bg-accent rounded-l-lg group-hover:h-full transition-[height] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" />
+                  <div className="w-10 h-10 rounded-md bg-accent-light border border-accent-border flex items-center justify-center mb-5 transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-accent-border">
+                    <card.icon size={20} className="text-accent" />
+                  </div>
+                  <h3 className="font-body font-semibold text-lg mb-3">
+                    {card.title}
+                  </h3>
+                  <p className="text-muted text-sm leading-relaxed">
+                    {card.description}
+                  </p>
                 </div>
-                <h3 className="font-body font-semibold text-lg mb-3">
-                  {card.title}
-                </h3>
-                <p className="text-muted text-sm leading-relaxed">
-                  {card.description}
-                </p>
-              </div>
-            </ScrollReveal>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+
+        <div className="flex justify-center gap-2 mt-6">
+          {cards.map((card, i) => (
+            <button
+              key={card.title}
+              type="button"
+              onClick={() => scrollToIndex(i)}
+              aria-label={`Ir para o card ${i + 1}`}
+              className={`h-2 rounded-full transition-all duration-300 ${
+                i === activeIndex
+                  ? "w-5 bg-accent"
+                  : "w-2 bg-primary/15 hover:bg-primary/30"
+              }`}
+            />
           ))}
         </div>
       </div>
