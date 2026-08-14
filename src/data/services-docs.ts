@@ -9,6 +9,11 @@ export type DocGroup = {
   items: string[];
 };
 
+export type DocImage = {
+  src: string;
+  alt: string;
+};
+
 export type DocProject = {
   title: string;
   description?: string;
@@ -16,6 +21,7 @@ export type DocProject = {
   bullets: string[];
   hasLink: boolean;
   highlight?: boolean;
+  image?: DocImage;
 };
 
 export type DocSection =
@@ -26,6 +32,7 @@ export type DocSection =
       title: string;
       groups: DocGroup[];
       note?: { label: string; text: string };
+      diagramImage?: DocImage;
     }
   | { id: "garantia"; title: string; content: string }
   | {
@@ -39,6 +46,7 @@ export type ServiceDoc = {
   slug: string;
   title: string;
   tagline: string;
+  heroImage?: DocImage;
   sections: DocSection[];
 };
 
@@ -48,6 +56,10 @@ export const servicesDocs: ServiceDoc[] = [
     title: "Landing Page",
     tagline:
       "Página de conversão sob medida, pensada pra transformar visitante em contato — sem CMS pesado, sem template genérico.",
+    heroImage: {
+      src: "/img/services/landing-page-overview.png",
+      alt: "Hero da landing page — visão geral do serviço",
+    },
     sections: [
       {
         id: "visao-geral",
@@ -82,6 +94,10 @@ export const servicesDocs: ServiceDoc[] = [
       {
         id: "decisoes-tecnicas",
         title: "Decisões técnicas",
+        diagramImage: {
+          src: "/img/services/landing-page-arquitetura.png",
+          alt: "Diagrama de decisões técnicas da landing page",
+        },
         groups: [
           {
             subtitle: "Abordagem técnica",
@@ -115,6 +131,10 @@ export const servicesDocs: ServiceDoc[] = [
             ],
             url: "https://vinicius-masc.vercel.app/",
             hasLink: true,
+            image: {
+              src: "/img/services/landing-page-vinicius-mascagni.png",
+              alt: "Screenshot do projeto real — landing page Vinicius Mascagni",
+            },
           },
         ],
       },

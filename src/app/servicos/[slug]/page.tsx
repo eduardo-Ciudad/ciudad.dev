@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Check, ExternalLink } from "lucide-react";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { DocImagePlaceholder } from "@/components/DocImagePlaceholder";
+import { DocImage } from "@/components/DocImage";
 import { BackToSiteHeader } from "@/components/BackToSiteHeader";
 import { Footer } from "@/components/Footer";
 import { getServiceDoc, servicesDocs } from "@/data/services-docs";
@@ -63,7 +64,11 @@ export default async function ServiceDocPage(
           </ScrollReveal>
 
           <div className="mb-14">
-            <DocImagePlaceholder label={`Screenshot geral — ${doc.title}`} />
+            {doc.heroImage ? (
+              <DocImage src={doc.heroImage.src} alt={doc.heroImage.alt} />
+            ) : (
+              <DocImagePlaceholder label={`Screenshot geral — ${doc.title}`} />
+            )}
           </div>
 
           {doc.sections.map((section) => (
@@ -105,10 +110,18 @@ export default async function ServiceDocPage(
 
                 {section.id === "decisoes-tecnicas" && (
                   <div>
-                    <DocImagePlaceholder
-                      label="Diagrama de arquitetura e decisões técnicas"
-                      className="mb-8"
-                    />
+                    {section.diagramImage ? (
+                      <DocImage
+                        src={section.diagramImage.src}
+                        alt={section.diagramImage.alt}
+                        className="mb-8"
+                      />
+                    ) : (
+                      <DocImagePlaceholder
+                        label="Diagrama de arquitetura e decisões técnicas"
+                        className="mb-8"
+                      />
+                    )}
                     <div className="space-y-7">
                       {section.groups.map((group) => (
                         <div key={group.subtitle}>
@@ -156,10 +169,18 @@ export default async function ServiceDocPage(
                     <div className="space-y-12">
                       {section.projects.map((project) => (
                         <div key={project.title}>
-                          <DocImagePlaceholder
-                            label={`Screenshot — ${project.title}`}
-                            className="mb-5"
-                          />
+                          {project.image ? (
+                            <DocImage
+                              src={project.image.src}
+                              alt={project.image.alt}
+                              className="mb-5"
+                            />
+                          ) : (
+                            <DocImagePlaceholder
+                              label={`Screenshot — ${project.title}`}
+                              className="mb-5"
+                            />
+                          )}
 
                           {project.highlight && (
                             <span className="inline-block text-[10px] font-semibold uppercase tracking-wide text-muted bg-card border border-card-border rounded-full px-2 py-1 mb-2">
