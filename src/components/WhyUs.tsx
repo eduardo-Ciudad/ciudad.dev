@@ -110,7 +110,7 @@ export function WhyUs() {
             Diferenciais
           </span>
           <h2 className="font-heading font-bold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-0.5px] text-primary">
-            Por que a ciudad.dev?
+            Por que a Ciudad<span className="text-accent">Lab</span>?
           </h2>
           <p className="mt-3 text-muted text-[15px] max-w-xl mx-auto">
             O que separa um projeto que funciona de um que vira slide.

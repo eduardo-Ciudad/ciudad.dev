@@ -34,7 +34,7 @@ export function Navbar() {
           href="#"
           className="text-2xl md:text-[26px] font-heading font-bold text-primary"
         >
-          ciudad<span className="text-accent">.dev</span>
+          Ciudad<span className="text-accent">Lab</span>
         </a>
 
         <div className="hidden md:flex items-center gap-1">

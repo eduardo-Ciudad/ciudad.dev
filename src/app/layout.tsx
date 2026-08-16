@@ -18,7 +18,7 @@ const dmSans = DM_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "ciudad.dev — Sites, lojas e sistemas sob medida",
+  title: "CiudadLab — Sites, lojas e sistemas sob medida",
   description:
     "Da ideia ao ar. Sites, lojas e sistemas sob medida — prontos pra rodar. Sem template genérico, sem intermediário.",
   keywords: [
@@ -26,7 +26,7 @@ export const metadata: Metadata = {
     "landing page",
     "e-commerce",
     "site institucional",
-    "ciudad.dev",
+    "CiudadLab",
   ],
 };
 

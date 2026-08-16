@@ -10,7 +10,7 @@ import { AnimatePresence, motion } from "framer-motion";
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
-const STORAGE_KEY = "ciudad-intro-seen";
+const STORAGE_KEY = "ciudadlab-intro-seen";
 
 const LETTER_STAGGER = 0.055;
 const LETTER_DURATION = 0.3;
@@ -23,8 +23,8 @@ const EASE = [0.65, 0, 0.35, 1] as const;
 const HOLD_MS = (BAR_DELAY + BAR_DURATION + HOLD_AFTER_BAR) * 1000;
 
 const segments = [
-  ...["c", "i", "u", "d", "a", "d"].map((text) => ({ text, accent: false })),
-  { text: ".dev", accent: true },
+  ...["C", "i", "u", "d", "a", "d"].map((text) => ({ text, accent: false })),
+  { text: "Lab", accent: true },
 ];
 
 const containerVariants = {

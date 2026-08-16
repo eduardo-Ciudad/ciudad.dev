@@ -7,16 +7,19 @@ export function Footer() {
     <footer className="bg-dark py-12 md:py-16">
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between gap-10">
-          <div className="max-w-sm">
+          <div className="max-w-sm text-center">
             <a
               href="#"
               className="text-xl font-heading font-semibold text-white"
             >
-              ciudad<span className="text-accent">.dev</span>
+              Ciudad<span className="text-accent">Lab</span>
             </a>
             <p className="mt-3 text-white/50 text-[13px] leading-relaxed">
               Sites, lojas e sistemas sob medida para quem leva o próprio
               negócio a sério.
+            </p>
+            <p className="mt-4 text-white/45 text-xs uppercase tracking-[2px]">
+              Building software.
             </p>
           </div>
 
@@ -116,7 +119,7 @@ export function Footer() {
 
         <div className="border-t border-white/10 mt-10 pt-6 flex flex-col items-center gap-1.5">
           <p className="text-white/30 text-xs text-center">
-            © 2026 ciudad.dev — Todos os direitos reservados
+            © 2026 CiudadLab — Todos os direitos reservados
           </p>
           <p className="text-white/30 text-[11px] text-center">
             CNPJ em processo de formalização

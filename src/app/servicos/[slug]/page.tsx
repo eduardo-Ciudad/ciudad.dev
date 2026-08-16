@@ -21,7 +21,7 @@ export async function generateMetadata(
   if (!doc) return {};
 
   return {
-    title: `${doc.title} — Documentação | ciudad.dev`,
+    title: `${doc.title} — Documentação | CiudadLab`,
     description: doc.tagline,
   };
 }

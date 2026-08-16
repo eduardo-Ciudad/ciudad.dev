@@ -27,7 +27,7 @@ export function About() {
             <div className="mt-6 space-y-4 text-[14px] md:text-[15px] leading-relaxed text-muted">
               <p>
                 Sou Eduardo Ciudad, desenvolvedor de software e founder da
-                Ciudad.dev.
+                CiudadLab.
               </p>
               <p>
                 Meu trabalho é transformar necessidades de negócio em produtos

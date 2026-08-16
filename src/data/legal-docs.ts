@@ -38,12 +38,12 @@ export const legalDocs: LegalDoc[] = [
     slug: "privacidade",
     title: "Política de Privacidade",
     description:
-      "Como a ciudad.dev coleta, utiliza e protege dados pessoais, em conformidade com a LGPD.",
+      "Como a CiudadLab coleta, utiliza e protege dados pessoais, em conformidade com a LGPD.",
     updatedAt: "13/08/2026",
     intro: [
       {
         type: "p",
-        text: "A ciudad.dev, operada por Eduardo Ciudad, respeita a privacidade dos visitantes do site e das pessoas que entram em contato ou contratam nossos serviços.",
+        text: "A CiudadLab, operada por Eduardo Ciudad, respeita a privacidade dos visitantes do site e das pessoas que entram em contato ou contratam nossos serviços.",
       },
       {
         type: "p",
@@ -57,7 +57,7 @@ export const legalDocs: LegalDoc[] = [
         blocks: [
           {
             type: "p",
-            text: "A ciudad.dev é uma atividade de desenvolvimento de software operada, atualmente, por Eduardo Ciudad, pessoa física, enquanto o processo de formalização da atividade empresarial estiver em andamento.",
+            text: "A CiudadLab é uma atividade de desenvolvimento de software operada, atualmente, por Eduardo Ciudad, pessoa física, enquanto o processo de formalização da atividade empresarial estiver em andamento.",
           },
           {
             type: "link",
@@ -75,7 +75,7 @@ export const legalDocs: LegalDoc[] = [
         blocks: [
           {
             type: "p",
-            text: "Podemos coletar os seguintes dados, dependendo da forma como você interage com a ciudad.dev:",
+            text: "Podemos coletar os seguintes dados, dependendo da forma como você interage com a CiudadLab:",
           },
         ],
         subsections: [
@@ -167,7 +167,7 @@ export const legalDocs: LegalDoc[] = [
         id: "compartilhamento",
         title: "5. Compartilhamento de dados",
         blocks: [
-          { type: "p", text: "A ciudad.dev não vende seus dados pessoais." },
+          { type: "p", text: "A CiudadLab não vende seus dados pessoais." },
           {
             type: "p",
             text: "Se necessário para a operação do negócio, alguns dados poderão ser tratados por prestadores de serviços que atuem em nosso nome, como fornecedores de hospedagem, serviços de e-mail, ferramentas de comunicação ou ferramentas de análise.",
@@ -318,12 +318,12 @@ export const legalDocs: LegalDoc[] = [
     slug: "cookies",
     title: "Política de Cookies",
     description:
-      "Como a ciudad.dev utiliza cookies e tecnologias semelhantes no site.",
+      "Como a CiudadLab utiliza cookies e tecnologias semelhantes no site.",
     updatedAt: "13/08/2026",
     intro: [
       {
         type: "p",
-        text: "A ciudad.dev utiliza cookies e tecnologias semelhantes para garantir o funcionamento do site e, quando aplicável, compreender como os visitantes utilizam nossas páginas.",
+        text: "A CiudadLab utiliza cookies e tecnologias semelhantes para garantir o funcionamento do site e, quando aplicável, compreender como os visitantes utilizam nossas páginas.",
       },
     ],
     sections: [
@@ -380,7 +380,7 @@ export const legalDocs: LegalDoc[] = [
               },
               {
                 type: "p",
-                text: "A ciudad.dev não utiliza cookies de terceiros destinados à publicidade comportamental ou rastreamento publicitário, salvo se esta política for atualizada para refletir uma alteração nessa prática.",
+                text: "A CiudadLab não utiliza cookies de terceiros destinados à publicidade comportamental ou rastreamento publicitário, salvo se esta política for atualizada para refletir uma alteração nessa prática.",
               },
             ],
           },
@@ -437,12 +437,12 @@ export const legalDocs: LegalDoc[] = [
     slug: "termos",
     title: "Termos de Uso",
     description:
-      "Condições gerais para utilização do site e contratação dos serviços da ciudad.dev.",
+      "Condições gerais para utilização do site e contratação dos serviços da CiudadLab.",
     updatedAt: "13/08/2026",
     intro: [
       {
         type: "p",
-        text: "Estes Termos de Uso estabelecem as condições gerais para utilização do site ciudad.dev.",
+        text: "Estes Termos de Uso estabelecem as condições gerais para utilização do site CiudadLab.",
       },
       {
         type: "p",
@@ -452,11 +452,11 @@ export const legalDocs: LegalDoc[] = [
     sections: [
       {
         id: "sobre",
-        title: "1. Sobre a ciudad.dev",
+        title: "1. Sobre a CiudadLab",
         blocks: [
           {
             type: "p",
-            text: "A ciudad.dev é uma atividade de desenvolvimento de software operada atualmente por Eduardo Ciudad.",
+            text: "A CiudadLab é uma atividade de desenvolvimento de software operada atualmente por Eduardo Ciudad.",
           },
           {
             type: "p",
@@ -530,7 +530,7 @@ export const legalDocs: LegalDoc[] = [
         blocks: [
           {
             type: "p",
-            text: "Salvo indicação em contrário, os textos, elementos visuais, identidade, código e demais conteúdos desenvolvidos especificamente para o site ciudad.dev pertencem a seus respectivos titulares.",
+            text: "Salvo indicação em contrário, os textos, elementos visuais, identidade, código e demais conteúdos desenvolvidos especificamente para o site CiudadLab pertencem a seus respectivos titulares.",
           },
           {
             type: "p",
@@ -568,11 +568,11 @@ export const legalDocs: LegalDoc[] = [
         blocks: [
           {
             type: "p",
-            text: "A ciudad.dev busca manter o site disponível e funcionando corretamente, mas não garante disponibilidade ininterrupta ou ausência absoluta de erros.",
+            text: "A CiudadLab busca manter o site disponível e funcionando corretamente, mas não garante disponibilidade ininterrupta ou ausência absoluta de erros.",
           },
           {
             type: "p",
-            text: "O site poderá ficar temporariamente indisponível em razão de manutenção, atualizações, falhas de infraestrutura, problemas de terceiros ou outros eventos fora do controle razoável da ciudad.dev.",
+            text: "O site poderá ficar temporariamente indisponível em razão de manutenção, atualizações, falhas de infraestrutura, problemas de terceiros ou outros eventos fora do controle razoável da CiudadLab.",
           },
         ],
       },
@@ -586,7 +586,7 @@ export const legalDocs: LegalDoc[] = [
           },
           {
             type: "p",
-            text: "A ciudad.dev não controla esses sites e não se responsabiliza pelo conteúdo, funcionamento ou políticas de privacidade de terceiros.",
+            text: "A CiudadLab não controla esses sites e não se responsabiliza pelo conteúdo, funcionamento ou políticas de privacidade de terceiros.",
           },
           {
             type: "p",

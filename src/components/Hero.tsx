@@ -107,7 +107,7 @@ export function Hero() {
 
             <div className="bg-[#0d1117] p-7 md:p-8 font-mono">
               <p className="text-neutral-500 text-xs tracking-wide mb-6">
-                ciudad.dev — status
+                CiudadLab — status
               </p>
 
               <div className="space-y-3">

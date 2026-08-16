@@ -8,7 +8,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const doc = getLegalDoc("cookies")!;
 
   return {
-    title: `${doc.title} | ciudad.dev`,
+    title: `${doc.title} | CiudadLab`,
     description: doc.description,
   };
 }
