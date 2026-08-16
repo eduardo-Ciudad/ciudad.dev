@@ -14,6 +14,14 @@ export type DocImage = {
   alt: string;
 };
 
+export type DocInProgress = {
+  title: string;
+  summary: string;
+  done: string[];
+  pending: string[];
+  note: string;
+};
+
 export type DocProject = {
   title: string;
   description?: string;
@@ -31,7 +39,7 @@ export type DocSection =
       id: "decisoes-tecnicas";
       title: string;
       groups: DocGroup[];
-      note?: { label: string; text: string };
+      inProgress?: DocInProgress;
       diagramImage?: DocImage;
     }
   | { id: "garantia"; title: string; content: string }
@@ -220,9 +228,23 @@ export const servicesDocs: ServiceDoc[] = [
             ],
           },
         ],
-        note: {
-          label: "Em desenvolvimento",
-          text: "Integração com ERP (Bling): sincronização automática de catálogo (produtos, variações, estoque) direto do Bling pro site, evitando cadastro duplicado. Ainda em construção — vou atualizar essa seção quando estiver disponível pra novos projetos.",
+        inProgress: {
+          title: "Integração com ERP (Bling)",
+          summary:
+            "Sincronização automática de catálogo direto do Bling pro site — produtos, variações, preço e estoque — eliminando cadastro duplicado entre o ERP e a loja.",
+          done: [
+            "Autenticação OAuth2 completa com o Bling (fluxo de autorização já testado até a tela de consentimento)",
+            "Sincronização de categorias e produtos via API v3 do Bling, com paginação para catálogos grandes",
+            "Mapeamento de variações (tamanho, cor) do Bling para a estrutura de produtos da loja, incluindo tratamento de casos como produtos sem variação",
+            "Bling como fonte da verdade para preço e estoque nos itens sincronizados — evita divergência entre o que o lojista vê no ERP e o que aparece no site",
+            "Renovação automática de token de acesso, sem precisar reautenticar manualmente",
+          ],
+          pending: [
+            "Validação completa do fluxo de callback com um catálogo real",
+            "Limite de requisições por segundo (a API do Bling restringe a 3 req/s — já mapeado, implementação em andamento)",
+            "Webhook de atualização em tempo real (hoje a sincronização é sob demanda)",
+          ],
+          note: "Atualmente pausada a pedido de um cliente após os testes de autenticação — retomo a finalização assim que houver um novo projeto com essa necessidade.",
         },
       },
       {
