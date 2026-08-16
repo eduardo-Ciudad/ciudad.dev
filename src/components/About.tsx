@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { LinkedinIcon, GithubIcon } from "./icons";
 import { ScrollReveal } from "./ScrollReveal";
 
@@ -9,8 +10,13 @@ export function About() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row items-center gap-10 md:gap-12">
           <ScrollReveal className="shrink-0">
-            <div className="w-[240px] h-[300px] md:w-[280px] md:h-[340px] rounded-lg bg-surface border border-card-border flex items-center justify-center overflow-hidden">
-              <span className="text-muted text-sm">foto</span>
+            <div className="relative w-[240px] h-[300px] md:w-[280px] md:h-[340px] rounded-lg bg-surface border border-card-border overflow-hidden">
+              <Image
+                src="/img/founder.jpg"
+                alt="Eduardo Ciudad, founder da CiudadLab"
+                fill
+                className="object-cover"
+              />
             </div>
           </ScrollReveal>
 
