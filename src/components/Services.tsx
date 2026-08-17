@@ -186,7 +186,7 @@ export function Services() {
                     href={`/servicos/${service.slug}`}
                     className="group/doc w-full mt-4 py-2.5 px-5 border border-card-border rounded-full text-sm font-medium text-accent hover:bg-accent-light hover:border-accent-border transition-colors flex items-center justify-center gap-1.5"
                   >
-                    Ver documentação
+                    Ver detalhes
                     <ArrowRight
                       size={15}
                       className="transition-transform duration-200 group-hover/doc:translate-x-1"
