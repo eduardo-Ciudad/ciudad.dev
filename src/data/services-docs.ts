@@ -281,6 +281,10 @@ export const servicesDocs: ServiceDoc[] = [
     title: "Sistema personalizado",
     tagline:
       "Pra quando o problema do seu negócio não tem solução pronta no mercado — automação, painel interno, MVP de produto, integração entre sistemas que hoje são feitas na mão.",
+    heroImage: {
+      src: "/img/services/sistema-personalizado-overview.png",
+      alt: "Visão geral de um sistema personalizado",
+    },
     sections: [
       {
         id: "visao-geral",
@@ -315,6 +319,10 @@ export const servicesDocs: ServiceDoc[] = [
       {
         id: "decisoes-tecnicas",
         title: "Decisões técnicas",
+        diagramImage: {
+          src: "/img/services/sistema-personalizado-arquitetura.png",
+          alt: "Diagrama de arquitetura e decisões técnicas do sistema personalizado",
+        },
         groups: [
           {
             subtitle: "Arquitetura definida por projeto",
@@ -345,6 +353,10 @@ export const servicesDocs: ServiceDoc[] = [
             ],
             url: "https://controle-financeiro-lab-frontend.vercel.app/",
             hasLink: true,
+            image: {
+              src: "/img/services/sistema-personalizado-controle-financeiro.png",
+              alt: "Screenshot do projeto real — Sistema Financeiro Multi-Tenant",
+            },
           },
           {
             title: "PromoBot",
