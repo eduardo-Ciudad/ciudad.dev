@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { ScrollReveal } from "./ScrollReveal";
 import { ServiceDetailModal, type ServiceDetail } from "./ServiceDetailModal";
+import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 
 const services: {
   slug: string;
@@ -176,7 +177,9 @@ export function Services() {
                   </div>
 
                   <a
-                    href="#contato"
+                    href={WHATSAPP_CONTACT_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className="block w-full mt-6 py-3.5 bg-primary text-card text-sm font-medium rounded-full hover:bg-primary/85 transition-colors text-center"
                   >
                     {service.cta}

@@ -2,6 +2,7 @@
 
 import { motion, useMotionValue, animate } from "framer-motion";
 import { useState, useEffect } from "react";
+import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 
 const metrics = [
   { label: "projetos entregues", value: 6, decimals: 0 },
@@ -82,7 +83,9 @@ export function Hero() {
             className="mt-7"
           >
             <a
-              href="#contato"
+              href={WHATSAPP_CONTACT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-full text-base font-semibold hover:brightness-110 transition-all duration-300"
             >
               Começar meu projeto

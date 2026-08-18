@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Mail } from "lucide-react";
 import { LinkedinIcon, GithubIcon } from "./icons";
+import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 
 export function Footer() {
   return (
@@ -46,7 +47,9 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href="#contato"
+                  href={WHATSAPP_CONTACT_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-white/50 text-[13px] hover:text-white transition-colors"
                 >
                   Contato

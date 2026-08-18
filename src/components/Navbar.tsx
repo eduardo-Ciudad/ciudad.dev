@@ -3,10 +3,11 @@
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 
 const links = [
   { label: "Serviços", href: "#servicos" },
-  { label: "Contato", href: "#contato" },
+  { label: "Contato", href: WHATSAPP_CONTACT_URL },
 ];
 
 export function Navbar() {
@@ -42,13 +43,17 @@ export function Navbar() {
             <a
               key={link.href}
               href={link.href}
+              target={link.href === WHATSAPP_CONTACT_URL ? "_blank" : undefined}
+              rel={link.href === WHATSAPP_CONTACT_URL ? "noopener noreferrer" : undefined}
               className="px-4 py-2 text-sm font-medium text-muted hover:text-primary hover:bg-primary/[0.06] rounded-lg transition-all duration-200"
             >
               {link.label}
             </a>
           ))}
           <a
-            href="#contato"
+            href={WHATSAPP_CONTACT_URL}
+            target="_blank"
+            rel="noopener noreferrer"
             className="ml-3 text-sm font-semibold bg-accent text-white px-6 py-2.5 rounded-full hover:brightness-110 transition-all duration-200"
           >
             Começar projeto
@@ -78,6 +83,8 @@ export function Navbar() {
                 <a
                   key={link.href}
                   href={link.href}
+                  target={link.href === WHATSAPP_CONTACT_URL ? "_blank" : undefined}
+                  rel={link.href === WHATSAPP_CONTACT_URL ? "noopener noreferrer" : undefined}
                   className="text-sm text-muted font-medium hover:text-primary transition-colors py-1"
                   onClick={() => setOpen(false)}
                 >
@@ -85,7 +92,9 @@ export function Navbar() {
                 </a>
               ))}
               <a
-                href="#contato"
+                href={WHATSAPP_CONTACT_URL}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="text-sm font-semibold bg-accent text-white px-6 py-2.5 rounded-full hover:brightness-110 transition-all duration-200 text-center mt-1"
                 onClick={() => setOpen(false)}
               >

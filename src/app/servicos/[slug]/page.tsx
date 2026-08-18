@@ -7,6 +7,7 @@ import { DocImage } from "@/components/DocImage";
 import { BackToSiteHeader } from "@/components/BackToSiteHeader";
 import { Footer } from "@/components/Footer";
 import { getServiceDoc, servicesDocs } from "@/data/services-docs";
+import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 
 export async function generateStaticParams() {
   return servicesDocs.map((doc) => ({ slug: doc.slug }));
@@ -299,7 +300,9 @@ export default async function ServiceDocPage(
               e valor definidos.
             </p>
             <a
-              href="/#contato"
+              href={WHATSAPP_CONTACT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-full text-base font-semibold hover:brightness-110 transition-all duration-300"
             >
               Quero um orçamento

@@ -1,6 +1,7 @@
 "use client";
 
 import { ScrollReveal } from "./ScrollReveal";
+import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 
 export function CtaFinal() {
   return (
@@ -16,7 +17,9 @@ export function CtaFinal() {
           </p>
           <div className="mt-8">
             <a
-              href="mailto:contato@ciudad.dev"
+              href={WHATSAPP_CONTACT_URL}
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-accent text-white px-7 py-3 rounded-full text-sm font-medium hover:brightness-110 transition-all duration-300"
             >
               Entrar em contato
