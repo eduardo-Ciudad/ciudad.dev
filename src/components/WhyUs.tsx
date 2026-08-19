@@ -203,7 +203,7 @@ export function WhyUs() {
           <div
             ref={trackRef}
             onScroll={updateScrollState}
-            className="no-scrollbar flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2"
+            className="no-scrollbar flex gap-5 overflow-x-auto overflow-y-hidden snap-x snap-mandatory scroll-smooth pb-2"
           >
             {cards.map((card, i) => (
               <WhyUsCard key={card.title} card={card} delay={i * 0.1} />
