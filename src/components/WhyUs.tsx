@@ -9,8 +9,11 @@ import {
   Code2,
   ChevronLeft,
   ChevronRight,
+  type LucideIcon,
 } from "lucide-react";
+import { useInView } from "framer-motion";
 import { ScrollReveal } from "./ScrollReveal";
+import { useSupportsHover } from "@/hooks/useSupportsHover";
 
 const cards = [
   {
@@ -44,6 +47,57 @@ const cards = [
       "Nada de ficar preso em plataforma que cobra mensalidade pra você acessar o próprio site. O código é entregue no seu repositório, o deploy é feito em infraestrutura que você controla. Se quiser trocar de desenvolvedor amanhã, leva tudo com você.",
   },
 ];
+
+function WhyUsCard({
+  card,
+  delay,
+}: {
+  card: { icon: LucideIcon; title: string; description: string };
+  delay: number;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(cardRef, { once: true, amount: 0.4 });
+  const supportsHover = useSupportsHover();
+  // On touch devices hover never reliably engages, so the card's hover
+  // treatment (accent bar, elevation, icon fill) plays once on scroll
+  // into view instead. Desktop keeps real :hover as the only trigger.
+  const revealed = !supportsHover && inView;
+
+  return (
+    <ScrollReveal
+      delay={delay}
+      className="snap-start shrink-0 w-[280px] md:w-[300px]"
+    >
+      <div
+        ref={cardRef}
+        className={`group relative overflow-hidden bg-card border border-card-border rounded-lg px-8 py-10 h-full cursor-default transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)] hover:ring-1 hover:ring-accent-border ${
+          revealed
+            ? "-translate-y-1 shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)] ring-1 ring-accent-border"
+            : ""
+        }`}
+      >
+        <div
+          className={`absolute left-0 top-0 w-[3px] bg-accent rounded-l-lg transition-[height] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:h-full ${
+            revealed ? "h-full" : "h-0"
+          }`}
+        />
+        <div
+          className={`w-10 h-10 rounded-md bg-accent-light border border-accent-border flex items-center justify-center mb-5 transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-accent-border ${
+            revealed ? "scale-110 bg-accent-border" : ""
+          }`}
+        >
+          <card.icon size={20} className="text-accent" />
+        </div>
+        <h3 className="font-body font-semibold text-lg mb-3">
+          {card.title}
+        </h3>
+        <p className="text-muted text-sm leading-relaxed">
+          {card.description}
+        </p>
+      </div>
+    </ScrollReveal>
+  );
+}
 
 export function WhyUs() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -152,24 +206,7 @@ export function WhyUs() {
             className="no-scrollbar flex gap-5 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-2"
           >
             {cards.map((card, i) => (
-              <ScrollReveal
-                key={card.title}
-                delay={i * 0.1}
-                className="snap-start shrink-0 w-[280px] md:w-[300px]"
-              >
-                <div className="group relative overflow-hidden bg-card border border-card-border rounded-lg px-8 py-10 h-full cursor-default transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)] hover:ring-1 hover:ring-accent-border">
-                  <div className="absolute left-0 top-0 h-0 w-[3px] bg-accent rounded-l-lg group-hover:h-full transition-[height] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                  <div className="w-10 h-10 rounded-md bg-accent-light border border-accent-border flex items-center justify-center mb-5 transition-all duration-300 ease-out group-hover:scale-110 group-hover:bg-accent-border">
-                    <card.icon size={20} className="text-accent" />
-                  </div>
-                  <h3 className="font-body font-semibold text-lg mb-3">
-                    {card.title}
-                  </h3>
-                  <p className="text-muted text-sm leading-relaxed">
-                    {card.description}
-                  </p>
-                </div>
-              </ScrollReveal>
+              <WhyUsCard key={card.title} card={card} delay={i * 0.1} />
             ))}
           </div>
         </div>

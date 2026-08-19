@@ -1,7 +1,10 @@
 "use client";
 
-import { ShoppingBag, Rocket, User } from "lucide-react";
+import { useRef } from "react";
+import { ShoppingBag, Rocket, User, type LucideIcon } from "lucide-react";
+import { useInView } from "framer-motion";
 import { ScrollReveal } from "./ScrollReveal";
+import { useSupportsHover } from "@/hooks/useSupportsHover";
 
 const personas = [
   {
@@ -27,6 +30,71 @@ const personas = [
   },
 ];
 
+function ForWhoCard({
+  persona,
+  delay,
+}: {
+  persona: {
+    icon: LucideIcon;
+    title: string;
+    description: string;
+    cta: string;
+  };
+  delay: number;
+}) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(cardRef, { once: true, amount: 0.4 });
+  const supportsHover = useSupportsHover();
+  // On touch devices hover never reliably engages, so the card's hover
+  // treatment (accent bar, icon fill, elevation) plays once on scroll
+  // into view instead. Desktop keeps real :hover as the only trigger.
+  const revealed = !supportsHover && inView;
+
+  return (
+    <ScrollReveal delay={delay}>
+      <div
+        ref={cardRef}
+        className={`group relative overflow-hidden bg-surface border border-card-border rounded-xl px-8 py-10 h-full flex flex-col cursor-default transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)] ${
+          revealed
+            ? "-translate-y-1 shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)]"
+            : ""
+        }`}
+      >
+        <div
+          className={`absolute left-0 top-0 w-[3px] bg-accent rounded-l-xl transition-[height] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:h-full ${
+            revealed ? "h-full" : "h-0"
+          }`}
+        />
+        <div
+          className={`w-12 h-12 rounded-xl bg-accent-light flex items-center justify-center mb-6 transition-all duration-300 ease-out group-hover:bg-accent-border ${
+            revealed ? "bg-accent-border" : ""
+          }`}
+        >
+          <persona.icon size={22} className="text-accent" />
+        </div>
+        <h3 className="font-body font-semibold text-xl mb-3">
+          {persona.title}
+        </h3>
+        <p className="text-muted text-sm leading-relaxed mb-6 flex-1">
+          {persona.description}
+        </p>
+        <a
+          href="#servicos"
+          className="group/link inline-flex items-center gap-1.5 text-accent text-sm font-medium hover:underline"
+        >
+          {persona.cta}
+          <span
+            aria-hidden="true"
+            className="transition-transform duration-200 group-hover/link:translate-x-1"
+          >
+            →
+          </span>
+        </a>
+      </div>
+    </ScrollReveal>
+  );
+}
+
 export function ForWho() {
   return (
     <section className="py-16 md:py-24 bg-card">
@@ -45,32 +113,7 @@ export function ForWho() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {personas.map((persona, i) => (
-            <ScrollReveal key={persona.title} delay={i * 0.15}>
-              <div className="group relative overflow-hidden bg-surface border border-card-border rounded-xl px-8 py-10 h-full flex flex-col cursor-default transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)]">
-                <div className="absolute left-0 top-0 h-0 w-[3px] bg-accent rounded-l-xl group-hover:h-full transition-[height] duration-400 ease-[cubic-bezier(0.16,1,0.3,1)]" />
-                <div className="w-12 h-12 rounded-xl bg-accent-light flex items-center justify-center mb-6 transition-all duration-300 ease-out group-hover:bg-accent-border">
-                  <persona.icon size={22} className="text-accent" />
-                </div>
-                <h3 className="font-body font-semibold text-xl mb-3">
-                  {persona.title}
-                </h3>
-                <p className="text-muted text-sm leading-relaxed mb-6 flex-1">
-                  {persona.description}
-                </p>
-                <a
-                  href="#servicos"
-                  className="group/link inline-flex items-center gap-1.5 text-accent text-sm font-medium hover:underline"
-                >
-                  {persona.cta}
-                  <span
-                    aria-hidden="true"
-                    className="transition-transform duration-200 group-hover/link:translate-x-1"
-                  >
-                    →
-                  </span>
-                </a>
-              </div>
-            </ScrollReveal>
+            <ForWhoCard key={persona.title} persona={persona} delay={i * 0.15} />
           ))}
         </div>
       </div>
