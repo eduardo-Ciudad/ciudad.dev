@@ -193,7 +193,7 @@ export const servicesDocs: ServiceDoc[] = [
         title: "Decisões técnicas",
         diagramImage: {
           src: "/img/services/ecommerce-arquitetura.jpg",
-          alt: "Diagrama de decisões técnicas do e-commerce, incluindo integração com Bling em desenvolvimento",
+          alt: "Diagrama de decisões técnicas do e-commerce, incluindo a integração com o Bling",
         },
         groups: [
           {
@@ -227,25 +227,18 @@ export const servicesDocs: ServiceDoc[] = [
               "Testes automatizados cobrindo as regras de negócio críticas (pagamento, estoque, autenticação) — mudança futura não quebra o que já funciona sem eu perceber",
             ],
           },
+          {
+            subtitle: "Integração com ERP (Bling)",
+            items: [
+              "Catálogo sincronizado automaticamente do Bling pro site — produtos, variações, preço e estoque — sem cadastro duplicado entre o ERP e a loja",
+              "Autenticação OAuth2 completa, com renovação automática de token e nova tentativa automática em caso de expiração durante a sincronização",
+              "Sincronização de categorias e produtos direto da API v3 do Bling, com paginação para catálogos grandes",
+              "Estoque em tempo real como fonte da verdade: o Bling controla o que aparece disponível no site, sem risco de vender o que já saiu do estoque físico",
+              "Respeita o limite de requisições da API do Bling automaticamente (throttling interno), sem risco de bloqueio por excesso de chamadas",
+              "Tratamento de erro detalhado — se algo falhar na sincronização, o sistema identifica exatamente o que e por quê, em vez de falhar silenciosamente",
+            ],
+          },
         ],
-        inProgress: {
-          title: "Integração com ERP (Bling)",
-          summary:
-            "Sincronização automática de catálogo direto do Bling pro site — produtos, variações, preço e estoque — eliminando cadastro duplicado entre o ERP e a loja.",
-          done: [
-            "Autenticação OAuth2 completa com o Bling (fluxo de autorização já testado até a tela de consentimento)",
-            "Sincronização de categorias e produtos via API v3 do Bling, com paginação para catálogos grandes",
-            "Mapeamento de variações (tamanho, cor) do Bling para a estrutura de produtos da loja, incluindo tratamento de casos como produtos sem variação",
-            "Bling como fonte da verdade para preço e estoque nos itens sincronizados — evita divergência entre o que o lojista vê no ERP e o que aparece no site",
-            "Renovação automática de token de acesso, sem precisar reautenticar manualmente",
-          ],
-          pending: [
-            "Validação completa do fluxo de callback com um catálogo real",
-            "Limite de requisições por segundo (a API do Bling restringe a 3 req/s — já mapeado, implementação em andamento)",
-            "Webhook de atualização em tempo real (hoje a sincronização é sob demanda)",
-          ],
-          note: "Atualmente pausada a pedido de um cliente após os testes de autenticação — retomo a finalização assim que houver um novo projeto com essa necessidade.",
-        },
       },
       {
         id: "garantia",
