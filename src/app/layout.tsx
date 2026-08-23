@@ -22,6 +22,12 @@ const TITLE = "CiudadLab — Sites, lojas e sistemas sob medida";
 const DESCRIPTION =
   "Da ideia ao ar. Sites, lojas e sistemas sob medida — prontos pra rodar. Sem template genérico, sem intermediário.";
 
+// Bump this every time public/favicon.png is replaced. Favicons are cached
+// far more aggressively than regular assets (browser-level, not just HTTP),
+// so relying on the same URL to pick up new bytes doesn't work reliably —
+// changing this query string forces a fresh URL, which forces a fresh fetch.
+const FAVICON_VERSION = 1;
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://www.ciudadlab.com.br"),
   title: TITLE,
@@ -33,6 +39,9 @@ export const metadata: Metadata = {
     "site institucional",
     "CiudadLab",
   ],
+  icons: {
+    icon: `/favicon.png?v=${FAVICON_VERSION}`,
+  },
   openGraph: {
     type: "website",
     locale: "pt_BR",
