@@ -17,10 +17,14 @@ const dmSans = DM_Sans({
   display: "swap",
 });
 
+const TITLE = "CiudadLab — Sites, lojas e sistemas sob medida";
+const DESCRIPTION =
+  "Da ideia ao ar. Sites, lojas e sistemas sob medida — prontos pra rodar. Sem template genérico, sem intermediário.";
+
 export const metadata: Metadata = {
-  title: "CiudadLab — Sites, lojas e sistemas sob medida",
-  description:
-    "Da ideia ao ar. Sites, lojas e sistemas sob medida — prontos pra rodar. Sem template genérico, sem intermediário.",
+  metadataBase: new URL("https://www.ciudadlab.com.br"),
+  title: TITLE,
+  description: DESCRIPTION,
   keywords: [
     "desenvolvimento web",
     "landing page",
@@ -28,6 +32,19 @@ export const metadata: Metadata = {
     "site institucional",
     "CiudadLab",
   ],
+  openGraph: {
+    type: "website",
+    locale: "pt_BR",
+    siteName: "CiudadLab",
+    title: TITLE,
+    description: DESCRIPTION,
+    url: "/",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: TITLE,
+    description: DESCRIPTION,
+  },
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
