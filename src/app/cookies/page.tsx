@@ -11,6 +11,9 @@ export async function generateMetadata(): Promise<Metadata> {
   return {
     title,
     description: doc.description,
+    alternates: {
+      canonical: "/cookies",
+    },
     openGraph: {
       title,
       description: doc.description,
