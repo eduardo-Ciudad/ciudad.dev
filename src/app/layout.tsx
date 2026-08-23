@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import { IntroLoader } from "@/components/IntroLoader";
+import { organizationSchema } from "@/data/organization-schema";
 import "./globals.css";
 
 const cormorant = Cormorant_Garamond({
@@ -51,6 +52,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="pt-BR" className={`${cormorant.variable} ${dmSans.variable}`}>
       <body className="font-body antialiased">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
         <IntroLoader />
         {children}
       </body>
