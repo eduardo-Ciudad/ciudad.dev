@@ -21,9 +21,32 @@ export async function generateMetadata(
 
   if (!doc) return {};
 
+  const title = `${doc.title} — Documentação | CiudadLab`;
+  const description = doc.tagline;
+  const url = `/servicos/${slug}`;
+
   return {
-    title: `${doc.title} — Documentação | CiudadLab`,
-    description: doc.tagline,
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "article",
+      url,
+      images: doc.heroImage
+        ? [
+            {
+              url: doc.heroImage.src,
+              alt: doc.heroImage.alt,
+            },
+          ]
+        : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+    },
   };
 }
 
