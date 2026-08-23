@@ -12,6 +12,8 @@ export type DocGroup = {
 export type DocImage = {
   src: string;
   alt: string;
+  width?: number;
+  height?: number;
 };
 
 export type DocInProgress = {
@@ -67,6 +69,8 @@ export const servicesDocs: ServiceDoc[] = [
     heroImage: {
       src: "/img/services/landing-page-overview.png",
       alt: "Hero da landing page — visão geral do serviço",
+      width: 1678,
+      height: 842,
     },
     sections: [
       {
@@ -105,6 +109,8 @@ export const servicesDocs: ServiceDoc[] = [
         diagramImage: {
           src: "/img/services/landing-page-arquitetura.png",
           alt: "Diagrama de decisões técnicas da landing page",
+          width: 1672,
+          height: 941,
         },
         groups: [
           {
@@ -142,6 +148,8 @@ export const servicesDocs: ServiceDoc[] = [
             image: {
               src: "/img/services/landing-page-vinicius-mascagni.png",
               alt: "Screenshot do projeto real — landing page Vinicius Mascagni",
+              width: 1886,
+              height: 1058,
             },
           },
         ],
@@ -156,6 +164,8 @@ export const servicesDocs: ServiceDoc[] = [
     heroImage: {
       src: "/img/services/ecommerce-overview.png",
       alt: "Visão geral do e-commerce GabiKids",
+      width: 1895,
+      height: 929,
     },
     sections: [
       {
@@ -194,6 +204,8 @@ export const servicesDocs: ServiceDoc[] = [
         diagramImage: {
           src: "/img/services/ecommerce-arquitetura.jpg",
           alt: "Diagrama de decisões técnicas do e-commerce, incluindo a integração com o Bling",
+          width: 1376,
+          height: 768,
         },
         groups: [
           {
@@ -263,6 +275,8 @@ export const servicesDocs: ServiceDoc[] = [
             image: {
               src: "/img/services/ecommerce-gabikids.png",
               alt: "Screenshot do projeto real — loja GabiKids",
+              width: 1721,
+              height: 858,
             },
           },
         ],
@@ -277,6 +291,8 @@ export const servicesDocs: ServiceDoc[] = [
     heroImage: {
       src: "/img/services/sistema-personalizado-overview.png",
       alt: "Visão geral de um sistema personalizado",
+      width: 1670,
+      height: 824,
     },
     sections: [
       {
@@ -315,6 +331,8 @@ export const servicesDocs: ServiceDoc[] = [
         diagramImage: {
           src: "/img/services/sistema-personalizado-arquitetura.png",
           alt: "Diagrama de arquitetura e decisões técnicas do sistema personalizado",
+          width: 1672,
+          height: 941,
         },
         groups: [
           {
@@ -349,6 +367,8 @@ export const servicesDocs: ServiceDoc[] = [
             image: {
               src: "/img/services/sistema-personalizado-controle-financeiro.png",
               alt: "Screenshot do projeto real — Sistema Financeiro Multi-Tenant",
+              width: 1660,
+              height: 805,
             },
           },
           {

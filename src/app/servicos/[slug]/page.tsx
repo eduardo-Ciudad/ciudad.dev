@@ -41,6 +41,8 @@ export async function generateMetadata(
             {
               url: doc.heroImage.src,
               alt: doc.heroImage.alt,
+              width: doc.heroImage.width,
+              height: doc.heroImage.height,
             },
           ]
         : undefined,
