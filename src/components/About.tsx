@@ -66,7 +66,7 @@ export function About() {
             </div>
             <div className="mt-6 flex items-center gap-4 justify-center md:justify-start">
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/eduardociudadf/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-accent hover:opacity-80 transition-opacity"
@@ -75,7 +75,7 @@ export function About() {
                 <LinkedinIcon size={22} />
               </a>
               <a
-                href="https://github.com"
+                href="https://github.com/eduardo-Ciudad"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-accent hover:opacity-80 transition-opacity"
