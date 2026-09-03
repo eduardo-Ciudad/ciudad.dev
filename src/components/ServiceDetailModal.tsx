@@ -16,6 +16,7 @@ export type ServiceDetail = {
   highlight?: {
     title: string;
     description: string;
+    url?: string;
   };
   otherProjects?: string;
 };
@@ -163,6 +164,17 @@ export function ServiceDetailModal({
               <p className="text-sm text-muted leading-relaxed">
                 {details.highlight.description}
               </p>
+              {details.highlight.url && (
+                <a
+                  href={details.highlight.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm font-medium text-accent border border-accent-border rounded-full px-4 py-2 hover:bg-accent-light transition-colors"
+                >
+                  Ver projeto
+                  <ExternalLink size={14} />
+                </a>
+              )}
             </div>
           )}
 

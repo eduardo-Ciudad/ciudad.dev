@@ -111,7 +111,8 @@ const services: {
       highlight: {
         title: "PromoBot",
         description:
-          "Bot de IA em arquitetura hexagonal que monitora promoções, gera legendas automaticamente e distribui via WhatsApp — rodando 24/7 em infraestrutura própria.",
+          "Bot de IA em arquitetura hexagonal que monitora promoções, gera legendas automaticamente e distribui em grupos do Telegram — rodando 24/7 em infraestrutura própria.",
+        url: "https://github.com/eduardo-Ciudad/promo-bot-mercadolivre",
       },
       otherProjects:
         "Veja também o StudyMind, plataforma de estudos com IA, entre outros projetos do portfólio.",

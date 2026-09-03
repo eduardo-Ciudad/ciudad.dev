@@ -356,6 +356,25 @@ export const servicesDocs: ServiceDoc[] = [
         title: "Projetos reais",
         projects: [
           {
+            title: "PromoBot",
+            description:
+              "Bot de IA que monitora promoções no Mercado Livre, gera legendas automaticamente com IA generativa e distribui em grupos do Telegram — rodando 24/7 em infraestrutura própria, com arquitetura isolada por integração (se o Telegram cair, o monitoramento continua rodando).",
+            bullets: [
+              "Scraper próprio monitora ofertas automaticamente todos os dias",
+              "Pipeline assíncrono via fila de mensagens (RabbitMQ) para enriquecer cada oferta com IA generativa",
+              "Entrega automática nos grupos de Telegram, sem intervenção manual",
+            ],
+            url: "https://github.com/eduardo-Ciudad/promo-bot-mercadolivre",
+            hasLink: true,
+            highlight: true,
+            image: {
+              src: "/img/services/promo-bot-fluxograma.png",
+              alt: "Fluxograma de funcionamento do PromoBot: identifica promoções, cria a mensagem, envia nos grupos, repete todos os dias e gera comissão",
+              width: 1672,
+              height: 941,
+            },
+          },
+          {
             title: "Sistema Financeiro Multi-Tenant",
             bullets: [
               "Isolamento de dados por usuário",
@@ -370,14 +389,6 @@ export const servicesDocs: ServiceDoc[] = [
               width: 1660,
               height: 805,
             },
-          },
-          {
-            title: "PromoBot",
-            description:
-              "Bot de IA que monitora promoções, gera legendas automaticamente com IA generativa e distribui via WhatsApp — rodando 24/7 em infraestrutura própria, com arquitetura isolada por integração (se o WhatsApp cair, o monitoramento continua rodando).",
-            bullets: [],
-            hasLink: false,
-            highlight: true,
           },
         ],
         note: "Veja também o StudyMind, plataforma de estudos com IA, entre outros projetos do portfólio.",
