@@ -31,7 +31,7 @@ const services: {
       "Deploy incluso",
     ],
     timeline: "1–2 semanas",
-    price: "R$ 500–800",
+    price: "R$ 800–1.000",
     cta: "Quero uma Landing Page",
     details: {
       benefits: [

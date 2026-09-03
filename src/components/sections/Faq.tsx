@@ -7,7 +7,7 @@ const faqs = [
   {
     question: "Quanto custa um projeto?",
     answer:
-      "Depende do escopo. Uma landing page começa em R $ 500, um e-commerce a partir de R $ 2.500 e sistemas sob medida variam conforme a complexidade. Você recebe o valor fechado antes de começar — sem hora extra e sem surpresa na fatura.",
+      "Depende do escopo. Uma landing page começa em R $ 800, um e-commerce a partir de R $ 2.500 e sistemas sob medida variam conforme a complexidade. Você recebe o valor fechado antes de começar — sem hora extra e sem surpresa na fatura.",
   },
   {
     question: "Qual o prazo mínimo de um projeto?",
