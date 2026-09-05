@@ -94,7 +94,12 @@ export default async function ServiceDocPage(
 
           <div className="mb-14">
             {doc.heroImage ? (
-              <DocImage src={doc.heroImage.src} alt={doc.heroImage.alt} />
+              <DocImage
+                src={doc.heroImage.src}
+                alt={doc.heroImage.alt}
+                width={doc.heroImage.width}
+                height={doc.heroImage.height}
+              />
             ) : (
               <DocImagePlaceholder label={`Screenshot geral — ${doc.title}`} />
             )}
@@ -143,6 +148,8 @@ export default async function ServiceDocPage(
                       <DocImage
                         src={section.diagramImage.src}
                         alt={section.diagramImage.alt}
+                        width={section.diagramImage.width}
+                        height={section.diagramImage.height}
                         className="mb-8"
                       />
                     ) : (
@@ -250,6 +257,8 @@ export default async function ServiceDocPage(
                             <DocImage
                               src={project.image.src}
                               alt={project.image.alt}
+                              width={project.image.width}
+                              height={project.image.height}
                               className="mb-5"
                             />
                           ) : (
