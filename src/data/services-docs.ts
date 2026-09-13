@@ -162,10 +162,10 @@ export const servicesDocs: ServiceDoc[] = [
     tagline:
       "Loja completa com backend próprio — não é montada em cima de Shopify/Nuvemshop. Você é dono do código e do servidor.",
     heroImage: {
-      src: "/img/services/gabikids-herov2.png",
+      src: "/img/services/hero-ecommerce-v3.png",
       alt: "Visão geral do e-commerce GabiKids",
-      width: 1631,
-      height: 892,
+      width: 1651,
+      height: 842,
     },
     sections: [
       {
@@ -273,10 +273,10 @@ export const servicesDocs: ServiceDoc[] = [
             url: "https://gabikids.vercel.app/",
             hasLink: true,
             image: {
-              src: "/img/services/gabikids-cardv2.png",
+              src: "/img/services/login-ecommerce-v3.png",
               alt: "Screenshot do projeto real — loja GabiKids",
-              width: 1307,
-              height: 866,
+              width: 1727,
+              height: 765,
             },
           },
         ],
