@@ -89,7 +89,7 @@ const services: {
       "MVP, automação, painel interno, integração com API externa — qualquer software que o seu negócio precise e que não existe pronto no mercado.",
     bullets: [
       "Arquitetura definida pro seu caso de uso",
-      "Integrações com APIs externas (pagamento, IA, WhatsApp)",
+      "Integrações com APIs externas (pagamento, IA, WhatsApp, Analytics)",
       "Autenticação e controle de acesso",
       "Documentação técnica entregue",
     ],
@@ -99,7 +99,7 @@ const services: {
     details: {
       benefits: [
         "Arquitetura definida sob medida pro seu caso de uso",
-        "Integrações com APIs externas (pagamento, IA, WhatsApp)",
+        "Integrações com APIs externas (pagamento, IA, WhatsApp, Analytics)",
         "Documentação técnica e testes cobrindo as regras de negócio",
       ],
       example: {

@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import Script from "next/script";
 import { IntroLoader } from "@/components/IntroLoader";
 import { organizationSchema } from "@/data/organization-schema";
 import "./globals.css";
+
+const gaMeasurementId = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID;
 
 const cormorant = Cormorant_Garamond({
   variable: "--font-cormorant",
@@ -58,6 +61,9 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
+  const shouldLoadAnalytics =
+    process.env.NODE_ENV === "production" && Boolean(gaMeasurementId);
+
   return (
     <html lang="pt-BR" className={`${cormorant.variable} ${dmSans.variable}`}>
       <body className="font-body antialiased">
@@ -67,6 +73,22 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
         <IntroLoader />
         {children}
+        {shouldLoadAnalytics && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+              strategy="afterInteractive"
+            />
+            <Script id="google-analytics" strategy="afterInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '${gaMeasurementId}');
+              `}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );

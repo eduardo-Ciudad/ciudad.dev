@@ -384,7 +384,7 @@ export const servicesDocs: ServiceDoc[] = [
           {
             subtitle: "Arquitetura definida por projeto",
             items: [
-              "Sistemas com múltiplas integrações externas (pagamento, IA, WhatsApp) usam arquitetura em camadas isoladas",
+              "Sistemas com múltiplas integrações externas (pagamento, IA, WhatsApp, Analytics) usam arquitetura em camadas isoladas",
               "JWT, senha hasheada, HTTPS, isolamento de dados por usuário",
               "Modelo append-only — nada é editado ou apagado, correções viram novos registros",
             ],
