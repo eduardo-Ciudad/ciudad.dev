@@ -124,9 +124,6 @@ export function Footer() {
           <p className="text-white/30 text-xs text-center">
             © 2026 CiudadLab — Todos os direitos reservados
           </p>
-          <p className="text-white/30 text-[11px] text-center">
-            CNPJ em processo de formalização
-          </p>
         </div>
       </div>
     </footer>
