@@ -5,6 +5,7 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { DocImagePlaceholder } from "@/components/DocImagePlaceholder";
 import { DocImage } from "@/components/DocImage";
 import { BackToSiteHeader } from "@/components/BackToSiteHeader";
+import { DetalhesTecnicos } from "@/components/DetalhesTecnicos";
 import { Footer } from "@/components/Footer";
 import { getServiceDoc, servicesDocs } from "@/data/services-docs";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
@@ -167,10 +168,9 @@ export default async function ServiceDocPage(
                           <div className="space-y-2.5">
                             {group.items.map((item) => (
                               <div key={item} className="flex gap-2.5 text-sm">
-                                <Check
-                                  size={16}
-                                  className="text-accent shrink-0 mt-0.5"
-                                />
+                                <span className="text-muted/50 shrink-0">
+                                  →
+                                </span>
                                 <span className="text-primary/80 leading-relaxed">
                                   {item}
                                 </span>
@@ -180,6 +180,11 @@ export default async function ServiceDocPage(
                         </div>
                       ))}
                     </div>
+
+                    {section.technicalGroups &&
+                      section.technicalGroups.length > 0 && (
+                        <DetalhesTecnicos groups={section.technicalGroups} />
+                      )}
 
                     {section.inProgress && (
                       <div className="mt-7 bg-amber-50 border border-amber-200 rounded-lg px-5 py-5">

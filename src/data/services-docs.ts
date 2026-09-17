@@ -41,6 +41,7 @@ export type DocSection =
       id: "decisoes-tecnicas";
       title: string;
       groups: DocGroup[];
+      technicalGroups?: DocGroup[];
       inProgress?: DocInProgress;
       diagramImage?: DocImage;
     }
@@ -93,7 +94,7 @@ export const servicesDocs: ServiceDoc[] = [
             number: 2,
             title: "Escolha de design",
             description:
-              "Não parto de template. Defino paleta, tipografia e estrutura de seções com base na sua marca e no seu público — se você já tem identidade visual (logo, cores), uso como base; se não tem, proponho uma direção e valido com você antes de programar qualquer linha.",
+              "Você aprova a direção visual da página antes de entrarmos no desenvolvimento.",
           },
           {
             number: 3,
@@ -114,12 +115,20 @@ export const servicesDocs: ServiceDoc[] = [
         },
         groups: [
           {
+            subtitle: "Design e experiência",
+            items: [
+              "Não parto de template. Defino paleta, tipografia e estrutura de seções com base na sua marca e no seu público — se você já tem identidade visual (logo, cores), uso como base; se não tem, proponho uma direção e valido com você antes de programar qualquer linha.",
+              "Mobile-first: 70%+ do tráfego de landing page vem de Instagram/redes sociais no celular",
+              "Deploy em Vercel/Netlify com SSL automático incluso",
+            ],
+          },
+        ],
+        technicalGroups: [
+          {
             subtitle: "Abordagem técnica",
             items: [
               "HTML semântico + CSS puro ou Next.js, dependendo da complexidade (página estática simples não precisa de framework pesado)",
-              "Mobile-first: 70%+ do tráfego de landing page vem de Instagram/redes sociais no celular",
               "Animações leves via IntersectionObserver nativo — sem bibliotecas pesadas que atrasam o carregamento",
-              "Deploy em Vercel/Netlify com SSL automático incluso",
             ],
           },
         ],
@@ -188,7 +197,7 @@ export const servicesDocs: ServiceDoc[] = [
             number: 2,
             title: "Escolha de design",
             description:
-              "Catálogo, carrinho e checkout seguem um padrão de UX testado (não reinvento o fluxo de compra), mas a identidade visual — cores, cards de produto, tipografia — é feita sob medida pra sua marca.",
+              "Você aprova a identidade visual da loja antes de entrarmos na parte de infraestrutura.",
           },
           {
             number: 3,
@@ -209,16 +218,44 @@ export const servicesDocs: ServiceDoc[] = [
         },
         groups: [
           {
-            subtitle: "Backend e dados",
+            subtitle: "Catálogo",
             items: [
-              "Java + Spring Boot, PostgreSQL com migrations versionadas (Flyway) — todo histórico do banco é rastreável, nada de alteração manual sem controle",
-              "Catálogo com variação por tamanho: preço e estoque são controlados por variante, não pelo produto pai, pra granularidade real de inventário",
+              "Catálogo com variação por tamanho e cor: preço e estoque são controlados por variante, não pelo produto pai, pra granularidade real de inventário",
+              "Catálogo com categorias e filtros",
+              "A identidade visual — cores, cards de produto, tipografia — é feita sob medida pra sua marca.",
+              "Catálogo, carrinho e checkout seguem um padrão de UX testado (não reinvento o fluxo de compra)",
             ],
           },
           {
             subtitle: "Pagamento",
             items: [
               "Integração com Mercado Pago (Checkout Transparente): Pix com QR Code e cartão com parcelamento, direto na sua página — cliente não é redirecionado pra outro site",
+            ],
+          },
+          {
+            subtitle: "Frete",
+            items: [
+              "Cálculo em tempo real via API dos Correios (PAC e SEDEX)",
+            ],
+          },
+          {
+            subtitle: "Integração com ERP (Bling)",
+            items: [
+              "Catálogo sincronizado automaticamente do Bling pro site — produtos, variações, preço e estoque — sem cadastro duplicado entre o ERP e a loja",
+              "Estoque em tempo real como fonte da verdade: o Bling controla o que aparece disponível no site, sem risco de vender o que já saiu do estoque físico",
+            ],
+          },
+        ],
+        technicalGroups: [
+          {
+            subtitle: "Backend e dados",
+            items: [
+              "Java + Spring Boot, PostgreSQL com migrations versionadas (Flyway) — todo histórico do banco é rastreável, nada de alteração manual sem controle",
+            ],
+          },
+          {
+            subtitle: "Pagamento",
+            items: [
               'Webhook de confirmação de pagamento validado por assinatura HMAC-SHA256: isso impede que alguém forje uma notificação de "pagamento aprovado" sem ter pago de verdade',
               "Checagem de valor: o sistema confere se o valor pago bate exatamente com o valor do pedido antes de confirmar — proteção contra manipulação de preço",
             ],
@@ -226,7 +263,7 @@ export const servicesDocs: ServiceDoc[] = [
           {
             subtitle: "Frete",
             items: [
-              "Cálculo em tempo real via API dos Correios (PAC e SEDEX), com cache de token e nova tentativa automática em caso de falha temporária da API dos Correios",
+              "Cache de token e nova tentativa automática em caso de falha temporária da API dos Correios",
             ],
           },
           {
@@ -242,10 +279,8 @@ export const servicesDocs: ServiceDoc[] = [
           {
             subtitle: "Integração com ERP (Bling)",
             items: [
-              "Catálogo sincronizado automaticamente do Bling pro site — produtos, variações, preço e estoque — sem cadastro duplicado entre o ERP e a loja",
               "Autenticação OAuth2 completa, com renovação automática de token e nova tentativa automática em caso de expiração durante a sincronização",
               "Sincronização de categorias e produtos direto da API v3 do Bling, com paginação para catálogos grandes",
-              "Estoque em tempo real como fonte da verdade: o Bling controla o que aparece disponível no site, sem risco de vender o que já saiu do estoque físico",
               "Respeita o limite de requisições da API do Bling automaticamente (throttling interno), sem risco de bloqueio por excesso de chamadas",
               "Tratamento de erro detalhado — se algo falhar na sincronização, o sistema identifica exatamente o que e por quê, em vez de falhar silenciosamente",
             ],
@@ -315,7 +350,7 @@ export const servicesDocs: ServiceDoc[] = [
             number: 2,
             title: "Escolha de design",
             description:
-              "Interface funcional antes de bonita. Se é um painel interno de uso da sua equipe, prioridade é clareza e velocidade de uso, não estética elaborada.",
+              "Você aprova a direção da interface antes de entrarmos na implementação e infraestrutura.",
           },
           {
             number: 3,
@@ -336,11 +371,22 @@ export const servicesDocs: ServiceDoc[] = [
         },
         groups: [
           {
+            subtitle: "Interface e funcionamento",
+            items: [
+              "Interface funcional antes de bonita. Se é um painel interno de uso da sua equipe, prioridade é clareza e velocidade de uso, não estética elaborada.",
+              "Se uma integração externa cair ou mudar, o resto do sistema continua funcionando",
+              "Dados sensíveis (financeiro, autenticação) seguem o mesmo padrão de segurança do e-commerce",
+              "Histórico de dados que não pode ser perdido ou alterado (ex: lançamento financeiro), garantindo rastreabilidade total",
+            ],
+          },
+        ],
+        technicalGroups: [
+          {
             subtitle: "Arquitetura definida por projeto",
             items: [
-              "Sistemas com múltiplas integrações externas (pagamento, IA, WhatsApp) usam arquitetura em camadas isoladas — se uma integração externa cair ou mudar, o resto do sistema continua funcionando",
-              "Dados sensíveis (financeiro, autenticação) seguem o mesmo padrão de segurança do e-commerce: JWT, senha hasheada, HTTPS, isolamento de dados por usuário",
-              "Histórico de dados que não pode ser perdido ou alterado (ex: lançamento financeiro) usa modelo append-only — nada é editado ou apagado, correções viram novos registros, garantindo rastreabilidade total",
+              "Sistemas com múltiplas integrações externas (pagamento, IA, WhatsApp) usam arquitetura em camadas isoladas",
+              "JWT, senha hasheada, HTTPS, isolamento de dados por usuário",
+              "Modelo append-only — nada é editado ou apagado, correções viram novos registros",
             ],
           },
         ],
