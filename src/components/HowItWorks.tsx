@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
 const steps = [
@@ -28,19 +28,28 @@ const steps = [
 ];
 
 function DesktopTimeline() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.3 });
+  const sectionRef = useRef(null);
+  const inViewRef = useRef(null);
+  const inView = useInView(inViewRef, { once: true, amount: 0.3 });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const lineProgress = useTransform(
+    scrollYProgress,
+    [0.2, 0.8],
+    [0, 1],
+    { clamp: true },
+  );
 
   return (
-    <div ref={ref} className="hidden md:block">
-      <div className="relative">
+    <div ref={sectionRef} className="hidden md:block">
+      <div ref={inViewRef} className="relative">
         {/* Connection line */}
         <div className="absolute top-5 md:top-6 left-0 right-0 h-[2px] bg-accent-light z-0">
           <motion.div
-            className="h-full bg-accent-border"
-            initial={{ width: "0%" }}
-            animate={inView ? { width: "100%" } : { width: "0%" }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="h-full bg-accent-border origin-left"
+            style={{ scaleX: lineProgress }}
           />
         </div>
 
@@ -114,19 +123,28 @@ function DesktopTimeline() {
 }
 
 function MobileTimeline() {
-  const ref = useRef(null);
-  const inView = useInView(ref, { once: true, amount: 0.2 });
+  const sectionRef = useRef(null);
+  const inViewRef = useRef(null);
+  const inView = useInView(inViewRef, { once: true, amount: 0.2 });
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start end", "end start"],
+  });
+  const lineProgress = useTransform(
+    scrollYProgress,
+    [0.2, 0.8],
+    [0, 1],
+    { clamp: true },
+  );
 
   return (
-    <div ref={ref} className="md:hidden">
-      <div className="relative pl-12">
+    <div ref={sectionRef} className="md:hidden">
+      <div ref={inViewRef} className="relative pl-12">
         {/* Vertical line */}
         <div className="absolute left-[19px] top-0 bottom-0 w-[2px] bg-accent-light">
           <motion.div
-            className="w-full bg-accent-border"
-            initial={{ height: "0%" }}
-            animate={inView ? { height: "100%" } : { height: "0%" }}
-            transition={{ duration: 1.2, ease: "easeOut" }}
+            className="w-full h-full bg-accent-border origin-top"
+            style={{ scaleY: lineProgress }}
           />
         </div>
 
