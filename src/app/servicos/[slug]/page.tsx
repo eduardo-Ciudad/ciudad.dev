@@ -310,8 +310,8 @@ export default async function ServiceDocPage(
                           {project.hasLink && project.url && (
                             <a
                               href={project.url}
-                              target="_blank"
-                              rel="noopener noreferrer"
+                              target={project.url.startsWith("http") ? "_blank" : undefined}
+                              rel={project.url.startsWith("http") ? "noopener noreferrer" : undefined}
                               className="inline-flex items-center gap-1.5 text-sm font-medium text-accent border border-accent-border rounded-full px-4 py-2 hover:bg-accent-light transition-colors"
                             >
                               Ver projeto

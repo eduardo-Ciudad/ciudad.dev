@@ -1,12 +1,14 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 
 const links = [
-  { label: "Serviços", href: "#servicos" },
+  { label: "Serviços", href: "/#servicos" },
+  { label: "Projetos", href: "/projetos" },
   { label: "Contato", href: WHATSAPP_CONTACT_URL },
 ];
 
@@ -31,12 +33,12 @@ export function Navbar() {
       aria-label="Navegação principal"
     >
       <div className="w-full max-w-6xl mx-auto px-6 md:px-12 lg:px-16 flex items-center justify-between">
-        <a
-          href="#"
+        <Link
+          href="/"
           className="text-2xl md:text-[26px] font-heading font-bold text-primary"
         >
           Ciudad<span className="text-accent">Lab</span>
-        </a>
+        </Link>
 
         <div className="hidden md:flex items-center gap-1">
           {links.map((link) => (

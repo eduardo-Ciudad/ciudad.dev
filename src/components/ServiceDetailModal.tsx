@@ -144,8 +144,8 @@ export function ServiceDetailModal({
 
             <a
               href={details.example.url}
-              target="_blank"
-              rel="noopener noreferrer"
+              target={details.example.url.startsWith("http") ? "_blank" : undefined}
+              rel={details.example.url.startsWith("http") ? "noopener noreferrer" : undefined}
               className="inline-flex items-center gap-1.5 text-sm font-medium text-accent border border-accent-border rounded-full px-4 py-2 hover:bg-accent-light transition-colors"
             >
               Ver projeto
@@ -167,8 +167,8 @@ export function ServiceDetailModal({
               {details.highlight.url && (
                 <a
                   href={details.highlight.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  target={details.highlight.url.startsWith("http") ? "_blank" : undefined}
+                  rel={details.highlight.url.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="inline-flex items-center gap-1.5 text-sm font-medium text-accent border border-accent-border rounded-full px-4 py-2 hover:bg-accent-light transition-colors"
                 >
                   Ver projeto

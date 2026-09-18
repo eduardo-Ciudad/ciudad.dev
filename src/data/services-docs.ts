@@ -305,7 +305,7 @@ export const servicesDocs: ServiceDoc[] = [
               "Checkout Pix + cartão via Mercado Pago",
               "Frete calculado via Correios",
             ],
-            url: "https://gabikids.vercel.app/",
+            url: "/projetos#gabikids",
             hasLink: true,
             image: {
               src: "/img/services/login-ecommerce-v3.png",
@@ -410,7 +410,7 @@ export const servicesDocs: ServiceDoc[] = [
               "Pipeline assíncrono via fila de mensagens (RabbitMQ) para enriquecer cada oferta com IA generativa",
               "Entrega automática nos grupos de Telegram, sem intervenção manual",
             ],
-            url: "https://github.com/eduardo-Ciudad/promo-bot-mercadolivre",
+            url: "/projetos#promobot",
             hasLink: true,
             highlight: true,
             image: {
@@ -427,7 +427,7 @@ export const servicesDocs: ServiceDoc[] = [
               "Lançamentos append-only (nunca editados, só estornados)",
               "Dashboard com extrato mensal",
             ],
-            url: "https://controle-financeiro-lab-frontend.vercel.app/",
+            url: "/projetos#sistema-financeiro-multi-tenant",
             hasLink: true,
             image: {
               src: "/img/services/sistema-personalizado-controle-financeiro.png",

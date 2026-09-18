@@ -77,7 +77,7 @@ const services: {
       example: {
         title: "E-commerce — GabiKids",
         description: "Loja de roupas infantil em produção.",
-        url: "https://gabikids.vercel.app/",
+        url: "/projetos#gabikids",
       },
     },
   },
@@ -106,13 +106,13 @@ const services: {
         title: "Sistema Financeiro Multi-Tenant",
         description:
           "Isolamento de dados por usuário, lançamentos append-only, dashboard com extrato mensal.",
-        url: "https://controle-financeiro-lab-frontend.vercel.app/",
+        url: "/projetos#sistema-financeiro-multi-tenant",
       },
       highlight: {
         title: "PromoBot",
         description:
           "Bot de IA em arquitetura hexagonal que monitora promoções, gera legendas automaticamente e distribui em grupos do Telegram — rodando 24/7 em infraestrutura própria.",
-        url: "https://github.com/eduardo-Ciudad/promo-bot-mercadolivre",
+        url: "/projetos#promobot",
       },
       otherProjects:
         "Veja também o StudyMind, plataforma de estudos com IA, entre outros projetos do portfólio.",
