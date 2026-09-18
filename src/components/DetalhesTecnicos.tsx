@@ -14,7 +14,7 @@ export function DetalhesTecnicos({ groups }: DetalhesTecnicosProps) {
   const contentId = useId();
 
   return (
-    <div className="group mt-8 overflow-hidden rounded-lg border border-card-border bg-card transition-all duration-300 ease-out hover:shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)] hover:ring-1 hover:ring-accent-border">
+    <div className="group mt-8 overflow-hidden rounded-lg border border-card-border bg-card transition-all duration-300 ease-out hover:shadow-[0_8px_20px_-12px_rgba(37,99,235,0.15)] hover:ring-1 hover:ring-accent-border">
       <button
         type="button"
         aria-expanded={isOpen}
