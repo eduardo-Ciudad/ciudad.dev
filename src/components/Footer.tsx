@@ -1,7 +1,39 @@
 import Link from "next/link";
-import { Mail } from "lucide-react";
+import { createLucideIcon, Mail } from "lucide-react";
 import { LinkedinIcon, GithubIcon } from "./icons";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+
+const InstagramIcon = createLucideIcon("Instagram", [
+  [
+    "rect",
+    {
+      width: "20",
+      height: "20",
+      x: "2",
+      y: "2",
+      rx: "5",
+      ry: "5",
+      key: "1h8pa3",
+    },
+  ],
+  [
+    "path",
+    {
+      d: "M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z",
+      key: "9exkf1",
+    },
+  ],
+  [
+    "line",
+    {
+      x1: "17.5",
+      x2: "17.51",
+      y1: "6.5",
+      y2: "6.5",
+      key: "r4j1v1",
+    },
+  ],
+]);
 
 export function Footer() {
   return (
@@ -108,6 +140,15 @@ export function Footer() {
                 aria-label="GitHub"
               >
                 <GithubIcon size={20} />
+              </a>
+              <a
+                href="https://www.instagram.com/ciudad.lab/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white/50 hover:text-white transition-colors"
+                aria-label="Instagram"
+              >
+                <InstagramIcon size={20} />
               </a>
               <a
                 href="mailto:eduardo.ciudad.dev@gmail.com"

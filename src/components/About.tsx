@@ -63,6 +63,19 @@ export function About() {
                 <span className="text-primary font-medium">JUnit</span> e{" "}
                 <span className="text-primary font-medium">Mockito</span>.
               </p>
+              <p>
+                No{" "}
+                <a
+                  href="https://www.linkedin.com/in/eduardociudadf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-medium text-primary transition-colors hover:text-accent"
+                >
+                  LinkedIn
+                </a>
+                , +3.500 seguidores acompanham o conteúdo que compartilho sobre
+                backend Java.
+              </p>
             </div>
             <div className="mt-6 flex items-center gap-4 justify-center md:justify-start">
               <a
