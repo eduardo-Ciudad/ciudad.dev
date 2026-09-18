@@ -1,7 +1,7 @@
 export type Projeto = {
   slug: string;
   nome: string;
-  categoria: "fullstack" | "landing-page";
+  categoria: "fullstack" | "ferramenta-interna" | "landing-page";
   destaque: boolean;
   pago?: boolean;
   autoral?: boolean;
@@ -69,6 +69,38 @@ export const projetos: Projeto[] = [
     destaque: true,
     status: "Em manutenção",
     descricao: ["Plataforma de estudos com IA"],
+  },
+  {
+    slug: "dev-journal",
+    nome: "Dev Journal",
+    categoria: "fullstack",
+    destaque: true,
+    imagem: "/img/projetos/dev-jornal.png",
+    descricao: [
+      "Dashboard com estatísticas de estudo: dias registrados, horas, commits, streak, tecnologias mais usadas",
+      "API REST própria com CRUD completo, busca e filtros persistidos",
+      "Ferramenta de uso pessoal — construída pra resolver a própria rotina de estudos",
+    ],
+    ctaSecundario: {
+      label: "Código-fonte",
+      url: "https://github.com/eduardo-Ciudad/dev-journal",
+    },
+  },
+  {
+    slug: "conversor-pdf-centrofarma-eldorado",
+    nome: "Conversor de PDF (Centrofarma Eldorado)",
+    categoria: "ferramenta-interna",
+    destaque: true,
+    imagem: "/img/projetos/centrofarma-eldorado.png",
+    descricao: [
+      "Elimina preenchimento manual — farmacêutico digita uma vez, PDF sai pronto pra assinar",
+      "Preview do documento atualiza em tempo real conforme o formulário é preenchido",
+      "Campos específicos por tipo de atendimento (injetável, pressão arterial, perfuração de brinco), sob medida pro fluxo real da farmácia",
+    ],
+    ctaPrincipal: {
+      label: "Ver demonstração",
+      url: "https://eduardo-ciudad.github.io/conversor-pdf/",
+    },
   },
   {
     slug: "leticia-souza",

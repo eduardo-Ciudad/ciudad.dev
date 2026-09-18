@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 const categoriaCarousel = {
   fullstack: "Projeto fullstack",
+  "ferramenta-interna": "Ferramenta interna",
   "landing-page": "Landing page",
 } as const;
 

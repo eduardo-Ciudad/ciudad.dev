@@ -12,6 +12,7 @@ type ProjetosGridProps = {
 
 const categoriaLabel = {
   fullstack: "Fullstack",
+  "ferramenta-interna": "Ferramenta interna",
   "landing-page": "Landing page",
 } satisfies Record<Projeto["categoria"], string>;
 
@@ -142,6 +143,9 @@ export function ProjetosGrid({ projetos }: ProjetosGridProps) {
   const [extraCardsRevealed, setExtraCardsRevealed] = useState(false);
   const extraProjectsId = useId();
   const fullstack = projetos.filter((projeto) => projeto.categoria === "fullstack");
+  const ferramentas = projetos.filter(
+    (projeto) => projeto.categoria === "ferramenta-interna",
+  );
   const landingPages = projetos.filter((projeto) => projeto.categoria === "landing-page");
   const landingPagesVisiveis = landingPages.filter((projeto) => projeto.destaque);
   const landingPagesExtras = landingPages.filter((projeto) => !projeto.destaque);
@@ -163,6 +167,31 @@ export function ProjetosGrid({ projetos }: ProjetosGridProps) {
           ))}
         </div>
       </section>
+
+      {ferramentas.length > 0 && (
+        <section aria-labelledby="ferramentas-title">
+          <div className="mb-9 md:mb-12">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.12em] text-accent">
+              Automação de processos
+            </span>
+            <h2
+              id="ferramentas-title"
+              className="mt-3 font-heading text-3xl font-semibold md:text-5xl"
+            >
+              Ferramentas internas
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            {ferramentas.map((projeto, index) => (
+              <ProjetoCard
+                key={projeto.slug}
+                projeto={projeto}
+                index={index}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       <section aria-labelledby="landing-pages-title">
         <div className="mb-9 md:mb-12">
