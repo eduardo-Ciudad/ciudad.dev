@@ -63,16 +63,16 @@ body {
   initial-value: 0px;
 }
 
-.why-us-track {
+.scroll-fade-track {
   --fade-size: 24px;
   mask-image: linear-gradient(to right, transparent 0, black var(--fade-l), black calc(100% - var(--fade-r)), transparent 100%);
   transition: --fade-l 220ms ease, --fade-r 220ms ease;
 }
 
 @media (min-width: 768px) {
-  .why-us-track { --fade-size: 56px; }
+  .scroll-fade-track { --fade-size: 56px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .why-us-track { transition: none; }
+  .scroll-fade-track { transition: none; }
 }

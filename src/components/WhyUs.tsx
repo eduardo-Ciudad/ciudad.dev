@@ -150,7 +150,7 @@ export function WhyUs() {
               else if (event.key === "ArrowRight") { event.preventDefault(); scrollByCard(1); }
             }}
             style={fadeStyle}
-            className={`why-us-track no-scrollbar flex gap-5 overflow-x-auto overflow-y-hidden py-6 pr-6 scroll-pr-6 snap-x snap-mandatory outline-none focus-visible:ring-2 focus-visible:ring-accent ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+            className={`scroll-fade-track no-scrollbar flex gap-5 overflow-x-auto overflow-y-hidden py-6 pr-6 scroll-pr-6 snap-x snap-mandatory outline-none focus-visible:ring-2 focus-visible:ring-accent ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
           >
             {cards.map((card, index) => <WhyUsCard key={card.title} card={card} delay={index * 0.1} trackRef={trackRef} index={index} />)}
           </div>
