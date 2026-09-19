@@ -103,6 +103,23 @@ export const projetos: Projeto[] = [
     },
   },
   {
+    slug: "jarvis",
+    nome: "Jarvis — Assistente Pessoal",
+    categoria: "ferramenta-interna",
+    destaque: true,
+    autoral: true,
+    imagem: "/img/projetos/jarvis-site.png",
+    descricao: [
+      "Assistente de voz 100% local — ouve o microfone e transcreve com Whisper, sem custo e sem API key de STT",
+      "Processa o pedido com Claude mantendo o histórico da conversa e responde em voz alta via ElevenLabs",
+      "Interface HUD futurista em tempo real (status do sistema, CPU, memória), com estética inspirada no J.A.R.V.I.S. do Homem de Ferro",
+    ],
+    ctaSecundario: {
+      label: "Código-fonte",
+      url: "https://github.com/eduardo-Ciudad/jarvis-python",
+    },
+  },
+  {
     slug: "leticia-souza",
     nome: "Letícia Souza",
     categoria: "landing-page",
@@ -169,6 +186,40 @@ export const projetos: Projeto[] = [
     ctaPrincipal: {
       label: "Ver ao vivo",
       url: "https://eduardo-ciudad.github.io/ueitila-mendes-cantora/",
+    },
+  },
+  {
+    slug: "trilhax",
+    nome: "TrilhaX",
+    categoria: "landing-page",
+    destaque: true,
+    autoral: true,
+    imagem: "/img/projetos/trilhax-site.png",
+    descricao: [
+      "4 trilhas de carreira (Backend Java, Frontend React, Fullstack, DevOps) com planos a partir de R$ 29,90",
+      "Fluxo completo: landing, cadastro/login, dashboard do aluno e painel admin",
+      "Front-end standalone (HTML/CSS/JS), pronto pra integrar com uma API própria",
+    ],
+    ctaSecundario: {
+      label: "Código-fonte",
+      url: "https://github.com/eduardo-Ciudad/TrilhaX-frontend",
+    },
+  },
+  {
+    slug: "fluxo-digital",
+    nome: "Fluxo Digital",
+    categoria: "landing-page",
+    destaque: true,
+    autoral: true,
+    imagem: "/img/projetos/vitrine-digital.png",
+    descricao: [
+      "Vitrine de vendas com portfólio embutido (6 projetos reais) e CTA de WhatsApp em cada seção",
+      "Seções de benefícios, processo do briefing ao lançamento e FAQ",
+      "100% estático (HTML/CSS/JS), otimizado pra performance e conversão",
+    ],
+    ctaSecundario: {
+      label: "Código-fonte",
+      url: "https://github.com/eduardo-Ciudad/fluxo-digital",
     },
   },
 ];
