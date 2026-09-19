@@ -138,9 +138,9 @@ export function Services() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {services.map((service, i) => (
-            <ScrollReveal key={service.title} delay={i * 0.15}>
-              <div className="bg-card border border-card-border rounded-2xl p-8 md:p-10 h-full flex flex-col hover:shadow-lg hover:border-accent-border transition-all duration-300">
-                <span className="text-[11px] tracking-[0.1em] uppercase font-semibold text-accent mb-4">
+            <ScrollReveal key={service.title} delay={i * 0.15} className="h-full">
+              <div className="group relative bg-card border border-card-border rounded-2xl p-8 md:p-10 h-full flex flex-col transform-gpu transition-all duration-300 ease-out hover:scale-[1.02] hover:-translate-y-1 hover:shadow-xl hover:border-accent-border hover:z-10 focus-within:shadow-xl focus-within:border-accent-border focus-within:z-10 has-[:focus-visible]:scale-[1.02] has-[:focus-visible]:-translate-y-1 motion-reduce:transition-none motion-reduce:hover:scale-100 motion-reduce:hover:translate-y-0 motion-reduce:has-[:focus-visible]:scale-100 motion-reduce:has-[:focus-visible]:translate-y-0">
+                <span className="text-[11px] tracking-[0.1em] uppercase font-semibold text-muted mb-4 transition-colors duration-300 group-hover:text-accent group-focus-within:text-accent">
                   {service.kicker}
                 </span>
                 <h3 className="font-heading font-semibold text-2xl md:text-3xl mb-4">
@@ -151,9 +151,18 @@ export function Services() {
                 </p>
 
                 <div className="space-y-2.5 mb-6">
-                  {service.bullets.map((bullet) => (
-                    <div key={bullet} className="flex gap-2.5 text-sm">
-                      <span className="text-muted/50 shrink-0">→</span>
+                  {service.bullets.map((bullet, bulletIndex) => (
+                    <div
+                      key={bullet}
+                      className="flex gap-2.5 text-sm"
+                      style={{ transitionDelay: `${bulletIndex * 40}ms` }}
+                    >
+                      <span
+                        className="text-muted/50 shrink-0 transition-[color,transform] duration-300 group-hover:translate-x-1 group-hover:text-accent group-focus-within:translate-x-1 group-focus-within:text-accent motion-reduce:transform-none"
+                        style={{ transitionDelay: `${bulletIndex * 40}ms` }}
+                      >
+                        →
+                      </span>
                       <span className="text-primary/80">{bullet}</span>
                     </div>
                   ))}
@@ -161,10 +170,15 @@ export function Services() {
 
                 <button
                   onClick={() => setOpenModal(service.title)}
-                  className="inline-flex items-center gap-1.5 text-sm font-medium text-accent hover:underline self-start mb-6"
+                  className="group/more inline-flex items-center gap-1.5 text-sm font-medium text-accent self-start mb-6 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-accent"
                 >
                   Saiba mais
-                  <span aria-hidden="true">+</span>
+                  <span
+                    aria-hidden="true"
+                    className="transition-transform duration-300 group-hover/more:rotate-90 group-focus-visible/more:rotate-90 motion-reduce:transform-none"
+                  >
+                    +
+                  </span>
                 </button>
 
                 <div className="mt-auto">
@@ -172,7 +186,7 @@ export function Services() {
                     <span className="text-sm text-muted">
                       {service.timeline}
                     </span>
-                    <span className="text-lg font-heading font-semibold text-accent">
+                    <span className="text-lg font-heading font-semibold text-primary transition-colors duration-300 group-hover:text-accent group-focus-within:text-accent">
                       {service.price}
                     </span>
                   </div>
@@ -181,19 +195,20 @@ export function Services() {
                     href={WHATSAPP_CONTACT_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="block w-full mt-6 py-3.5 bg-primary text-card text-sm font-medium rounded-full hover:bg-primary/85 transition-colors text-center"
+                    className="group/cta relative isolate flex w-full items-center justify-center gap-2 mt-6 py-3.5 overflow-hidden bg-primary text-card text-sm font-medium rounded-full hover:bg-primary/90 transition-colors text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
-                    {service.cta}
+                    <span>{service.cta}</span>
+                    <ArrowRight aria-hidden="true" size={15} className="transition-transform duration-300 group-hover/cta:translate-x-1 group-focus-visible/cta:translate-x-1 motion-reduce:transform-none" />
                   </a>
 
                   <Link
                     href={`/servicos/${service.slug}`}
-                    className="group/doc w-full mt-4 py-2.5 px-5 border border-card-border rounded-full text-sm font-medium text-accent hover:bg-accent-light hover:border-accent-border transition-colors flex items-center justify-center gap-1.5"
+                    className="group/doc w-full mt-4 py-2.5 px-5 border border-card-border rounded-full text-sm font-medium text-accent hover:bg-accent-light hover:border-accent-border transition-colors flex items-center justify-center gap-1.5 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
-                    Ver detalhes
+                    <span className="relative after:absolute after:-bottom-0.5 after:left-0 after:h-px after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform after:duration-300 group-hover/doc:after:scale-x-100 group-focus-visible/doc:after:scale-x-100 motion-reduce:after:transform-none">Ver detalhes</span>
                     <ArrowRight
                       size={15}
-                      className="transition-transform duration-200 group-hover/doc:translate-x-1"
+                      className="transition-transform duration-200 group-hover/doc:translate-x-1 group-focus-visible/doc:translate-x-1 motion-reduce:transform-none"
                     />
                   </Link>
                 </div>
