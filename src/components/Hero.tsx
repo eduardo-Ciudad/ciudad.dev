@@ -1,15 +1,24 @@
 "use client";
 
-import { motion, useMotionValue, animate } from "framer-motion";
+import { motion, useMotionValue, animate, useReducedMotion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 
-const metrics = [
+const metrics: readonly {
+  label: string;
+  value: number;
+  decimals: number;
+  suffix?: string;
+}[] = [
   { label: "projetos entregues", value: 6, decimals: 0 },
   { label: "em produção agora", value: 3, decimals: 0 },
-  { label: "testes escritos", value: 170, decimals: 0, suffix: "+" },
+  { label: "testes escritos", value: 318, decimals: 0, suffix: "+" },
   { label: "uptime médio", value: 99.9, decimals: 1, suffix: "%" },
-];
+] as const;
+
+function formatMetric(value: number, decimals: number) {
+  return decimals > 0 ? value.toFixed(decimals) : Math.round(value).toString();
+}
 
 function AnimatedNumber({
   value,
@@ -20,24 +29,33 @@ function AnimatedNumber({
   decimals?: number;
   suffix?: string;
 }) {
-  const [display, setDisplay] = useState("0");
-  const motionValue = useMotionValue(0);
+  const reducedMotion = useReducedMotion();
+  // Começa perto do valor final (nunca em zero) para que o primeiro paint
+  // — antes da hidratação, em conexão lenta, ou pra um crawler sem JS —
+  // já mostre um número real em vez de "0".
+  const startValue = reducedMotion ? value : value * 0.88;
+  const [display, setDisplay] = useState(() => formatMetric(startValue, decimals));
+  const motionValue = useMotionValue(startValue);
 
   useEffect(() => {
+    if (reducedMotion) {
+      // Synchronize immediately when the user's motion preference disables animation.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setDisplay(formatMetric(value, decimals));
+      return;
+    }
     const controls = animate(motionValue, value, {
-      duration: 1.5,
+      duration: 1,
       ease: "easeOut",
     });
     const unsubscribe = motionValue.on("change", (v) => {
-      setDisplay(
-        decimals > 0 ? v.toFixed(decimals) : Math.round(v).toString()
-      );
+      setDisplay(formatMetric(v, decimals));
     });
     return () => {
       controls.stop();
       unsubscribe();
     };
-  }, [motionValue, value, decimals]);
+  }, [motionValue, value, decimals, reducedMotion]);
 
   return (
     <span className="text-green-400 font-mono font-semibold text-sm">
