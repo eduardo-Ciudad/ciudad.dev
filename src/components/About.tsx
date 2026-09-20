@@ -12,7 +12,7 @@ export function About() {
           <ScrollReveal className="shrink-0">
             <div className="relative w-[240px] h-[300px] md:w-[280px] md:h-[340px] rounded-lg bg-surface border border-card-border overflow-hidden">
               <Image
-                src="/img/founder.jpg"
+                src="/img/foto-founderV2.png"
                 alt="Eduardo Ciudad, founder da CiudadLab"
                 fill
                 className="object-cover"
