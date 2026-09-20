@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const useIsoLayoutEffect =
@@ -34,6 +34,7 @@ export interface CoverflowCarouselProps {
   showNavigation?: boolean;
   ctaLabel?: string;
   imageFit?: "cover" | "contain";
+  enableLightbox?: boolean;
   label?: string;
   className?: string;
   cardClassName?: string;
@@ -55,6 +56,7 @@ export function CoverflowCarousel({
   showNavigation = false,
   ctaLabel = "Ver detalhes",
   imageFit = "cover",
+  enableLightbox = false,
   label = "Carrossel de projetos",
   className,
   cardClassName,
@@ -75,6 +77,8 @@ export function CoverflowCarousel({
     t: number;
   } | null>(null);
   const [selected, setSelected] = React.useState(0);
+  const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null);
+  const dragDistanceRef = React.useRef(0);
 
   const indexAt = React.useCallback(
     (pos: number) => ((Math.round(pos) % count) + count) % count,
@@ -147,10 +151,13 @@ export function CoverflowCarousel({
   );
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-    rafRef.current = null;
+    if (rafRef.current !== null) {
+      cancelAnimationFrame(rafRef.current);
+      rafRef.current = null;
+    }
     event.currentTarget.setPointerCapture(event.pointerId);
     targetRef.current = posRef.current;
+    dragDistanceRef.current = 0;
     dragRef.current = {
       id: event.pointerId,
       x: event.clientX,
@@ -162,6 +169,7 @@ export function CoverflowCarousel({
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const drag = dragRef.current;
     if (!drag || drag.id !== event.pointerId) return;
+    dragDistanceRef.current += Math.abs(event.clientX - drag.x);
     const pitch = widthRef.current * (1 + gap);
     if (!pitch) return;
     const now = performance.now();
@@ -177,6 +185,18 @@ export function CoverflowCarousel({
     const drag = dragRef.current;
     if (!drag || drag.id !== event.pointerId) return;
     dragRef.current = null;
+
+    if (enableLightbox && dragDistanceRef.current <= 6) {
+      const target = document
+        .elementFromPoint(event.clientX, event.clientY)
+        ?.closest<HTMLElement>("[data-index]");
+      const index = target ? Number(target.dataset.index) : NaN;
+      if (!Number.isNaN(index)) {
+        setLightboxIndex(index);
+        return;
+      }
+    }
+
     const carried = Math.max(-2, Math.min(2, drag.v * 0.18));
     settle(clamp(Math.round(posRef.current + carried)));
   };
@@ -202,6 +222,20 @@ export function CoverflowCarousel({
     },
     [],
   );
+
+  React.useEffect(() => {
+    if (lightboxIndex === null) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setLightboxIndex(null);
+    };
+    document.addEventListener("keydown", onKeyDown);
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, [lightboxIndex]);
 
   const active = slides[selected];
   const scrollToActive = () => {
@@ -261,8 +295,10 @@ export function CoverflowCarousel({
                 role="group"
                 aria-roledescription="slide"
                 aria-label={`${index + 1} de ${count}`}
+                data-index={index}
                 className={cn(
                   "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl bg-card shadow-xl will-change-transform",
+                  enableLightbox && "cursor-zoom-in",
                   cardClassName,
                 )}
                 style={{ width: "var(--cf-card)" }}
@@ -321,6 +357,42 @@ export function CoverflowCarousel({
           {slides.map((slide, index) => (
             <button key={slide.src} type="button" aria-label={`Ir para o projeto ${index + 1}`} aria-current={index === selected} onClick={() => goTo(index)} className={cn("size-2 rounded-full bg-primary transition-opacity focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent", index === selected ? "opacity-100" : "opacity-30")} />
           ))}
+        </div>
+      )}
+
+      {lightboxIndex !== null && slides[lightboxIndex] && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label={slides[lightboxIndex].alt}
+          onClick={() => setLightboxIndex(null)}
+          className="fixed inset-0 z-[300] flex items-center justify-center bg-black/80 p-6 duration-200 animate-in fade-in md:p-16"
+        >
+          <button
+            type="button"
+            aria-label="Fechar"
+            onClick={() => setLightboxIndex(null)}
+            className="absolute right-4 top-4 z-10 rounded-full border border-white/20 bg-black/40 p-2 text-white backdrop-blur transition hover:bg-black/60 focus-visible:outline-2 focus-visible:outline-white sm:right-6 sm:top-6"
+          >
+            <X className="size-5" />
+          </button>
+          <div
+            className="flex max-h-full max-w-full flex-col items-center gap-3"
+            onClick={(event) => event.stopPropagation()}
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={slides[lightboxIndex].src}
+              alt={slides[lightboxIndex].alt}
+              className="max-h-[80vh] max-w-full rounded-lg object-contain shadow-2xl duration-200 animate-in zoom-in-95"
+            />
+            {slides[lightboxIndex].title && (
+              <p className="text-sm font-medium text-white/90">
+                {slides[lightboxIndex].title}
+                {slides[lightboxIndex].subtitle ? ` · ${slides[lightboxIndex].subtitle}` : ""}
+              </p>
+            )}
+          </div>
         </div>
       )}
     </div>

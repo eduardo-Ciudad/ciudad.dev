@@ -57,6 +57,7 @@ export function Testimonials() {
           showNavigation
           ctaLabel="Ver case"
           imageFit="contain"
+          enableLightbox
           className="mt-8 md:mt-12"
           cardWidth="clamp(148px, 34vw, 280px)"
           cardHeight="calc(clamp(148px, 34vw, 280px) * 3 / 4)"
