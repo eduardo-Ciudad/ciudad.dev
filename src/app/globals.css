@@ -76,3 +76,45 @@ body {
 @media (prefers-reduced-motion: reduce) {
   .scroll-fade-track { transition: none; }
 }
+
+.blog-prose {
+  color: var(--color-primary);
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.blog-prose > * + * { margin-top: 1.5rem; }
+.blog-prose h2,
+.blog-prose h3 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+.blog-prose h2 { margin-top: 3.75rem; font-size: clamp(1.9rem, 5vw, 2.5rem); }
+.blog-prose h3 { margin-top: 2.75rem; font-size: clamp(1.45rem, 4vw, 1.85rem); }
+.blog-prose p,
+.blog-prose li { color: var(--color-muted); }
+.blog-prose strong { color: var(--color-primary); font-weight: 600; }
+.blog-prose ul,
+.blog-prose ol { padding-left: 1.4rem; }
+.blog-prose ul { list-style: disc; }
+.blog-prose ol { list-style: decimal; }
+.blog-prose li { padding-left: 0.35rem; }
+.blog-prose li + li { margin-top: 0.55rem; }
+.blog-prose a { color: var(--color-accent); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent-border); text-underline-offset: 0.22em; transition: text-decoration-color 180ms ease; }
+.blog-prose a:hover { text-decoration-color: var(--accent); }
+.blog-prose blockquote { border-left: 3px solid var(--accent); padding-left: 1.25rem; font-family: var(--font-heading); font-size: 1.35rem; line-height: 1.5; }
+.blog-prose .table-scroll { margin: 2rem calc(50% - 50vw); overflow-x: auto; padding-inline: max(1.5rem, calc((100vw - 48rem) / 2)); overscroll-behavior-inline: contain; }
+.blog-prose table { width: 100%; min-width: 38rem; border-collapse: collapse; border: 1px solid var(--color-divider); background: var(--color-card); font-size: 0.875rem; line-height: 1.5; }
+.blog-prose th,
+.blog-prose td { border-bottom: 1px solid var(--color-divider); padding: 0.85rem 1rem; text-align: left; vertical-align: top; }
+.blog-prose th { background: var(--color-accent-light); color: var(--color-primary); font-weight: 600; }
+.blog-prose td { color: var(--color-muted); }
+.blog-prose tr:last-child td { border-bottom: 0; }
+
+@media (min-width: 768px) {
+  .blog-prose { font-size: 1.0625rem; }
+  .blog-prose .table-scroll { margin-inline: -4rem; padding-inline: 4rem; }
+}

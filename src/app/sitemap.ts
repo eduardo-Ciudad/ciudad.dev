@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { servicesDocs } from "@/data/services-docs";
+import { getAllPosts } from "@/lib/blog";
 
 const baseUrl = "https://www.ciudadlab.com.br";
 
@@ -15,6 +16,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/projetos`,
       lastModified: new Date(),
       changeFrequency: "monthly",
+      priority: 0.9,
+    },
+    {
+      url: `${baseUrl}/blog`,
+      lastModified: new Date(),
+      changeFrequency: "weekly",
       priority: 0.9,
     },
     {
@@ -44,5 +51,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.8,
   }));
 
-  return [...staticRoutes, ...serviceRoutes];
+  const blogRoutes: MetadataRoute.Sitemap = getAllPosts().map((post) => ({
+    url: `${baseUrl}/blog/${post.slug}`,
+    lastModified: new Date(`${post.date}T12:00:00Z`),
+    changeFrequency: "monthly",
+    priority: 0.8,
+  }));
+
+  return [...staticRoutes, ...serviceRoutes, ...blogRoutes];
 }

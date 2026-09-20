@@ -9,6 +9,7 @@ import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 const links = [
   { label: "Serviços", href: "/#servicos" },
   { label: "Projetos", href: "/projetos" },
+  { label: "Blog", href: "/blog" },
   { label: "Contato", href: WHATSAPP_CONTACT_URL },
 ];
 

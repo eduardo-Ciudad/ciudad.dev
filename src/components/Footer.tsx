@@ -62,6 +62,14 @@ export function Footer() {
             </h4>
             <ul className="space-y-2">
               <li>
+                <Link
+                  href="/blog"
+                  className="text-white/50 text-[13px] hover:text-white transition-colors"
+                >
+                  Blog
+                </Link>
+              </li>
+              <li>
                 <a
                   href="#servicos"
                   className="text-white/50 text-[13px] hover:text-white transition-colors"
