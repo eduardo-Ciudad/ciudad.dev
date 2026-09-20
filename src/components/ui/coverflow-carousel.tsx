@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -13,6 +14,7 @@ export interface CoverflowSlide {
   title?: string;
   subtitle?: string;
   targetId?: string;
+  href?: string;
   meta?: { label: string; value: string }[];
 }
 
@@ -24,11 +26,14 @@ export interface CoverflowCarouselProps {
   falloff?: number;
   fade?: number;
   cardWidth?: string;
+  cardHeight?: string;
   gap?: number;
   loop?: boolean;
   showCaption?: boolean;
   showPagination?: boolean;
   showNavigation?: boolean;
+  ctaLabel?: string;
+  imageFit?: "cover" | "contain";
   label?: string;
   className?: string;
   cardClassName?: string;
@@ -42,16 +47,20 @@ export function CoverflowCarousel({
   falloff = 0.56,
   fade = 0.1,
   cardWidth = "clamp(148px, 22vw, 260px)",
+  cardHeight,
   gap = 0.05,
   loop = true,
   showCaption = false,
   showPagination = false,
   showNavigation = false,
+  ctaLabel = "Ver detalhes",
+  imageFit = "cover",
   label = "Carrossel de projetos",
   className,
   cardClassName,
 }: CoverflowCarouselProps) {
   const count = slides.length;
+  const router = useRouter();
   const frameRef = React.useRef<HTMLDivElement>(null);
   const cardRefs = React.useRef<(HTMLDivElement | null)[]>([]);
   const posRef = React.useRef(0);
@@ -196,6 +205,10 @@ export function CoverflowCarousel({
 
   const active = slides[selected];
   const scrollToActive = () => {
+    if (active?.href) {
+      router.push(active.href);
+      return;
+    }
     if (!active?.targetId) return;
     document.getElementById(active.targetId)?.scrollIntoView({
       behavior: "smooth",
@@ -206,7 +219,10 @@ export function CoverflowCarousel({
   return (
     <div
       className={cn("w-full", className)}
-      style={{ ["--cf-card" as string]: cardWidth }}
+      style={{
+        ["--cf-card" as string]: cardWidth,
+        ["--cf-card-height" as string]: cardHeight ?? cardWidth,
+      }}
       role="region"
       aria-roledescription="carousel"
       aria-label={label}
@@ -236,7 +252,7 @@ export function CoverflowCarousel({
         >
           <div
             className="relative select-none"
-            style={{ height: "var(--cf-card)", transformStyle: "preserve-3d" }}
+            style={{ height: "var(--cf-card-height)", transformStyle: "preserve-3d" }}
           >
             {slides.map((slide, index) => (
               <div
@@ -256,7 +272,10 @@ export function CoverflowCarousel({
                   src={slide.src}
                   alt={slide.alt}
                   draggable={false}
-                  className="h-full w-full select-none object-cover"
+                  className={cn(
+                    "h-full w-full select-none",
+                    imageFit === "contain" ? "object-contain" : "object-cover",
+                  )}
                 />
               </div>
             ))}
@@ -289,9 +308,9 @@ export function CoverflowCarousel({
               ))}
             </dl>
           )}
-          {active.targetId && (
+          {(active.targetId || active.href) && (
             <button type="button" onClick={scrollToActive} className="mt-4 rounded-full border border-accent-border px-4 py-2 text-sm font-medium text-accent transition-colors hover:bg-accent-light focus-visible:outline-2 focus-visible:outline-accent">
-              Ver detalhes
+              {ctaLabel}
             </button>
           )}
         </div>
