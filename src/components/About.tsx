@@ -8,8 +8,23 @@ export function About() {
   return (
     <section id="sobre" className="py-16 md:py-24 bg-card">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="flex flex-col md:flex-row items-center gap-10 md:gap-12">
-          <ScrollReveal className="shrink-0">
+        <div className="grid grid-cols-1 items-center gap-y-8 md:grid-cols-[auto_1fr] md:gap-x-12 md:gap-y-0">
+          <ScrollReveal
+            delay={0.15}
+            className="text-center md:col-start-2 md:row-start-1 md:self-end md:text-left"
+          >
+            <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">
+              Conheça o founder
+            </span>
+            <h2 className="font-heading font-semibold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-1px]">
+              Eduardo Ciudad
+            </h2>
+            <p className="text-accent font-semibold text-[15px] mt-2">
+              Desenvolvedor Backend &amp; Criador de Conteúdo
+            </p>
+          </ScrollReveal>
+
+          <ScrollReveal className="shrink-0 justify-self-center md:col-start-1 md:row-span-2 md:row-start-1 md:justify-self-start">
             <div className="relative w-[240px] h-[300px] md:w-[280px] md:h-[340px] rounded-lg bg-surface border border-card-border overflow-hidden">
               <Image
                 src="/img/foto-founderV1.png"
@@ -20,17 +35,11 @@ export function About() {
             </div>
           </ScrollReveal>
 
-          <ScrollReveal delay={0.15} className="flex-1 text-center md:text-left">
-            <span className="block text-xs font-semibold uppercase tracking-[0.15em] text-accent mb-3">
-              Conheça o founder
-            </span>
-            <h2 className="font-heading font-semibold text-[28px] md:text-[36px] lg:text-[42px] tracking-[-1px]">
-              Eduardo Ciudad
-            </h2>
-            <p className="text-accent font-semibold text-[15px] mt-2">
-              Desenvolvedor Backend &amp; Criador de Conteúdo
-            </p>
-            <div className="mt-6 space-y-4 text-[14px] md:text-[15px] leading-relaxed text-muted">
+          <ScrollReveal
+            delay={0.15}
+            className="text-center md:col-start-2 md:row-start-2 md:self-start md:text-left"
+          >
+            <div className="space-y-4 text-[14px] leading-relaxed text-muted md:mt-6 md:text-[15px]">
               <p>
                 Sou Eduardo Ciudad, desenvolvedor de software e founder da
                 CiudadLab.
