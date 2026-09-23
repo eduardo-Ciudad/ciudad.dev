@@ -3,6 +3,7 @@ import "server-only";
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import { getProjeto, hasCase } from "@/data/projetos";
 
 const BLOG_DIRECTORY = path.join(process.cwd(), "content", "blog");
 
@@ -13,6 +14,7 @@ export type BlogPostMeta = {
   date: string;
   tags: string[];
   readingTime: number;
+  caseSlug?: string;
 };
 
 export type BlogPost = BlogPostMeta & {
@@ -44,6 +46,19 @@ function parsePost(fileName: string): BlogPost {
     throw new Error(`Frontmatter inválido em ${fileName}: "tags" deve ser uma lista de textos.`);
   }
 
+  let caseSlug: string | undefined;
+  if (data.case !== undefined) {
+    const projeto = typeof data.case === "string" ? getProjeto(data.case) : undefined;
+
+    if (typeof data.case !== "string" || !data.case.trim() || !projeto || !hasCase(projeto)) {
+      throw new Error(
+        `Frontmatter inválido em ${fileName}: "case" não corresponde a nenhum case publicado.`,
+      );
+    }
+
+    caseSlug = data.case;
+  }
+
   return {
     title: String(data.title),
     description: String(data.description),
@@ -51,6 +66,7 @@ function parsePost(fileName: string): BlogPost {
     date: String(data.date),
     tags: data.tags,
     readingTime: getReadingTime(content),
+    caseSlug,
     content,
   };
 }
@@ -70,7 +86,12 @@ export function getAllPosts(): BlogPostMeta[] {
       date: post.date,
       tags: post.tags,
       readingTime: post.readingTime,
+      caseSlug: post.caseSlug,
     }));
+}
+
+export function getPostsByCase(caseSlug: string): BlogPostMeta[] {
+  return getAllPosts().filter((post) => post.caseSlug === caseSlug);
 }
 
 export function getPostBySlug(slug: string): BlogPost | undefined {

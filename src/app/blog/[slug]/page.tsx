@@ -8,6 +8,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { BlogArticleCta } from "@/components/BlogArticleCta";
 import { blogMdxComponents } from "@/components/BlogMdxComponents";
+import { getProjeto, hasCase } from "@/data/projetos";
 import { formatPostDate, getAllPosts, getPostBySlug } from "@/lib/blog";
 
 const baseUrl = "https://www.ciudadlab.com.br";
@@ -55,6 +56,9 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
   const post = getPostBySlug(slug);
   if (!post) notFound();
 
+  const projetoRelacionado = post.caseSlug ? getProjeto(post.caseSlug) : undefined;
+  const projeto = projetoRelacionado && hasCase(projetoRelacionado) ? projetoRelacionado : undefined;
+
   const articleUrl = `${baseUrl}/blog/${post.slug}`;
   const jsonLd = {
     "@context": "https://schema.org",
@@ -88,6 +92,14 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
               <time dateTime={post.date}>{formatPostDate(post.date)}</time>
               <span aria-hidden="true">·</span>
               <span>{post.readingTime} min de leitura</span>
+              {projeto && (
+                <>
+                  <span aria-hidden="true">·</span>
+                  <Link href={`/projetos/${projeto.slug}`} className="font-medium text-accent transition-opacity hover:opacity-80">
+                    Bastidor do case {projeto.nome}
+                  </Link>
+                </>
+              )}
             </div>
           </header>
 
@@ -99,6 +111,16 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             />
           </div>
           <div className="mx-auto mt-16 max-w-3xl px-6 md:mt-24">
+            {projeto && (
+              <aside className="mb-8 rounded-2xl border border-accent-border bg-accent-light p-6 md:p-8">
+                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">Case relacionado</span>
+                <p className="mt-3 font-heading text-2xl font-semibold text-primary md:text-[28px]">{projeto.nome}</p>
+                <p className="mt-2 text-[15px] leading-[1.7] text-primary/80">{projeto.resultado}</p>
+                <Link href={`/projetos/${projeto.slug}`} className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-accent transition-opacity hover:opacity-80">
+                  Ver o case completo <span aria-hidden="true">→</span>
+                </Link>
+              </aside>
+            )}
             <BlogArticleCta />
           </div>
         </article>

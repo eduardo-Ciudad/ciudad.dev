@@ -8,6 +8,7 @@ import { Footer } from "@/components/Footer";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { getProjeto, hasCase, projetos } from "@/data/projetos";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+import { formatPostDate, getPostsByCase } from "@/lib/blog";
 
 type ProjetoCasePageProps = {
   params: Promise<{ slug: string }>;
@@ -62,6 +63,8 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
 
   if (!projeto || !hasCase(projeto)) notFound();
 
+  const bastidores = getPostsByCase(projeto.slug);
+
   return (
     <div className="min-h-screen bg-surface">
       <BackToSiteHeader href="/projetos" label="Voltar para Projetos" />
@@ -78,6 +81,11 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
             <a href="#resultado" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
               Resultado
             </a>
+            {bastidores.length > 0 && (
+              <a href="#bastidores" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
+                Bastidores
+              </a>
+            )}
           </nav>
         </aside>
 
@@ -156,6 +164,41 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
               </p>
             </section>
           </ScrollReveal>
+
+          {bastidores.length > 0 && (
+            <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
+              <section id="bastidores">
+                <h2 className="mb-6 font-heading text-2xl font-semibold tracking-[-0.5px] md:text-[28px]">
+                  Bastidores deste projeto
+                </h2>
+                <p className="mb-6 text-[15px] leading-[1.8] text-primary/80">
+                  Decisões e problemas reais do desenvolvimento, contados em detalhe no blog.
+                </p>
+                <div className="space-y-4">
+                  {bastidores.map((post) => (
+                    <Link
+                      key={post.slug}
+                      href={`/blog/${post.slug}`}
+                      className="group block rounded-xl border border-divider bg-card p-5 transition-colors hover:border-accent-border md:p-6"
+                    >
+                      <div className="text-xs text-muted">
+                        <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+                        <span aria-hidden="true"> · </span>
+                        <span>{post.readingTime} min de leitura</span>
+                      </div>
+                      <h3 className="mt-2 font-heading text-xl font-semibold text-primary transition-colors group-hover:text-accent md:text-2xl">
+                        {post.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted">{post.description}</p>
+                      <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent">
+                        Ler o bastidor <span aria-hidden="true">→</span>
+                      </span>
+                    </Link>
+                  ))}
+                </div>
+              </section>
+            </ScrollReveal>
+          )}
 
           <section className="border-t border-divider pt-14 text-center">
             <h2 className="mb-3 font-heading text-2xl font-semibold md:text-3xl">
