@@ -8,8 +8,8 @@ import {
   ShieldCheck,
   X,
 } from "lucide-react";
-import { BackToSiteHeader } from "@/components/BackToSiteHeader";
 import { Footer } from "@/components/Footer";
+import { Navbar } from "@/components/Navbar";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { garantia } from "@/data/garantia";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
@@ -43,9 +43,9 @@ const summaryIcons = {
 export default function GarantiaPage() {
   return (
     <div className="min-h-screen bg-surface">
-      <BackToSiteHeader />
+      <Navbar />
 
-      <main className="mx-auto max-w-6xl px-6 pb-20 pt-14 md:pb-28">
+      <main className="mx-auto max-w-6xl px-6 pb-20 pt-28 md:pb-28 md:pt-32">
         <article className="mx-auto max-w-[720px]">
           <ScrollReveal className="mb-10">
             <span className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">

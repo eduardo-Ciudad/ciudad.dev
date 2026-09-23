@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowUpRight, Check } from "lucide-react";
-import { BackToSiteHeader } from "@/components/BackToSiteHeader";
+import { ArrowLeft, ArrowUpRight, Check } from "lucide-react";
 import { DocImage } from "@/components/DocImage";
 import { Footer } from "@/components/Footer";
+import { Navbar } from "@/components/Navbar";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { getProjeto, hasCase, projetos } from "@/data/projetos";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
@@ -67,9 +67,9 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
 
   return (
     <div className="min-h-screen bg-surface">
-      <BackToSiteHeader href="/projetos" label="Voltar para Projetos" />
+      <Navbar />
 
-      <main className="mx-auto max-w-6xl px-6 pb-20 pt-14 md:pb-28 lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
+      <main className="mx-auto max-w-6xl px-6 pb-20 pt-28 md:pb-28 md:pt-32 lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
         <aside className="hidden lg:block">
           <nav className="sticky top-24 flex flex-col gap-1 text-sm" aria-label="Seções do case">
             <a href="#visao-geral" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
@@ -90,6 +90,12 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
         </aside>
 
         <article className="max-w-[720px]">
+          <Link
+            href="/projetos"
+            className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-accent"
+          >
+            <ArrowLeft size={16} aria-hidden="true" /> Todos os projetos
+          </Link>
           <ScrollReveal className="mb-10">
             <span className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">
               {categoriaLabel[projeto.categoria]}

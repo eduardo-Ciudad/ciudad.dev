@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Check, Clock, ExternalLink } from "lucide-react";
+import { ArrowLeft, Check, Clock, ExternalLink } from "lucide-react";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { DocImagePlaceholder } from "@/components/DocImagePlaceholder";
 import { DocImage } from "@/components/DocImage";
-import { BackToSiteHeader } from "@/components/BackToSiteHeader";
 import { DetalhesTecnicos } from "@/components/DetalhesTecnicos";
 import { Footer } from "@/components/Footer";
+import { Navbar } from "@/components/Navbar";
 import { getServiceDoc, servicesDocs } from "@/data/services-docs";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 
@@ -67,9 +67,9 @@ export default async function ServiceDocPage(
 
   return (
     <div className="min-h-screen bg-surface">
-      <BackToSiteHeader />
+      <Navbar />
 
-      <div className="max-w-6xl mx-auto px-6 pt-14 pb-20 md:pb-28 lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
+      <div className="max-w-6xl mx-auto px-6 pt-28 pb-20 md:pt-32 md:pb-28 lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
         <aside className="hidden lg:block">
           <nav className="sticky top-24 flex flex-col gap-1 text-sm">
             {doc.sections.map((section) => (
@@ -85,6 +85,12 @@ export default async function ServiceDocPage(
         </aside>
 
         <div className="max-w-[720px]">
+          <Link
+            href="/#servicos"
+            className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-accent"
+          >
+            <ArrowLeft size={16} aria-hidden="true" /> Todos os serviços
+          </Link>
           <ScrollReveal className="mb-10">
             <h1 className="font-heading font-bold text-4xl md:text-5xl tracking-[-0.5px] text-primary mb-4">
               {doc.title}
