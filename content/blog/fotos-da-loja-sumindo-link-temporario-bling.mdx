@@ -1,0 +1,111 @@
+---
+title: "As fotos da loja começaram a sumir: o link temporário do Bling e a migração para o R2"
+description: "Bastidor real de um e-commerce integrado ao Bling: por que 1.241 fotos de produto tinham prazo de validade, como investigamos com números em vez de palpite e o que mudou para não acontecer de novo."
+slug: "fotos-da-loja-sumindo-link-temporario-bling"
+date: "2026-09-23"
+tags: ["bastidores", "e-commerce", "integração Bling"]
+case: "gabikids"
+---
+
+Na tarde de 21 de setembro, um produto da [GabiKids](/projetos/gabikids) apareceu na vitrine sem foto. Nenhum deploy novo, nenhuma mudança no painel, nada que explicasse. Em poucos minutos ficou claro que não era um produto: era uma contagem regressiva, e mais de mil fotos da loja estavam na fila para sumir do mesmo jeito.
+
+Este texto conta o que aconteceu, como a gente investigou e o que mudou. Inclusive a hipótese errada que eu levantei no meio do caminho.
+
+## A resposta curta
+
+- O Bling (ERP da loja) entrega as fotos dos produtos como **links temporários**, com data de validade embutida.
+- A loja guardava esses links. Funcionava, até o dia em que eles venceram.
+- A correção definitiva, copiar as fotos para um armazenamento próprio (Cloudflare R2), **já existia**, mas ainda não tinha alcançado todos os produtos antigos quando o prazo chegou.
+- Uma sincronização completa migrou o que faltava. Fotos no R2 não vencem.
+
+## O que é um link que vence
+
+Quando você cadastra uma foto no Bling, ela fica guardada num armazenamento da Amazon (S3). Para entregar essa foto por API, o Bling não manda um endereço permanente. Ele gera um **link assinado**, mais ou menos assim:
+
+```text
+https://orgbling.s3.amazonaws.com/.../9badbee9...?AWSAccessKeyId=...&Expires=1790019763&Signature=...
+```
+
+O parâmetro `Expires` é um horário no formato Unix (segundos desde 1970). Até esse horário, o link abre a imagem. Depois dele, o servidor responde "acesso negado" e o navegador mostra um espaço vazio.
+
+Isso é uma prática correta do lado do Bling: link assinado evita que qualquer pessoa na internet acesse os arquivos de todos os clientes dele. O problema é tratar esse link como se fosse permanente.
+
+## A investigação
+
+### 1. O que exatamente está quebrado?
+
+Inspecionando o card sem foto, o `src` da imagem era um desses links do Bling. Convertendo o `Expires=1790019763`: **21/09 às 16h42**, uns 20 minutos antes de o problema aparecer. Não era coincidência.
+
+E havia uma consequência pior: produtos sincronizados na mesma execução recebem prazos parecidos. Se um venceu, os outros iam vencer em lote.
+
+### 2. Qual o tamanho do problema?
+
+Antes de mexer em qualquer coisa, contamos direto no banco:
+
+| | Quantidade |
+| --- | --- |
+| Fotos de produto no total | 2.204 |
+| Ainda apontando para o Bling | **1.241** |
+| Já no armazenamento próprio (R2) | 963 |
+| Capas de produto ainda no Bling | **258** de 482 |
+
+A divisão era **por produto inteiro**: 256 produtos só com fotos do Bling, 225 só com fotos do R2 e **nenhum** misturado. Isso mostrou que a migração, quando rodava para um produto, funcionava por completo. O problema não era o R2 falhar no meio do caminho.
+
+### 3. A hipótese errada
+
+Olhando esses números, minha primeira leitura foi: "a sincronização só migra produto novo e ignora os antigos". Parecia fazer sentido, porque tinham entrado 11 produtos novos e todas as fotos deles foram para o R2.
+
+Só que o código dizia outra coisa. Não existia nenhuma condição que pulasse produtos existentes: todo produto passava pela etapa de fotos. A hipótese caiu, e eu prefiro contar isso aqui do que fingir que acertei de primeira. Chute que não confere com o código é chute, não diagnóstico.
+
+### 4. A pergunta que resolveu
+
+Se o sync passa por todos os produtos, por que ainda sobravam 1.241 fotos do Bling? Havia duas possibilidades:
+
+- **A migração falhou** para esses produtos e caiu num link novo do Bling. Nesse caso, os links teriam vencimento na semana seguinte.
+- **O sync ainda não tinha chegado neles.** Nesse caso, os links seriam antigos, todos vencendo na mesma janela.
+
+Agrupamos as fotos restantes pelo horário de vencimento. Resultado: **1.119 fotos, todas vencendo entre 16h e 17h daquele dia**. Nenhuma tinha sido tocada pela sincronização em andamento. Ela era sequencial, respeitava o limite de requisições do Bling e simplesmente ainda não tinha passado por esses produtos.
+
+### 5. Esperar ou reiniciar?
+
+Com uma consulta repetida a cada 10 segundos, o ritmo ficou visível: cerca de 0,25 foto migrada por segundo, com o contador do Bling caindo sem parar. A estimativa era de pouco mais de uma hora para terminar.
+
+A decisão foi **não reiniciar nada**. Reiniciar mataria o processo no meio e jogaria fora o que já tinha andado. Como as fotos restantes já estavam vencidas, esperar não piorava nada: a cada produto concluído, a foto voltava sozinha para a vitrine.
+
+## Por que aconteceu, em uma frase
+
+A migração para o R2 foi implementada em 15/09, mas os produtos que já estavam na loja continuavam com os links antigos do Bling até que uma sincronização completa passasse por eles, e o prazo desses links chegou antes.
+
+## Como funciona a solução
+
+Durante a sincronização com o Bling, cada foto de produto passa por este caminho:
+
+1. **Download** da imagem pelo link temporário, enquanto ele ainda é válido.
+2. **Validação do conteúdo**: os primeiros bytes do arquivo precisam ser de uma imagem real (JPEG, PNG ou WebP), não importa o que o nome diga.
+3. **Duas versões comprimidas**: uma principal de até 1200 px (qualidade 85%) e uma miniatura de até 400 px (qualidade 80%) para os cards da vitrine. Imagem pequena não é ampliada, só recomprimida.
+4. **Upload para o R2** com um endereço estável, montado a partir do produto e da posição da foto. O endereço não tem assinatura nem validade.
+5. **Ritmo controlado**: no mínimo 350 ms entre chamadas ao Bling, um pouco acima do limite de 3 requisições por segundo da API, para não ser bloqueado no meio do processo.
+
+Cada produto é gravado na sua própria transação. Se o processo for interrompido, o que já foi migrado continua salvo.
+
+## O que ficou de lição
+
+**Link de terceiro é dependência com prazo.** Se uma integração devolve um endereço de arquivo, a primeira pergunta é: esse endereço é permanente? Se não for, o arquivo precisa ser copiado para um lugar seu.
+
+**Contar antes de mexer.** Cada decisão dessa investigação saiu de uma consulta no banco: quantas fotos, de quais produtos, vencendo quando. Foi isso que evitou o reflexo de "reinicia e vê se volta", que teria atrasado a solução.
+
+**Um processo longo precisa dizer o que está fazendo.** A sincronização só registrava um resumo no final. Durante a investigação, o andamento teve que ser medido pelo banco.
+
+## O que ainda vou melhorar
+
+Transparência vale para o que falta também:
+
+- **Falha momentânea não pode apagar foto boa.** Hoje, se o upload de um produto falhar por instabilidade de rede, a sincronização pode trocar as fotos existentes por nenhuma. A regra correta é não mexer no que já existe quando a migração vier vazia.
+- **Resumo em tempo real.** Registrar quantas fotos foram migradas e quantas falharam em cada sincronização.
+- **Domínio próprio para as imagens**, em vez do endereço público padrão do R2, que tem limite de velocidade.
+
+## Se você tem uma loja integrada a um ERP
+
+Vale fazer uma verificação simples: clique com o botão direito numa foto de produto da sua loja, copie o endereço da imagem e veja se ele tem algo como `Expires=` ou `X-Amz-Expires=`. Se tiver, as fotos da sua loja têm data para sumir.
+
+Se isso aconteceu com você, ou se você quer uma loja que não dependa do prazo de um link de terceiro, [me conta como é a sua operação](/#contato). O case completo da GabiKids está [aqui](/projetos/gabikids).
