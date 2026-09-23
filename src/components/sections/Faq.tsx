@@ -10,6 +10,7 @@ type FaqItem = {
   link?: { href: string; label: string };
 };
 
+// Valores espelham src/data/precos.ts — atualizar os dois juntos.
 const faqs: FaqItem[] = [
   {
     question: "Quanto custa um projeto?",

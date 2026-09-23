@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { ScrollReveal } from "./ScrollReveal";
 import { ServiceDetailModal, type ServiceDetail } from "./ServiceDetailModal";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+import { precos } from "@/data/precos";
 
 const services: {
   slug: string;
@@ -30,8 +31,8 @@ const services: {
       "SEO básico configurado",
       "Deploy incluso",
     ],
-    timeline: "1–2 semanas",
-    price: "R$ 800–1.000",
+    timeline: precos["landing-page"].prazo,
+    price: precos["landing-page"].preco,
     cta: "Quero uma Landing Page",
     details: {
       benefits: [
@@ -61,8 +62,8 @@ const services: {
       "Painel administrativo pra gerenciar produtos",
       "Infraestrutura própria com deploy incluso",
     ],
-    timeline: "3–4 semanas",
-    price: "R$ 2.500–4.000",
+    timeline: precos.ecommerce.prazo,
+    price: precos.ecommerce.preco,
     cta: "Quero meu E-commerce",
     details: {
       benefits: [
@@ -93,8 +94,8 @@ const services: {
       "Autenticação e controle de acesso",
       "Documentação técnica entregue",
     ],
-    timeline: "2–4 semanas",
-    price: "Sob consulta",
+    timeline: precos["sistema-personalizado"].prazo,
+    price: precos["sistema-personalizado"].preco,
     cta: "Quero um orçamento",
     details: {
       benefits: [

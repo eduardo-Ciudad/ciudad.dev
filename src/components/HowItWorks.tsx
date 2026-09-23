@@ -232,7 +232,7 @@ function MobileTimeline() {
 
 export function HowItWorks() {
   return (
-    <section className="py-20 md:py-24 bg-white">
+    <section id="como-funciona" className="scroll-mt-20 py-20 md:py-24 bg-white">
       <div className="max-w-6xl mx-auto px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
