@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
+import { getProjeto } from "@/data/projetos";
 import { formatPostDate, getAllPosts } from "@/lib/blog";
 
 const title = "Blog | CiudadLab";
@@ -37,39 +38,50 @@ export default function BlogPage() {
             </p>
           </div>
 
-          <div className="mt-16 grid gap-px overflow-hidden rounded-3xl border border-divider bg-divider md:mt-24 md:grid-cols-2">
-            {posts.map((post, index) => (
-              <article
-                key={post.slug}
-                className={`min-h-[330px] bg-card ${
-                  index === 0 ? "md:col-span-2 md:min-h-[390px]" : ""
-                }`}
-              >
-                <Link
-                  href={`/blog/${post.slug}`}
-                  className="group flex h-full flex-col p-7 transition-colors hover:bg-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:p-10"
-                >
-                  <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
-                    <time dateTime={post.date}>{formatPostDate(post.date)}</time>
-                    <span aria-hidden="true">·</span>
-                    <span>{post.readingTime} min de leitura</span>
-                  </div>
-                  <h2 className={`mt-7 max-w-3xl font-heading font-semibold leading-[1.03] tracking-[-0.025em] transition-colors group-hover:text-accent ${index === 0 ? "text-4xl md:text-6xl" : "text-3xl md:text-4xl"}`}>
-                    {post.title}
-                  </h2>
-                  <p className="mt-5 max-w-2xl text-sm leading-6 text-muted md:text-base">{post.description}</p>
-                  <div className="mt-auto flex items-end justify-between gap-6 pt-10">
-                    <ul className="flex flex-wrap gap-2" aria-label="Tags">
-                      {post.tags.map((tag) => (
-                        <li key={tag} className="rounded-full border border-divider px-3 py-1 text-[11px] text-muted">{tag}</li>
-                      ))}
-                    </ul>
-                    <ArrowUpRight className="shrink-0 text-accent transition-transform group-hover:-translate-y-1 group-hover:translate-x-1" size={22} aria-hidden="true" />
-                  </div>
-                </Link>
-              </article>
-            ))}
-          </div>
+          <ol className="mt-16 border-t border-divider md:mt-24">
+            {posts.map((post, index) => {
+              const projeto = post.caseSlug ? getProjeto(post.caseSlug) : undefined;
+
+              return (
+                <li key={post.slug} className="border-b border-divider">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    className="group relative -mx-6 grid gap-5 px-6 py-10 transition-colors duration-300 hover:bg-card/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:grid-cols-12 md:gap-8 md:px-6 md:py-14"
+                  >
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 md:col-span-3 md:flex-col md:items-start md:gap-2">
+                      <span className="font-heading text-3xl font-semibold leading-none text-accent tabular-nums md:text-5xl">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent md:mt-3">
+                        {post.caseSlug && projeto ? `Bastidor · ${projeto.nome}` : "Guia"}
+                      </span>
+                      <span className="text-xs text-muted">
+                        <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+                        <span aria-hidden="true"> · </span>
+                        {post.readingTime} min de leitura
+                      </span>
+                    </div>
+                    <div className="md:col-span-8">
+                      <h2 className="font-heading text-3xl font-semibold leading-[1.08] tracking-[-0.02em] transition-colors group-hover:text-accent md:text-[42px]">
+                        {post.title}
+                      </h2>
+                      <p className="mt-4 max-w-2xl text-[15px] leading-7 text-muted">
+                        {post.description}
+                      </p>
+                      <p className="mt-5 text-xs text-muted">{post.tags.join(" / ")}</p>
+                    </div>
+                    <div className="hidden md:col-span-1 md:flex md:items-start md:justify-end">
+                      <ArrowUpRight
+                        className="-translate-x-2 text-accent opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                        size={24}
+                        aria-hidden="true"
+                      />
+                    </div>
+                  </Link>
+                </li>
+              );
+            })}
+          </ol>
         </section>
       </main>
       <Footer />
