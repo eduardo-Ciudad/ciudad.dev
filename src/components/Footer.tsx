@@ -70,6 +70,14 @@ export function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="/calculadora"
+                  className="text-white/50 text-[13px] hover:text-white transition-colors"
+                >
+                  Calculadora
+                </Link>
+              </li>
+              <li>
                 <a
                   href="#servicos"
                   className="text-white/50 text-[13px] hover:text-white transition-colors"

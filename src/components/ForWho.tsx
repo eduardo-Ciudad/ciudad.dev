@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef } from "react";
+import Link from "next/link";
 import { ShoppingBag, Rocket, User, type LucideIcon } from "lucide-react";
 import { useInView } from "framer-motion";
 import { ScrollReveal } from "./ScrollReveal";
@@ -116,6 +117,24 @@ export function ForWho() {
             <ForWhoCard key={persona.title} persona={persona} delay={i * 0.15} />
           ))}
         </div>
+
+        <ScrollReveal className="mt-12 text-center">
+          <p className="text-[15px] text-muted">
+            Vende pelo WhatsApp ou Instagram e responde cliente por cliente?
+          </p>
+          <Link
+            href="/calculadora"
+            className="group/calc mt-2 inline-flex items-center gap-1.5 text-[15px] font-medium text-accent hover:underline"
+          >
+            Calcule quanto tempo isso custa por mês
+            <span
+              aria-hidden="true"
+              className="transition-transform duration-200 group-hover/calc:translate-x-1"
+            >
+              →
+            </span>
+          </Link>
+        </ScrollReveal>
       </div>
     </section>
   );
