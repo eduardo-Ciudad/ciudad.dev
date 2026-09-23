@@ -3,36 +3,43 @@
 import { CoverflowCarousel, type CoverflowSlide } from "./ui/coverflow-carousel";
 import { ScrollReveal } from "./ScrollReveal";
 
-const slides: CoverflowSlide[] = [
+type TestimonialSlide = Omit<CoverflowSlide, "href"> & { projectSlug: string };
+
+const testimonials: TestimonialSlide[] = [
   {
     src: "/img/depoimentos/depoimento-gabikids.png",
     alt: "Depoimento de GabiKids",
     title: "GabiKids",
     subtitle: "E-commerce",
-    href: "/projetos#gabikids",
+    projectSlug: "gabikids",
   },
   {
     src: "/img/depoimentos/leticia-depoimentos.png",
     alt: "Depoimento de Letícia",
     title: "Letícia",
     subtitle: "Landing page",
-    href: "/projetos#leticia-souza",
+    projectSlug: "leticia-souza",
   },
   {
     src: "/img/depoimentos/bruno-clientes.png",
     alt: "Depoimento de Bruno",
     title: "Bruno",
     subtitle: "Sistema financeiro",
-    href: "/projetos#sistema-financeiro-multi-tenant",
+    projectSlug: "sistema-financeiro-multi-tenant",
   },
   {
     src: "/img/depoimentos/vinicius-personal.png",
     alt: "Depoimento de Vinícius",
     title: "Vinícius",
     subtitle: "Landing page",
-    href: "/projetos#vinicius-mascagni",
+    projectSlug: "vinicius-mascagni",
   },
 ];
+
+const slides: CoverflowSlide[] = testimonials.map(({ projectSlug, ...slide }) => ({
+  ...slide,
+  href: `/projetos/${projectSlug}`,
+}));
 
 export function Testimonials() {
   return (

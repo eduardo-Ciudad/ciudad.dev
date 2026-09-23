@@ -8,9 +8,40 @@ export type Projeto = {
   imagem?: string;
   status?: string;
   descricao: string[];
+  problema?: string;
+  solucao?: string;
+  decisoesTecnicas?: string[];
+  resultado?: string;
+  heroImage?: string;
+  featureImage?: string;
+  featureImageCaption?: string;
   ctaPrincipal?: { label: string; url: string };
   ctaSecundario?: { label: string; url: string };
 };
+
+export type ProjetoComCase = Projeto & {
+  problema: string;
+  solucao: string;
+  decisoesTecnicas: string[];
+  resultado: string;
+  heroImage: string;
+  featureImage: string;
+};
+
+export function hasCase(projeto: Projeto): projeto is ProjetoComCase {
+  return Boolean(
+    projeto.problema &&
+      projeto.solucao &&
+      projeto.decisoesTecnicas?.length &&
+      projeto.resultado &&
+      projeto.heroImage &&
+      projeto.featureImage,
+  );
+}
+
+export function getProjeto(slug: string) {
+  return projetos.find((projeto) => projeto.slug === slug);
+}
 
 export const projetos: Projeto[] = [
   {
@@ -24,6 +55,18 @@ export const projetos: Projeto[] = [
       "Checkout Pix + cartão via Mercado Pago",
       "Frete calculado via Correios",
     ],
+    problema: "Vendia só pelo Instagram e WhatsApp. Toda venda dependia de mandar foto de roupa, confirmar tamanho e cor manualmente — processo lento que fazia a cliente perder venda pra quem respondia mais rápido ou desistia no meio da conversa.",
+    solucao: "E-commerce completo, com catálogo integrado ao ERP Bling (sincroniza produto, estoque e preço automaticamente), checkout com Pix, cartão e boleto via Mercado Pago, e painel administrativo próprio.",
+    decisoesTecnicas: [
+      "Sincronização automática com o Bling ERP (OAuth2, API v3) — produto, estoque e categoria atualizam sozinhos, sem retrabalho manual",
+      "Checkout com webhook protegido contra duplicidade de pagamento e expiração automática de pedido não pago (libera estoque sozinho em 30 min)",
+      "Carrinho persistente para visitante não logado, sincronizado com a conta no login",
+      "Auditoria de segurança de 21 pontos antes de ir ao ar",
+      "Migração de imagens para Cloudflare R2 — as imagens vindas do Bling usavam link temporário que expirava; agora ficam hospedadas em infraestrutura própria, sem quebrar",
+    ],
+    resultado: "Cliente compra sozinha, do início ao fim, sem depender de resposta manual pra decidir tamanho, cor ou disponibilidade. Menos venda perdida por demora, mais tempo livre pra lojista cuidar do resto do negócio.",
+    heroImage: "/img/projetos/gabikids-caso-hero.png",
+    featureImage: "/img/projetos/gabikids-caso-feature.png",
     ctaPrincipal: { label: "Ver ao vivo", url: "https://gabikidstore.com" },
   },
   {
@@ -37,6 +80,18 @@ export const projetos: Projeto[] = [
       "Lançamentos append-only (nunca editados, só estornados)",
       "Dashboard com extrato mensal",
     ],
+    problema: "Cliente revendedor sem controle real do financeiro — não sabia dizer com precisão quanto entrava e quanto saía. Compra de fornecedor, venda e estoque tudo desencontrado, sem visão consolidada do negócio.",
+    solucao: "Sistema completo sob medida — controle de estoque, vendas, compras de fornecedores e financeiro integrados num só lugar, com arquitetura multi-tenant.",
+    decisoesTecnicas: [
+      "Arquitetura de ledger append-only — nenhum lançamento financeiro é apagado ou sobrescrito, só adicionado, garantindo histórico auditável",
+      "Módulos integrados: clientes/fornecedores, estoque rastreável por fornecedor, vendas com baixa automática de estoque, contas pessoais separadas do negócio",
+      "Migrations versionadas com Flyway — toda alteração de banco documentada e reversível",
+      "46+ testes automatizados cobrindo os fluxos financeiros",
+      "Deploy em infraestrutura própria (VPS, Docker, Nginx, SSL) sem depender de plataforma terceira",
+    ],
+    resultado: "Visão clara e em tempo real de entrada e saída. Decisão de compra e preço agora baseada em número real, não em achismo.",
+    heroImage: "/img/projetos/controle-financeiro-caso-hero.png",
+    featureImage: "/img/projetos/controle-financeiro-caso-feature.png",
     ctaPrincipal: {
       label: "Ver ao vivo",
       url: "https://controle-financeiro-lab.vercel.app",
@@ -131,6 +186,17 @@ export const projetos: Projeto[] = [
       "Depoimentos reais de clientes (casamentos, aniversários, eventos corporativos) direto na página",
       "Repertório e diferenciais organizados por tipo de evento, CTA de WhatsApp em cada seção",
     ],
+    problema: "Instagram forte, com bastante gente interessada — mas vendia menos do que deveria porque não conseguia responder todo mundo a tempo pra negociar.",
+    solucao: "Presença digital estruturada, que assume parte da conversão que antes dependia só de resposta manual no direct.",
+    decisoesTecnicas: [
+      "Portfólio integrado ao Instagram por categoria (ex: repertório sertanejo, casamento ao vivo) — cliente vai direto ao conteúdo relevante em vez de rolar o feed inteiro",
+      "Segmentação por tipo de evento (casamentos, aniversários, etc.), cada um com descrição própria",
+      "Prova social direto no hero (+200 eventos, resposta em até 1h) reduzindo insegurança de quem nunca contratou música ao vivo",
+      "Dois CTAs distintos (verificar disponibilidade / falar agora) atendendo diferentes estágios de decisão do visitante",
+    ],
+    resultado: "Melhora na conversão — o cliente avança sozinho no processo, sem depender só da velocidade de resposta.",
+    heroImage: "/img/projetos/leticia-caso-hero.png",
+    featureImage: "/img/projetos/leticia-caso-feature.png",
     ctaPrincipal: {
       label: "Ver ao vivo",
       url: "https://leticia-souza.vercel.app",
@@ -148,6 +214,16 @@ export const projetos: Projeto[] = [
       "Prova social (depoimentos reais de alunos)",
       "Um único CTA: WhatsApp",
     ],
+    problema: "Presença digital só no Instagram, sem nada que desse consistência ou credibilidade pra fechar aluno novo — cada contato começava do zero, sem material pra mostrar plano ou preço.",
+    solucao: "Landing page profissional com seção de planos e preços, prova social e otimizada pra celular.",
+    decisoesTecnicas: [
+      "Seção de preços e planos adicionada — visitante já vê valor antes de chamar no WhatsApp, filtrando lead sem fit de orçamento antes da conversa",
+      "Remoção de referências a dieta/nutrição — posicionamento mantido só em treino, evitando prometer algo fora da atuação dele",
+      "Correção de overflow em mobile, garantindo experiência consistente no principal dispositivo de acesso",
+    ],
+    resultado: "Presença digital mais sólida, com página que reforça credibilidade antes mesmo da primeira conversa — e menos tempo gasto explicando planos manualmente pra cada lead.",
+    heroImage: "/img/projetos/vinicius-caso-hero.png",
+    featureImage: "/img/projetos/vinicius-caso-feature.png",
     ctaPrincipal: {
       label: "Ver ao vivo",
       url: "https://vinicius-masc.vercel.app/",

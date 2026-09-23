@@ -2,11 +2,12 @@
 
 import { useCallback, useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { ArrowUpRight, ChevronLeft, ChevronRight, Code2 } from "lucide-react";
 import { ScrollReveal } from "./ScrollReveal";
 import { useDragScroll } from "@/hooks/useDragScroll";
-import type { Projeto } from "@/data/projetos";
+import { hasCase, type Projeto } from "@/data/projetos";
 
 type ProjetosGridProps = {
   projetos: Projeto[];
@@ -83,6 +84,16 @@ function ProjetoCard({ projeto, delay }: { projeto: Projeto; delay: number }) {
             ))}
           </ul>
 
+          {hasCase(projeto) && (
+            <Link
+              href={`/projetos/${projeto.slug}`}
+              className="mb-3 flex w-full items-center justify-between gap-3 rounded-lg border border-accent-border bg-accent-light px-3 py-2 text-left text-xs font-semibold text-accent transition-colors hover:bg-accent-border focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+            >
+              <span>Ver case completo</span>
+              <ArrowUpRight size={14} aria-hidden="true" />
+            </Link>
+          )}
+
           {(projeto.ctaPrincipal || projeto.ctaSecundario) && (
             <div className="mt-auto flex flex-wrap gap-2 pt-1">
               {projeto.ctaPrincipal && (
@@ -114,6 +125,7 @@ function ProjetoCard({ projeto, delay }: { projeto: Projeto; delay: number }) {
     </ScrollReveal>
   );
 }
+
 
 const initialScrollState = { canScrollLeft: false, canScrollRight: true, activeIndex: 0 };
 
@@ -266,7 +278,11 @@ function ProjetosCarousel({
           }`}
         >
           {projetos.map((projeto, index) => (
-            <ProjetoCard key={projeto.slug} projeto={projeto} delay={Math.min(index, 4) * 0.07} />
+            <ProjetoCard
+              key={projeto.slug}
+              projeto={projeto}
+              delay={Math.min(index, 4) * 0.07}
+            />
           ))}
         </div>
       </div>
@@ -300,6 +316,7 @@ function ProjetosCarousel({
           </span>
         </div>
       )}
+
     </section>
   );
 }
