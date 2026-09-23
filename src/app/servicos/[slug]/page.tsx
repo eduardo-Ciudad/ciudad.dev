@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Check, Clock, ExternalLink } from "lucide-react";
 import { ScrollReveal } from "@/components/ScrollReveal";
@@ -248,9 +249,17 @@ export default async function ServiceDocPage(
                 )}
 
                 {section.id === "garantia" && (
-                  <p className="text-primary/80 text-[15px] leading-[1.8]">
-                    {section.content}
-                  </p>
+                  <div>
+                    <p className="text-primary/80 text-[15px] leading-[1.8]">
+                      {section.content}
+                    </p>
+                    <Link
+                      href="/garantia"
+                      className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-opacity hover:opacity-80"
+                    >
+                      Ver termos da garantia <span aria-hidden="true">→</span>
+                    </Link>
+                  </div>
                 )}
 
                 {section.id === "projeto-real" && (

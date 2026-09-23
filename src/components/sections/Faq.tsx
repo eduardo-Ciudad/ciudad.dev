@@ -1,13 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-const faqs = [
+type FaqItem = {
+  question: string;
+  answer: string;
+  link?: { href: string; label: string };
+};
+
+const faqs: FaqItem[] = [
   {
     question: "Quanto custa um projeto?",
     answer:
-      "Depende do escopo. Uma landing page começa em R $ 800, um e-commerce a partir de R $ 2.500 e sistemas sob medida variam conforme a complexidade. Você recebe o valor fechado antes de começar — sem hora extra e sem surpresa na fatura.",
+      "Depende do escopo. Uma landing page fica entre R$ 700 e R$ 1.000, um e-commerce a partir de R$ 2.500 e sistemas sob medida variam conforme a complexidade. Você recebe o valor fechado antes de começar — sem hora extra e sem surpresa na fatura.",
   },
   {
     question: "Qual o prazo mínimo de um projeto?",
@@ -18,6 +25,7 @@ const faqs = [
     question: "O que é a garantia de 90 dias?",
     answer:
       "Depois da entrega, qualquer bug ou problema técnico que aparecer é corrigido sem custo adicional durante 90 dias. Isso inclui erros de funcionamento, não mudanças de escopo. Se quebrar, eu arrumo.",
+    link: { href: "/garantia", label: "Ver termos da garantia" },
   },
   {
     question: "Como funciona o escopo travado?",
@@ -89,11 +97,19 @@ export function Faq() {
                     animate={{ height: "auto", opacity: 1 }}
                     exit={{ height: 0, opacity: 0 }}
                     transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className="overflow-hidden"
+                    className={`overflow-hidden ${faq.link ? "pb-5" : ""}`}
                   >
-                    <p className="text-sm leading-relaxed text-neutral-500 pb-5">
+                    <p className={`text-sm leading-relaxed text-neutral-500 ${faq.link ? "" : "pb-5"}`}>
                       {faq.answer}
                     </p>
+                    {faq.link && (
+                      <Link
+                        href="/garantia"
+                        className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-opacity hover:opacity-80"
+                      >
+                        {faq.link.label} <span aria-hidden="true">→</span>
+                      </Link>
+                    )}
                   </motion.div>
                 )}
               </AnimatePresence>

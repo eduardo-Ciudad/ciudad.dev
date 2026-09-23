@@ -103,6 +103,14 @@ export function Footer() {
             <ul className="space-y-2">
               <li>
                 <Link
+                  href="/garantia"
+                  className="text-white/50 text-[13px] hover:text-white transition-colors"
+                >
+                  Garantia de 90 dias
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/privacidade"
                   className="text-white/50 text-[13px] hover:text-white transition-colors"
                 >

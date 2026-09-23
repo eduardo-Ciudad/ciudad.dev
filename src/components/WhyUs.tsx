@@ -1,12 +1,20 @@
 "use client";
 
+import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
 import { FileCheck, ShieldCheck, Clock, MessageCircle, Code2, ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
 import { motion, useInView, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { ScrollReveal } from "./ScrollReveal";
 import { useDragScroll } from "@/hooks/useDragScroll";
 
-const cards = [
+type WhyUsCardData = {
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  link?: { href: string; label: string };
+};
+
+const cards: WhyUsCardData[] = [
   {
     icon: FileCheck,
     title: "Escopo e preço travados antes de começar",
@@ -21,6 +29,7 @@ const cards = [
     icon: Clock,
     title: "Entrega em 2–4 semanas com garantia de 90 dias",
     description: "Prazo curto porque quem planeja é quem programa — sem telefone sem fio. Depois da entrega, 90 dias de garantia: se quebrar, eu arrumo sem custo adicional. Você não precisa entender de código pra saber se vai funcionar — essa responsabilidade é minha.",
+    link: { href: "/garantia", label: "Ver termos da garantia" },
   },
   {
     icon: MessageCircle,
@@ -39,7 +48,7 @@ const initialScrollState = { canScrollLeft: false, canScrollRight: true, activeI
 type FadeStyle = CSSProperties & { "--fade-l": string; "--fade-r": string };
 
 function WhyUsCard({ card, delay, trackRef, index }: {
-  card: { icon: LucideIcon; title: string; description: string };
+  card: WhyUsCardData;
   delay: number;
   trackRef: RefObject<HTMLDivElement | null>;
   index: number;
@@ -63,6 +72,15 @@ function WhyUsCard({ card, delay, trackRef, index }: {
           </div>
           <h3 className="mb-3 font-body text-lg font-semibold">{card.title}</h3>
           <p className="text-sm leading-relaxed text-muted">{card.description}</p>
+          {card.link && (
+            <Link
+              href={card.link.href}
+              onPointerDown={(event) => event.stopPropagation()}
+              className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-opacity hover:opacity-80"
+            >
+              {card.link.label} <span aria-hidden="true">→</span>
+            </Link>
+          )}
         </div>
       </div>
     </ScrollReveal>

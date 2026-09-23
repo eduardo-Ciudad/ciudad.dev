@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 
@@ -95,23 +96,29 @@ function DesktopTimeline() {
                   {step.text}
                 </p>
                 {step.badge && (
-                  <motion.span
-                    className="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent-light text-accent rounded-full border border-accent-border mt-3"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={
-                      inView
-                        ? { scale: 1, opacity: 1 }
-                        : { scale: 0.8, opacity: 0 }
-                    }
-                    transition={{
-                      duration: 0.4,
-                      delay: 0.8,
-                      type: "spring",
-                      stiffness: 200,
-                    }}
+                  <Link
+                    href="/garantia"
+                    aria-label="Ver termos da garantia de 90 dias"
+                    className="hover:brightness-95 transition"
                   >
-                    {step.badge}
-                  </motion.span>
+                    <motion.span
+                      className="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent-light text-accent rounded-full border border-accent-border mt-3"
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={
+                        inView
+                          ? { scale: 1, opacity: 1 }
+                          : { scale: 0.8, opacity: 0 }
+                      }
+                      transition={{
+                        duration: 0.4,
+                        delay: 0.8,
+                        type: "spring",
+                        stiffness: 200,
+                      }}
+                    >
+                      {step.badge}
+                    </motion.span>
+                  </Link>
                 )}
               </motion.div>
             </div>
@@ -190,23 +197,29 @@ function MobileTimeline() {
                   {step.text}
                 </p>
                 {step.badge && (
-                  <motion.span
-                    className="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent-light text-accent rounded-full border border-accent-border mt-3"
-                    initial={{ scale: 0.8, opacity: 0 }}
-                    animate={
-                      inView
-                        ? { scale: 1, opacity: 1 }
-                        : { scale: 0.8, opacity: 0 }
-                    }
-                    transition={{
-                      duration: 0.4,
-                      delay: 0.8,
-                      type: "spring",
-                      stiffness: 200,
-                    }}
+                  <Link
+                    href="/garantia"
+                    aria-label="Ver termos da garantia de 90 dias"
+                    className="hover:brightness-95 transition"
                   >
-                    {step.badge}
-                  </motion.span>
+                    <motion.span
+                      className="inline-flex items-center px-3 py-1 text-xs font-medium bg-accent-light text-accent rounded-full border border-accent-border mt-3"
+                      initial={{ scale: 0.8, opacity: 0 }}
+                      animate={
+                        inView
+                          ? { scale: 1, opacity: 1 }
+                          : { scale: 0.8, opacity: 0 }
+                      }
+                      transition={{
+                        duration: 0.4,
+                        delay: 0.8,
+                        type: "spring",
+                        stiffness: 200,
+                      }}
+                    >
+                      {step.badge}
+                    </motion.span>
+                  </Link>
                 )}
               </motion.div>
             </div>
