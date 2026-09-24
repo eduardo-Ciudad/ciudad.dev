@@ -39,6 +39,7 @@ export function useDragScroll({ containerRef, itemSelector, reducedMotion = fals
     if (!container) return;
     container.setPointerCapture(event.pointerId);
     container.style.scrollSnapType = "none";
+    container.style.scrollBehavior = "auto";
     dragRef.current = { pointerId: event.pointerId, startX: event.clientX, startScrollLeft: container.scrollLeft, moved: false };
     suppressClickRef.current = false;
     setIsDragging(true);
@@ -67,6 +68,7 @@ export function useDragScroll({ containerRef, itemSelector, reducedMotion = fals
     dragRef.current = null;
     container.style.userSelect = "";
     container.style.scrollSnapType = "";
+    container.style.scrollBehavior = "";
     if (container.hasPointerCapture(event.pointerId)) container.releasePointerCapture(event.pointerId);
     setIsDragging(false);
     if (drag.moved) snapToNearest();
