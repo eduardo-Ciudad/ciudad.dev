@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -34,6 +35,8 @@ export interface CoverflowCarouselProps {
   showNavigation?: boolean;
   ctaLabel?: string;
   imageFit?: "cover" | "contain";
+  imageSizes?: string;
+  imageQuality?: number;
   enableLightbox?: boolean;
   label?: string;
   className?: string;
@@ -56,6 +59,8 @@ export function CoverflowCarousel({
   showNavigation = false,
   ctaLabel = "Ver detalhes",
   imageFit = "cover",
+  imageSizes,
+  imageQuality,
   enableLightbox = false,
   label = "Carrossel de projetos",
   className,
@@ -85,6 +90,13 @@ export function CoverflowCarousel({
     [count],
   );
 
+  const setWillChange = React.useCallback((value: "transform" | "auto") => {
+    if (!imageSizes) return;
+    cardRefs.current.forEach((card) => {
+      if (card) card.style.willChange = value;
+    });
+  }, [imageSizes]);
+
   const paint = React.useCallback(() => {
     const width = widthRef.current;
     if (!width) return;
@@ -101,18 +113,20 @@ export function CoverflowCarousel({
       const distance = Math.abs(offset);
       const ramp = Math.pow(distance, falloff);
       const tilt = Math.min(rotate * ramp, 82) * Math.sign(offset);
-      card.style.transform =
-        `translateX(calc(-50% + ${offset * pitch}px)) ` +
-        `translateZ(${-depth * width * ramp}px) rotateY(${-tilt}deg)`;
+      card.style.transform = imageSizes && distance === 0
+        ? "translateX(-50%)"
+        : `translateX(calc(-50% + ${offset * pitch}px)) ` +
+          `translateZ(${-depth * width * ramp}px) rotateY(${-tilt}deg)`;
       const edge = loop ? Math.min(1, Math.max(0, count / 2 - distance)) : 1;
       card.style.opacity = String(Math.max(0, 1 - fade * distance) * edge);
       card.style.zIndex = String(100 - Math.round(distance));
     });
-  }, [count, depth, fade, falloff, gap, loop, rotate]);
+  }, [count, depth, fade, falloff, gap, imageSizes, loop, rotate]);
 
   const settle = React.useCallback(
     (target: number) => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      setWillChange("transform");
       targetRef.current = target;
       setSelected(indexAt(target));
       const step = () => {
@@ -120,6 +134,7 @@ export function CoverflowCarousel({
         if (Math.abs(remaining) < 0.0004) {
           posRef.current = target;
           paint();
+          setWillChange("auto");
           rafRef.current = null;
           return;
         }
@@ -129,7 +144,7 @@ export function CoverflowCarousel({
       };
       rafRef.current = requestAnimationFrame(step);
     },
-    [indexAt, paint],
+    [indexAt, paint, setWillChange],
   );
 
   const clamp = React.useCallback(
@@ -155,6 +170,7 @@ export function CoverflowCarousel({
       cancelAnimationFrame(rafRef.current);
       rafRef.current = null;
     }
+    setWillChange("transform");
     event.currentTarget.setPointerCapture(event.pointerId);
     targetRef.current = posRef.current;
     dragDistanceRef.current = 0;
@@ -192,6 +208,7 @@ export function CoverflowCarousel({
         ?.closest<HTMLElement>("[data-index]");
       const index = target ? Number(target.dataset.index) : NaN;
       if (!Number.isNaN(index)) {
+        setWillChange("auto");
         setLightboxIndex(index);
         return;
       }
@@ -297,22 +314,38 @@ export function CoverflowCarousel({
                 aria-label={`${index + 1} de ${count}`}
                 data-index={index}
                 className={cn(
-                  "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl bg-card shadow-xl will-change-transform",
+                  "absolute left-1/2 top-0 aspect-square overflow-hidden rounded-2xl bg-card shadow-xl",
+                  !imageSizes && "will-change-transform",
                   enableLightbox && "cursor-zoom-in",
                   cardClassName,
                 )}
                 style={{ width: "var(--cf-card)" }}
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={slide.src}
-                  alt={slide.alt}
-                  draggable={false}
-                  className={cn(
-                    "h-full w-full select-none",
-                    imageFit === "contain" ? "object-contain" : "object-cover",
-                  )}
-                />
+                {imageSizes ? (
+                  <Image
+                    src={slide.src}
+                    alt={slide.alt}
+                    fill
+                    sizes={imageSizes}
+                    quality={imageQuality}
+                    draggable={false}
+                    className={cn(
+                      "select-none",
+                      imageFit === "contain" ? "object-contain" : "object-cover",
+                    )}
+                  />
+                ) : (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    src={slide.src}
+                    alt={slide.alt}
+                    draggable={false}
+                    className={cn(
+                      "h-full w-full select-none",
+                      imageFit === "contain" ? "object-contain" : "object-cover",
+                    )}
+                  />
+                )}
               </div>
             ))}
           </div>
