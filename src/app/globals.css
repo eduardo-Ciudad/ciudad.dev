@@ -51,32 +51,6 @@ body {
   display: none;
 }
 
-@property --fade-l {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: 0px;
-}
-
-@property --fade-r {
-  syntax: "<length>";
-  inherits: false;
-  initial-value: 0px;
-}
-
-.scroll-fade-track {
-  --fade-size: 24px;
-  mask-image: linear-gradient(to right, transparent 0, black var(--fade-l), black calc(100% - var(--fade-r)), transparent 100%);
-  transition: --fade-l 220ms ease, --fade-r 220ms ease;
-}
-
-@media (min-width: 768px) {
-  .scroll-fade-track { --fade-size: 56px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-fade-track { transition: none; }
-}
-
 .blog-prose {
   color: var(--color-primary);
   font-size: 1rem;

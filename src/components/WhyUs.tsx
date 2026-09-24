@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useRef, useState, type CSSProperties, type RefObject } from "react";
+import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import { FileCheck, ShieldCheck, Clock, MessageCircle, Code2, ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
 import { motion, useInView, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { ScrollReveal } from "./ScrollReveal";
@@ -44,8 +44,6 @@ const cards: WhyUsCardData[] = [
 ];
 
 const initialScrollState = { canScrollLeft: false, canScrollRight: true, activeIndex: 0 };
-
-type FadeStyle = CSSProperties & { "--fade-l": string; "--fade-r": string };
 
 function WhyUsCard({ card, delay, trackRef, index }: {
   card: WhyUsCardData;
@@ -105,7 +103,7 @@ export function WhyUs() {
     const canScrollRight = track.scrollLeft + track.clientWidth < track.scrollWidth - 4;
     const items = getItems();
     const activeIndex = canScrollRight
-      ? items.reduce((nearestIndex, item, index) => Math.abs(item.offsetLeft - track.scrollLeft) < Math.abs(items[nearestIndex].offsetLeft - track.scrollLeft) ? index : nearestIndex, 0)
+      ? items.reduce((nearestIndex, item, index) => Math.abs(item.offsetLeft - track.offsetLeft - track.scrollLeft) < Math.abs(items[nearestIndex].offsetLeft - track.offsetLeft - track.scrollLeft) ? index : nearestIndex, 0)
       : cards.length - 1;
     const previous = stateRef.current;
     if (previous.canScrollLeft === canScrollLeft && previous.canScrollRight === canScrollRight && previous.activeIndex === activeIndex) return;
@@ -137,13 +135,8 @@ export function WhyUs() {
     });
   };
 
-  const fadeStyle: FadeStyle = {
-    "--fade-l": scrollState.canScrollLeft ? "var(--fade-size)" : "0px",
-    "--fade-r": scrollState.canScrollRight ? "var(--fade-size)" : "0px",
-  };
-
   return (
-    <section className="py-16 md:py-24">
+    <section className="overflow-x-clip py-16 md:py-24">
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal className="mb-10 text-center md:mb-12">
           <span className="mb-3 block text-xs font-semibold uppercase tracking-[0.15em] text-accent">Diferenciais</span>
@@ -152,9 +145,6 @@ export function WhyUs() {
         </ScrollReveal>
 
         <div className="relative -my-6 py-6">
-          <button type="button" onClick={() => scrollByCard(-1)} disabled={!scrollState.canScrollLeft} aria-label="Card anterior" className="absolute -left-5 top-1/2 z-20 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-card-border bg-card text-primary shadow-md transition-[opacity,color,border-color] duration-300 hover:border-accent-border hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:pointer-events-none disabled:opacity-25 md:flex"><ChevronLeft size={18} /></button>
-          <button type="button" onClick={() => scrollByCard(1)} disabled={!scrollState.canScrollRight} aria-label="Próximo card" className="absolute -right-5 top-1/2 z-20 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-card-border bg-card text-primary shadow-md transition-[opacity,color,border-color] duration-300 hover:border-accent-border hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:pointer-events-none disabled:opacity-25 md:flex"><ChevronRight size={18} /></button>
-
           <div
             ref={trackRef}
             {...dragHandlers}
@@ -167,11 +157,17 @@ export function WhyUs() {
               if (event.key === "ArrowLeft") { event.preventDefault(); scrollByCard(-1); }
               else if (event.key === "ArrowRight") { event.preventDefault(); scrollByCard(1); }
             }}
-            style={fadeStyle}
-            className={`scroll-fade-track no-scrollbar flex gap-5 overflow-x-auto overflow-y-hidden py-6 pr-6 scroll-pr-6 snap-x snap-mandatory outline-none focus-visible:ring-2 focus-visible:ring-accent ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+            className={`no-scrollbar flex gap-5 overflow-x-auto overflow-y-hidden py-6 snap-x snap-mandatory outline-none focus-visible:ring-2 focus-visible:ring-accent ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
           >
             {cards.map((card, index) => <WhyUsCard key={card.title} card={card} delay={index * 0.1} trackRef={trackRef} index={index} />)}
           </div>
+
+          {scrollState.canScrollLeft && (
+            <button type="button" onClick={() => scrollByCard(-1)} aria-label="Card anterior" className="absolute left-3 top-1/2 z-20 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-card-border bg-surface/70 text-primary shadow-md backdrop-blur-sm transition-opacity duration-200 hover:bg-surface/90 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:flex"><ChevronLeft size={18} /></button>
+          )}
+          {scrollState.canScrollRight && (
+            <button type="button" onClick={() => scrollByCard(1)} aria-label="Próximo card" className="absolute right-3 top-1/2 z-20 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-card-border bg-surface/70 text-primary shadow-md backdrop-blur-sm transition-opacity duration-200 hover:bg-surface/90 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:flex"><ChevronRight size={18} /></button>
+          )}
         </div>
 
         <div className="mt-6 flex items-center justify-center gap-4">

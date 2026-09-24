@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useId, useRef, useState, type CSSProperties } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useReducedMotion, useScroll, useSpring } from "framer-motion";
@@ -18,8 +18,6 @@ const categoriaLabel = {
   "ferramenta-interna": "Ferramenta interna",
   "landing-page": "Landing page",
 } satisfies Record<Projeto["categoria"], string>;
-
-type FadeStyle = CSSProperties & { "--fade-l": string; "--fade-r": string };
 
 function ProjetoCard({ projeto, delay }: { projeto: Projeto; delay: number }) {
   return (
@@ -166,8 +164,8 @@ function ProjetosCarousel({
     const activeIndex = items.length
       ? items.reduce(
           (nearestIndex, item, index) =>
-            Math.abs(item.offsetLeft - track.scrollLeft) <
-            Math.abs(items[nearestIndex].offsetLeft - track.scrollLeft)
+            Math.abs(item.offsetLeft - track.offsetLeft - track.scrollLeft) <
+            Math.abs(items[nearestIndex].offsetLeft - track.offsetLeft - track.scrollLeft)
               ? index
               : nearestIndex,
           0,
@@ -216,11 +214,6 @@ function ProjetosCarousel({
     });
   };
 
-  const fadeStyle: FadeStyle = {
-    "--fade-l": scrollState.canScrollLeft ? "var(--fade-size)" : "0px",
-    "--fade-r": scrollState.canScrollRight ? "var(--fade-size)" : "0px",
-  };
-
   return (
     <section aria-labelledby={headingId}>
       <ScrollReveal className="mb-8 md:mb-10">
@@ -233,29 +226,6 @@ function ProjetosCarousel({
       </ScrollReveal>
 
       <div className="relative -my-6 py-6">
-        {multipleCards && (
-          <>
-            <button
-              type="button"
-              onClick={() => scrollByCard(-1)}
-              disabled={!scrollState.canScrollLeft}
-              aria-label="Projeto anterior"
-              className="absolute -left-4 top-[calc(50%-1.25rem)] z-20 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-card-border bg-card text-primary shadow-md transition-[opacity,color,border-color] duration-300 hover:border-accent-border hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:pointer-events-none disabled:opacity-25 md:flex"
-            >
-              <ChevronLeft size={18} />
-            </button>
-            <button
-              type="button"
-              onClick={() => scrollByCard(1)}
-              disabled={!scrollState.canScrollRight}
-              aria-label="Próximo projeto"
-              className="absolute -right-4 top-[calc(50%-1.25rem)] z-20 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-card-border bg-card text-primary shadow-md transition-[opacity,color,border-color] duration-300 hover:border-accent-border hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:pointer-events-none disabled:opacity-25 md:flex"
-            >
-              <ChevronRight size={18} />
-            </button>
-          </>
-        )}
-
         <div
           ref={trackRef}
           {...dragHandlers}
@@ -272,8 +242,7 @@ function ProjetosCarousel({
               scrollByCard(1);
             }
           }}
-          style={fadeStyle}
-          className={`scroll-fade-track no-scrollbar flex gap-5 overflow-x-auto overflow-y-hidden py-2 pr-6 scroll-pr-6 snap-x snap-mandatory outline-none focus-visible:ring-2 focus-visible:ring-accent ${
+          className={`no-scrollbar flex gap-5 overflow-x-auto overflow-y-hidden py-2 snap-x snap-mandatory outline-none focus-visible:ring-2 focus-visible:ring-accent ${
             isDragging ? "cursor-grabbing" : multipleCards ? "cursor-grab" : ""
           }`}
         >
@@ -285,6 +254,27 @@ function ProjetosCarousel({
             />
           ))}
         </div>
+
+        {multipleCards && scrollState.canScrollLeft && (
+          <button
+            type="button"
+            onClick={() => scrollByCard(-1)}
+            aria-label="Projeto anterior"
+            className="absolute left-3 top-1/2 z-20 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-card-border bg-surface/70 text-primary shadow-md backdrop-blur-sm transition-opacity duration-200 hover:bg-surface/90 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:flex"
+          >
+            <ChevronLeft size={18} />
+          </button>
+        )}
+        {multipleCards && scrollState.canScrollRight && (
+          <button
+            type="button"
+            onClick={() => scrollByCard(1)}
+            aria-label="Próximo projeto"
+            className="absolute right-3 top-1/2 z-20 hidden size-10 -translate-y-1/2 items-center justify-center rounded-full border border-card-border bg-surface/70 text-primary shadow-md backdrop-blur-sm transition-opacity duration-200 hover:bg-surface/90 hover:text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent md:flex"
+          >
+            <ChevronRight size={18} />
+          </button>
+        )}
       </div>
 
       {multipleCards && (
