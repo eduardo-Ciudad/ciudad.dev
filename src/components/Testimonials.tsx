@@ -66,8 +66,8 @@ export function Testimonials() {
           imageFit="contain"
           enableLightbox
           className="mt-8 md:mt-12"
-          cardWidth="clamp(148px, 34vw, 280px)"
-          cardHeight="calc(clamp(148px, 34vw, 280px) * 3 / 4)"
+          cardWidth="min(88vw, clamp(207px, 47.6vw, 392px))"
+          cardHeight="calc(min(88vw, clamp(207px, 47.6vw, 392px)) * 3 / 4)"
           cardClassName="aspect-[4/3] bg-[#0b0b0b]"
         />
       </div>
