@@ -23,8 +23,8 @@ const steps = [
   {
     number: 4,
     title: "Entregamos rodando",
-    text: "Código no seu repositório, deploy no ar, documentação entregue. Mais 90 dias de garantia: se quebrar, eu arrumo sem custo.",
-    badge: "90 dias de garantia inclusos",
+    text: "Código no seu repositório, deploy no ar, documentação entregue. Mais 90 dias de garantia e de Radar: se quebrar, eu arrumo sem custo, e você recebe a leitura dos números do site.",
+    badge: "90 dias de garantia + Radar",
   },
 ];
 
