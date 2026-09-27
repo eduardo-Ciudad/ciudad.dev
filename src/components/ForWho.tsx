@@ -12,7 +12,7 @@ const personas = [
     icon: ShoppingBag,
     title: "Lojistas",
     description:
-      "Você já vende pelo Instagram ou marketplace e sabe que precisa de algo próprio. Uma loja com seu domínio, pagamento real integrado (Pix, cartão, boleto), catálogo organizado e checkout que não espanta cliente. Sem mensalidade de plataforma, sem ficar refém de algoritmo.",
+      "Você já vende pelo Instagram ou marketplace e sabe que precisa de algo próprio. Uma loja com seu domínio, pagamento real integrado (Pix, cartão), catálogo organizado e checkout que não espanta cliente. Sem mensalidade de plataforma, sem ficar refém de algoritmo.",
     cta: "Ver plano E-commerce",
   },
   {

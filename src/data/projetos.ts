@@ -56,7 +56,7 @@ export const projetos: Projeto[] = [
       "Frete calculado via Correios",
     ],
     problema: "Vendia só pelo Instagram e WhatsApp. Toda venda dependia de mandar foto de roupa, confirmar tamanho e cor manualmente — processo lento que fazia a cliente perder venda pra quem respondia mais rápido ou desistia no meio da conversa.",
-    solucao: "E-commerce completo, com catálogo integrado ao ERP Bling (sincroniza produto, estoque e preço automaticamente), checkout com Pix, cartão e boleto via Mercado Pago, e painel administrativo próprio.",
+    solucao: "E-commerce completo, com catálogo integrado ao ERP Bling (sincroniza produto, estoque e preço automaticamente), checkout com Pix e cartão via Mercado Pago, e painel administrativo próprio.",
     decisoesTecnicas: [
       "Sincronização automática com o Bling ERP (OAuth2, API v3) — produto, estoque e categoria atualizam sozinhos, sem retrabalho manual",
       "Checkout com webhook protegido contra duplicidade de pagamento e expiração automática de pedido não pago (libera estoque sozinho em 30 min)",

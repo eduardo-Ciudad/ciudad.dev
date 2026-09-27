@@ -59,7 +59,7 @@ const services: {
       "Loja completa com catálogo, carrinho e checkout integrado a pagamento real. Você vende sem depender de marketplace e sem mensalidade de plataforma.",
     bullets: [
       "Catálogo com categorias e filtros",
-      "Checkout com Pix, cartão e boleto (Mercado Pago)",
+      "Checkout com Pix e cartão (Mercado Pago)",
       "Painel administrativo pra gerenciar produtos",
       "Infraestrutura própria com deploy incluso",
     ],
