@@ -55,13 +55,14 @@ export const navegacao = {
         meta: precos["sistema-personalizado"].preco,
       },
     ],
-    footer: { label: "Todos com garantia de 90 dias", href: "/garantia" },
+    footer: { label: "Garantia de 90 dias + Radar inclusos", href: "/garantia" },
   },
   comoTrabalhamos: {
     label: "Como trabalhamos",
     items: [
       { title: "Como funciona", href: "/#como-funciona" },
       { title: "Garantia de 90 dias", href: "/garantia" },
+      { title: "Radar", href: "/radar" },
       { title: "Calculadora", href: "/calculadora" },
       { title: "Quem faz", href: "/#sobre" },
     ],
