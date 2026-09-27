@@ -24,7 +24,7 @@ export async function generateMetadata(
 
   if (!doc) return {};
 
-  const title = `${doc.title} — Documentação | CiudadLab`;
+  const title = doc.metadataTitle;
   const description = doc.tagline;
   const url = `/servicos/${slug}`;
 

@@ -56,6 +56,7 @@ export type DocSection =
 export type ServiceDoc = {
   slug: string;
   title: string;
+  metadataTitle: string;
   tagline: string;
   heroImage?: DocImage;
   sections: DocSection[];
@@ -65,6 +66,7 @@ export const servicesDocs: ServiceDoc[] = [
   {
     slug: "landing-page",
     title: "Landing Page",
+    metadataTitle: "Criação de Landing Page | CiudadLab",
     tagline:
       "Página de conversão sob medida, pensada pra transformar visitante em contato — sem CMS pesado, sem template genérico.",
     heroImage: {
@@ -78,7 +80,7 @@ export const servicesDocs: ServiceDoc[] = [
         id: "visao-geral",
         title: "Visão geral",
         content:
-          "Página de conversão sob medida, pensada pra transformar visitante em contato — sem CMS pesado, sem template genérico.",
+          "Uma página só, com um único objetivo: fazer o visitante entrar em contato. Ideal pra quem vive de indicação e quer ser encontrado no Google, ou pra quem vai rodar anúncio e precisa de uma página que converta.",
       },
       {
         id: "processo",
@@ -98,6 +100,12 @@ export const servicesDocs: ServiceDoc[] = [
           },
           {
             number: 3,
+            title: "Desenvolvimento com acompanhamento",
+            description:
+              "Você acompanha o progresso toda semana com um preview do projeto rodando. Ajustes no caminho, direto comigo.",
+          },
+          {
+            number: 4,
             title: "Entrega",
             description:
               "Deploy feito, domínio configurado (se você já tiver um), SEO básico (meta tags, Open Graph pra compartilhamento em redes sociais).",
@@ -168,6 +176,7 @@ export const servicesDocs: ServiceDoc[] = [
   {
     slug: "ecommerce",
     title: "E-commerce",
+    metadataTitle: "Criação de Loja Virtual (E-commerce) | CiudadLab",
     tagline:
       "Loja completa com backend próprio — não é montada em cima de Shopify/Nuvemshop. Você é dono do código e do servidor.",
     heroImage: {
@@ -181,7 +190,7 @@ export const servicesDocs: ServiceDoc[] = [
         id: "visao-geral",
         title: "Visão geral",
         content:
-          "Loja completa com backend próprio — não é montada em cima de Shopify/Nuvemshop. Você é dono do código e do servidor.",
+          "Pra quem já vende pelo Instagram, WhatsApp ou marketplace e quer um canal próprio: catálogo organizado, pagamento integrado e frete calculado na hora, sem depender de responder cliente por cliente.",
       },
       {
         id: "processo",
@@ -191,7 +200,7 @@ export const servicesDocs: ServiceDoc[] = [
             number: 1,
             title: "Call inicial",
             description:
-              "Levanto: quantos produtos, se tem variação (tamanho/cor), qual meio de pagamento você precisa (Pix, cartão, boleto), se já usa algum ERP pra estoque, e se tem CNPJ pra emitir nota fiscal (isso muda a integração de pagamento).",
+              "Levanto: quantos produtos, se tem variação (tamanho/cor), qual meio de pagamento você precisa (Pix, cartão), se já usa algum ERP pra estoque, e se tem CNPJ pra emitir nota fiscal (isso muda a integração de pagamento).",
           },
           {
             number: 2,
@@ -201,6 +210,12 @@ export const servicesDocs: ServiceDoc[] = [
           },
           {
             number: 3,
+            title: "Desenvolvimento com acompanhamento",
+            description:
+              "Você acompanha o progresso toda semana com um preview do projeto rodando. Ajustes no caminho, direto comigo.",
+          },
+          {
+            number: 4,
             title: "Entrega e infraestrutura",
             description:
               "Deploy em VPS própria (não em plataforma de terceiros que cobra mensalidade pra você acessar seu próprio site), com Docker, Nginx e SSL configurados. Você recebe acesso ao servidor e ao repositório — se quiser trocar de desenvolvedor no futuro, leva tudo.",
@@ -321,6 +336,7 @@ export const servicesDocs: ServiceDoc[] = [
   {
     slug: "sistema-personalizado",
     title: "Sistema personalizado",
+    metadataTitle: "Sistema Personalizado sob Medida | CiudadLab",
     tagline:
       "Pra quando o problema do seu negócio não tem solução pronta no mercado — automação, painel interno, MVP de produto, integração entre sistemas que hoje são feitas na mão.",
     heroImage: {
@@ -334,7 +350,7 @@ export const servicesDocs: ServiceDoc[] = [
         id: "visao-geral",
         title: "Visão geral",
         content:
-          "Pra quando o problema do seu negócio não tem solução pronta no mercado — automação, painel interno, MVP de produto, integração entre sistemas que hoje são feitas na mão.",
+          "Pra processos que hoje rodam em planilha, papel ou retrabalho manual. Primeiro entendo como o seu negócio funciona; depois construo o mínimo que resolve a dor real, e evoluímos a partir daí.",
       },
       {
         id: "processo",
@@ -342,7 +358,7 @@ export const servicesDocs: ServiceDoc[] = [
         steps: [
           {
             number: 1,
-            title: "Call inicial (a mais importante das três)",
+            title: "Call inicial (a mais importante de todas)",
             description:
               "Aqui o trabalho começa antes de qualquer linha de código: entender o processo atual (mesmo que seja manual, em planilha), identificar onde está a dor real, e desenhar a solução mínima que resolve — não a mais bonita, a que funciona.",
           },
@@ -354,6 +370,12 @@ export const servicesDocs: ServiceDoc[] = [
           },
           {
             number: 3,
+            title: "Desenvolvimento com acompanhamento",
+            description:
+              "Você acompanha o progresso toda semana com um preview do projeto rodando. Ajustes no caminho, direto comigo.",
+          },
+          {
+            number: 4,
             title: "Entrega e infraestrutura",
             description:
               "Deploy em VPS própria com Docker, banco de dados com backup, documentação técnica entregue junto (pra você ou outro desenvolvedor entender o sistema no futuro).",
