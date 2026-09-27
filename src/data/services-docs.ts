@@ -137,7 +137,7 @@ export const servicesDocs: ServiceDoc[] = [
         id: "garantia",
         title: "Garantia de 90 dias",
         content:
-          "Se algo quebrar (bug visual, formulário parando de funcionar, problema de responsividade em algum aparelho), eu arrumo sem custo adicional. Não cobre pedidos de novo conteúdo/seção — isso é escopo novo.",
+          "Se algo quebrar (bug visual, formulário parando de funcionar, problema de responsividade em algum aparelho), eu arrumo sem custo adicional. Não cobre pedidos de novo conteúdo/seção — isso é escopo novo. O site sai com Google Analytics 4 configurado e 90 dias de Radar inclusos.",
       },
       {
         id: "projeto-real",
@@ -291,7 +291,7 @@ export const servicesDocs: ServiceDoc[] = [
         id: "garantia",
         title: "Garantia de 90 dias",
         content:
-          "Bugs de funcionamento (pagamento não confirmando, frete calculando errado, erro de estoque) são corrigidos sem custo. Após os 90 dias, ofereço manutenção sob contrato à parte, se você quiser.",
+          "Bugs de funcionamento (pagamento não confirmando, frete calculando errado, erro de estoque) são corrigidos sem custo. O site sai com Google Analytics 4 configurado e 90 dias de Radar inclusos. Após os 90 dias, ofereço manutenção sob contrato à parte, se você quiser.",
       },
       {
         id: "projeto-real",
