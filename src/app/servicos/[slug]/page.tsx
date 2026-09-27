@@ -10,6 +10,7 @@ import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
 import { getServiceDoc, servicesDocs } from "@/data/services-docs";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 
 export async function generateStaticParams() {
   return servicesDocs.map((doc) => ({ slug: doc.slug }));
@@ -356,15 +357,14 @@ export default async function ServiceDocPage(
               Conta o que você precisa. Respondo em até 24h com escopo, prazo
               e valor definidos.
             </p>
-            <a
+            <WhatsAppLink
               href={WHATSAPP_CONTACT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              location="servico-doc"
               className="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-full text-base font-semibold hover:brightness-110 transition-all duration-300"
             >
               Quero um orçamento
               <span aria-hidden="true">→</span>
-            </a>
+            </WhatsAppLink>
           </div>
         </div>
       </div>
