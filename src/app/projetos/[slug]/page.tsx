@@ -8,6 +8,7 @@ import { Navbar } from "@/components/Navbar";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { getProjeto, hasCase, projetos } from "@/data/projetos";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { formatPostDate, getPostsByCase } from "@/lib/blog";
 
 type ProjetoCasePageProps = {
@@ -214,15 +215,14 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
               Conta o que você precisa. Respondo em até 24h com escopo, prazo e valor definidos.
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3">
-              <a
+              <WhatsAppLink
                 href={WHATSAPP_CONTACT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                location="projeto"
                 className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 Falar no WhatsApp
                 <ArrowUpRight size={16} aria-hidden="true" />
-              </a>
+              </WhatsAppLink>
 
               {[projeto.ctaPrincipal, projeto.ctaSecundario].filter(Boolean).map((cta) => (
                 <a
