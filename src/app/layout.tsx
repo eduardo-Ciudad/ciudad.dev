@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Cormorant_Garamond, DM_Sans } from "next/font/google";
 import Script from "next/script";
 import { IntroLoader } from "@/components/IntroLoader";
+import { CookieBanner } from "@/components/CookieBanner";
 import { organizationSchema } from "@/data/organization-schema";
 import "./globals.css";
 
@@ -83,10 +84,30 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               {`
                 window.dataLayer = window.dataLayer || [];
                 function gtag(){dataLayer.push(arguments);}
+                window.gtag = gtag;
+                gtag('consent', 'default', {
+                  analytics_storage: 'denied',
+                  ad_storage: 'denied',
+                  ad_user_data: 'denied',
+                  ad_personalization: 'denied',
+                  wait_for_update: 500
+                });
+                try {
+                  var savedConsent = localStorage.getItem('ciudadlab-consent');
+                  if (savedConsent === 'granted' || savedConsent === 'denied') {
+                    gtag('consent', 'update', {
+                      analytics_storage: savedConsent,
+                      ad_storage: 'denied',
+                      ad_user_data: 'denied',
+                      ad_personalization: 'denied'
+                    });
+                  }
+                } catch (error) {}
                 gtag('js', new Date());
                 gtag('config', '${gaMeasurementId}');
               `}
             </Script>
+            <CookieBanner />
           </>
         )}
       </body>
