@@ -2,6 +2,7 @@
 
 import { ScrollReveal } from "./ScrollReveal";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+import { WhatsAppLink } from "./WhatsAppLink";
 
 export function CtaFinal() {
   return (
@@ -16,15 +17,14 @@ export function CtaFinal() {
             valor definidos.
           </p>
           <div className="mt-8">
-            <a
+            <WhatsAppLink
               href={WHATSAPP_CONTACT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              location="cta-final"
               className="inline-flex items-center gap-2 bg-accent text-white px-7 py-3 rounded-full text-sm font-medium hover:brightness-110 transition-all duration-300"
             >
               Entrar em contato
               <span aria-hidden="true">→</span>
-            </a>
+            </WhatsAppLink>
           </div>
         </ScrollReveal>
       </div>
