@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 
 export function BlogArticleCta() {
   return (
@@ -13,15 +14,14 @@ export function BlogArticleCta() {
       <p className="mx-auto mt-4 max-w-lg text-[15px] leading-6 text-white/70">
         Conte o que o seu negócio precisa. Você recebe uma orientação clara sobre escopo, prazo e investimento.
       </p>
-      <a
+      <WhatsAppLink
         href={WHATSAPP_CONTACT_URL}
-        target="_blank"
-        rel="noopener noreferrer"
+        location="blog"
         className="mt-8 inline-flex items-center gap-2 whitespace-nowrap rounded-full bg-accent px-7 py-3 text-sm font-medium text-white no-underline transition-all duration-300 hover:brightness-110"
       >
         Conversar sobre meu projeto
         <ArrowUpRight size={16} aria-hidden="true" />
-      </a>
+      </WhatsAppLink>
     </aside>
   );
 }
