@@ -11,6 +11,7 @@ import {
   valoresIniciais,
 } from "@/data/calculadora";
 import { WHATSAPP_NUMBER } from "@/data/whatsapp";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 
 const formatarMoeda = new Intl.NumberFormat("pt-BR", {
   style: "currency",
@@ -165,15 +166,14 @@ export function CalculadoraAtendimento() {
               </p>
             </div>
 
-            <a
+            <WhatsAppLink
               href={whatsappHref}
-              target="_blank"
-              rel="noopener noreferrer"
+              location="calculadora"
               className="mt-8 flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full bg-accent px-7 py-3 text-sm font-medium text-white transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               {calculadora.result.cta}
               <ArrowUpRight size={16} aria-hidden="true" />
-            </a>
+            </WhatsAppLink>
             <p className="mt-3 text-center text-xs text-white/50">
               {calculadora.result.ctaNote}
             </p>
