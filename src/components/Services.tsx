@@ -7,6 +7,7 @@ import { ScrollReveal } from "./ScrollReveal";
 import { ServiceDetailModal, type ServiceDetail } from "./ServiceDetailModal";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 import { precos } from "@/data/precos";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 
 const services: {
   slug: string;
@@ -192,15 +193,14 @@ export function Services() {
                     </span>
                   </div>
 
-                  <a
+                  <WhatsAppLink
                     href={WHATSAPP_CONTACT_URL}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    location="servicos"
                     className="group/cta relative isolate flex w-full items-center justify-center gap-2 mt-6 py-3.5 overflow-hidden bg-primary text-card text-sm font-medium rounded-full hover:bg-primary/90 transition-colors text-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
                   >
                     <span>{service.cta}</span>
                     <ArrowRight aria-hidden="true" size={15} className="transition-transform duration-300 group-hover/cta:translate-x-1 group-focus-visible/cta:translate-x-1 motion-reduce:transform-none" />
-                  </a>
+                  </WhatsAppLink>
 
                   <Link
                     href={`/servicos/${service.slug}`}
@@ -217,6 +217,16 @@ export function Services() {
             </ScrollReveal>
           ))}
         </div>
+        <ScrollReveal className="mt-6">
+          <div className="flex flex-col items-start justify-between gap-3 rounded-xl border border-card-border bg-card px-5 py-4 text-sm text-primary/80 transition-colors hover:border-accent-border sm:flex-row sm:items-center">
+            <p>
+              Depois da entrega: <strong className="text-primary">Radar</strong> — Google Analytics configurado e leitura mensal dos números, 90 dias inclusos.
+            </p>
+            <Link href="/radar" className="shrink-0 font-medium text-accent transition-opacity hover:opacity-80">
+              Saiba mais →
+            </Link>
+          </div>
+        </ScrollReveal>
       </div>
 
       {activeService && (
