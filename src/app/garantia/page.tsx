@@ -13,6 +13,7 @@ import { Navbar } from "@/components/Navbar";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { garantia } from "@/data/garantia";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 
 const description =
   "O que acontece depois que o seu projeto vai ao ar: o que a garantia de 90 dias cobre, o que não cobre e como acionar.";
@@ -187,6 +188,12 @@ export default function GarantiaPage() {
               <p className="mt-3 text-base leading-[1.8] text-primary md:text-[17px]">
                 {garantia.after.text}
               </p>
+              <Link
+                href={garantia.after.href}
+                className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-accent transition-opacity hover:opacity-80"
+              >
+                {garantia.after.linkLabel}
+              </Link>
             </section>
           </ScrollReveal>
 
@@ -207,15 +214,14 @@ export default function GarantiaPage() {
             <p className="mx-auto mb-7 max-w-sm text-sm text-muted">
               {garantia.cta.description}
             </p>
-            <a
+            <WhatsAppLink
               href={WHATSAPP_CONTACT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              location="garantia"
               className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
             >
               {garantia.cta.label}
               <ArrowUpRight size={16} aria-hidden="true" />
-            </a>
+            </WhatsAppLink>
           </section>
         </article>
       </main>
