@@ -2,6 +2,8 @@ import Link from "next/link";
 import { createLucideIcon, Mail } from "lucide-react";
 import { LinkedinIcon, GithubIcon } from "./icons";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
+import { CookiePreferencesButton } from "@/components/CookiePreferencesButton";
 
 const InstagramIcon = createLucideIcon("Instagram", [
   [
@@ -94,14 +96,13 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a
+                <WhatsAppLink
                   href={WHATSAPP_CONTACT_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                  location="footer"
                   className="text-white/50 text-[13px] hover:text-white transition-colors"
                 >
                   Contato
-                </a>
+                </WhatsAppLink>
               </li>
             </ul>
           </div>
@@ -119,6 +120,14 @@ export function Footer() {
               </li>
               <li>
                 <Link
+                  href="/radar"
+                  className="text-white/50 text-[13px] hover:text-white transition-colors"
+                >
+                  Radar
+                </Link>
+              </li>
+              <li>
+                <Link
                   href="/privacidade"
                   className="text-white/50 text-[13px] hover:text-white transition-colors"
                 >
@@ -132,6 +141,9 @@ export function Footer() {
                 >
                   Política de Cookies
                 </Link>
+              </li>
+              <li>
+                <CookiePreferencesButton className="text-left text-white/50 text-[13px] hover:text-white transition-colors" />
               </li>
               <li>
                 <Link
