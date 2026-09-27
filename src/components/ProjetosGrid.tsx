@@ -20,6 +20,23 @@ const categoriaLabel = {
 } satisfies Record<Projeto["categoria"], string>;
 
 function ProjetoCard({ projeto, delay }: { projeto: Projeto; delay: number }) {
+  const renderCta = (
+    cta: NonNullable<Projeto["ctaPrincipal"]>,
+    variant: "primary" | "secondary",
+  ) => {
+    const className =
+      variant === "primary"
+        ? "inline-flex items-center gap-1 rounded-full bg-primary px-3.5 py-1.5 text-xs font-medium text-card transition-colors hover:bg-primary/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        : "inline-flex items-center gap-1 rounded-full border border-accent-border px-3.5 py-1.5 text-xs font-medium text-accent transition-colors hover:bg-accent-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent";
+    const content = <>{cta.label}<ArrowUpRight size={12} aria-hidden="true" /></>;
+
+    return cta.url.startsWith("/") ? (
+      <Link href={cta.url} className={className}>{content}</Link>
+    ) : (
+      <a href={cta.url} target="_blank" rel="noopener noreferrer" className={className}>{content}</a>
+    );
+  };
+
   return (
     <ScrollReveal
       delay={delay}
@@ -95,26 +112,10 @@ function ProjetoCard({ projeto, delay }: { projeto: Projeto; delay: number }) {
           {(projeto.ctaPrincipal || projeto.ctaSecundario) && (
             <div className="mt-auto flex flex-wrap gap-2 pt-1">
               {projeto.ctaPrincipal && (
-                <a
-                  href={projeto.ctaPrincipal.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 rounded-full bg-primary px-3.5 py-1.5 text-xs font-medium text-card transition-colors hover:bg-primary/85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                >
-                  {projeto.ctaPrincipal.label}
-                  <ArrowUpRight size={12} aria-hidden="true" />
-                </a>
+                renderCta(projeto.ctaPrincipal, "primary")
               )}
               {projeto.ctaSecundario && (
-                <a
-                  href={projeto.ctaSecundario.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 rounded-full border border-accent-border px-3.5 py-1.5 text-xs font-medium text-accent transition-colors hover:bg-accent-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                >
-                  {projeto.ctaSecundario.label}
-                  <ArrowUpRight size={12} aria-hidden="true" />
-                </a>
+                renderCta(projeto.ctaSecundario, "secondary")
               )}
             </div>
           )}
