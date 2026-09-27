@@ -102,7 +102,9 @@ export const garantia = {
   after: {
     id: "depois",
     label: "Depois dos 90 dias",
-    text: "Se quiser, seguimos juntos com manutenção sob contrato à parte. Se não quiser, tudo bem: o código, o repositório e os acessos continuam sendo seus, e qualquer desenvolvedor consegue dar continuidade.",
+    text: "Depois dos 90 dias, você pode continuar com o Radar: acompanhamento mensal com leitura dos números do seu site e relatório. Se não quiser, tudo bem — o código, o repositório e os acessos continuam sendo seus, e qualquer desenvolvedor consegue dar continuidade.",
+    href: "/radar",
+    linkLabel: "Conhecer o Radar →",
   },
   legal: {
     beforeLink:
