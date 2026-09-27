@@ -3,6 +3,7 @@
 import { motion, useMotionValue, animate, useReducedMotion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+import { STATUS_STATS } from "@/data/stats";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 
 const metrics: readonly {
@@ -11,10 +12,9 @@ const metrics: readonly {
   decimals: number;
   suffix?: string;
 }[] = [
-  { label: "projetos entregues", value: 6, decimals: 0 },
-  { label: "em produção agora", value: 3, decimals: 0 },
-  { label: "testes escritos", value: 318, decimals: 0, suffix: "+" },
-  { label: "uptime médio", value: 99.9, decimals: 1, suffix: "%" },
+  { label: "projetos entregues", value: STATUS_STATS.projetosEntregues, decimals: 0 },
+  { label: "em produção agora", value: STATUS_STATS.emProducao, decimals: 0 },
+  { label: "testes escritos", value: STATUS_STATS.testesEscritos, decimals: 0, suffix: "+" },
 ] as const;
 
 function formatMetric(value: number, decimals: number) {
@@ -31,12 +31,10 @@ function AnimatedNumber({
   suffix?: string;
 }) {
   const reducedMotion = useReducedMotion();
-  // Começa perto do valor final (nunca em zero) para que o primeiro paint
-  // — antes da hidratação, em conexão lenta, ou pra um crawler sem JS —
-  // já mostre um número real em vez de "0".
-  const startValue = reducedMotion ? value : value * 0.88;
-  const [display, setDisplay] = useState(() => formatMetric(startValue, decimals));
-  const motionValue = useMotionValue(startValue);
+  // O SSR e a primeira renderização do client mostram sempre o valor final.
+  // A contagem só recomeça depois da montagem, sem causar mismatch de hidratação.
+  const [display, setDisplay] = useState(() => formatMetric(value, decimals));
+  const motionValue = useMotionValue(value);
 
   useEffect(() => {
     if (reducedMotion) {
@@ -45,12 +43,16 @@ function AnimatedNumber({
       setDisplay(formatMetric(value, decimals));
       return;
     }
+    const startValue = value * 0.88;
+    motionValue.set(startValue);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setDisplay(formatMetric(startValue, decimals));
+    const unsubscribe = motionValue.on("change", (v) => {
+      setDisplay(formatMetric(v, decimals));
+    });
     const controls = animate(motionValue, value, {
       duration: 1,
       ease: "easeOut",
-    });
-    const unsubscribe = motionValue.on("change", (v) => {
-      setDisplay(formatMetric(v, decimals));
     });
     return () => {
       controls.stop();
@@ -159,15 +161,7 @@ export function Hero() {
                   transition={{ duration: 0.3, delay: 1.2 }}
                   className="text-neutral-400 text-sm"
                 >
-                  último deploy: há 2 dias
-                </motion.p>
-                <motion.p
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 1.4 }}
-                  className="text-neutral-400 text-sm"
-                >
-                  próxima entrega: 12 dias
+                  resposta em até 24h
                 </motion.p>
               </div>
 
