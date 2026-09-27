@@ -3,6 +3,7 @@
 import { motion, useMotionValue, animate, useReducedMotion } from "framer-motion";
 import { useState, useEffect } from "react";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 
 const metrics: readonly {
   label: string;
@@ -100,15 +101,14 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="mt-7"
           >
-            <a
+            <WhatsAppLink
               href={WHATSAPP_CONTACT_URL}
-              target="_blank"
-              rel="noopener noreferrer"
+              location="hero"
               className="inline-flex items-center gap-2 bg-accent text-white px-8 py-4 rounded-full text-base font-semibold hover:brightness-110 transition-all duration-300"
             >
               Começar meu projeto
               <span aria-hidden="true">→</span>
-            </a>
+            </WhatsAppLink>
           </motion.div>
         </div>
 
