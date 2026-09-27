@@ -1,0 +1,71 @@
+export const radar = {
+  eyebrow: "Produto",
+  title: "Radar",
+  subtitle:
+    "Depois que o seu site vai ao ar, alguém continua olhando os números por você — e te conta, sem jargão, o que está funcionando e o que dá pra melhorar.",
+  heroImage: {
+    src: "/img/radar/radar-sites.png",
+    alt: "Painel do Radar com os sites monitorados",
+    width: 1913,
+    height: 857,
+  },
+  tracked: {
+    title: "O que o Radar acompanha",
+    items: [
+      "Visitas e novos visitantes",
+      "De onde as pessoas chegam (Google, Instagram, direto)",
+      "Quantas clicaram no WhatsApp ou enviaram o formulário",
+      "Engajamento e páginas mais vistas",
+      "Comparação com o período anterior",
+    ],
+  },
+  deliverables: {
+    title: "O que você recebe",
+    items: [
+      {
+        icon: "chartNoAxesCombined",
+        title: "Google Analytics configurado na entrega",
+        description: "Seu site já sai medindo visitas e contatos. A conta do Analytics é sua.",
+      },
+      {
+        icon: "messageSquareText",
+        title: "Leitura semanal",
+        description: "Um resumo curto dos números da semana, em português de gente, com o que mudou.",
+      },
+      {
+        icon: "fileChartColumn",
+        title: "Relatório mensal",
+        description: "O que aconteceu no mês e uma ou duas sugestões práticas pro próximo.",
+      },
+    ],
+  },
+  example: {
+    label: "Exemplo",
+    title: "Exemplo de leitura semanal",
+    text: "Semana de 15 a 21/09: 34 visitas, 60% vindas do Google. A página de serviços foi a mais vista, mas só 1 pessoa clicou no WhatsApp. Vale testar um botão de contato mais visível logo no topo.",
+  },
+  analyticsImage: {
+    src: "/img/radar/radar-analytics.png",
+    alt: "Tela de Analytics do ciudadlab.com.br no Radar",
+    width: 1896,
+    height: 848,
+    caption: "Dados reais do ciudadlab.com.br no painel do Radar.",
+  },
+  howItWorks: {
+    title: "Como funciona",
+    steps: [
+      { title: "Site entregue com Analytics", description: "Configuro o Google Analytics 4 e as conversões antes de publicar." },
+      { title: "90 dias de Radar inclusos", description: "Durante a garantia, você recebe as leituras sem custo." },
+      { title: "Você decide se continua", description: "Depois dos 90 dias, o Radar vira um plano mensal. Se não quiser, o Analytics continua funcionando na sua conta." },
+    ],
+  },
+  faq: {
+    title: "Dúvidas frequentes",
+    items: [
+      { question: "Preciso entender de Analytics?", answer: "Não. Eu leio os números e te mando o que importa." },
+      { question: "Os dados são meus?", answer: "Sim. O Google Analytics fica na sua conta Google. O Radar só tem acesso de leitura, e os dados são agregados — nada identifica visitantes individualmente." },
+      { question: "Quanto custa depois dos 90 dias?", answer: "Sob consulta, de acordo com o tamanho do site e a frequência de relatórios." },
+    ],
+  },
+  cta: { title: "Quer o Radar no seu site?", label: "Falar no WhatsApp" },
+} as const;
