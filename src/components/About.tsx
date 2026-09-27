@@ -3,6 +3,9 @@
 import Image from "next/image";
 import { LinkedinIcon, GithubIcon } from "./icons";
 import { ScrollReveal } from "./ScrollReveal";
+import { STATUS_STATS } from "@/data/stats";
+
+const TESTS_HUNDREDS = Math.floor(STATUS_STATS.testesEscritos / 100) * 100;
 
 export function About() {
   return (
@@ -68,7 +71,7 @@ export function About() {
                 Docker Compose,{" "}
                 <span className="text-primary font-medium">CI/CD</span> e{" "}
                 <span className="text-primary font-medium">GitHub Actions</span>
-                , com mais de 200 testes automatizados entre{" "}
+                , com mais de {TESTS_HUNDREDS} testes automatizados entre{" "}
                 <span className="text-primary font-medium">JUnit</span> e{" "}
                 <span className="text-primary font-medium">Mockito</span>.
               </p>
