@@ -265,11 +265,11 @@ export const legalDocs: LegalDoc[] = [
         blocks: [
           {
             type: "p",
-            text: "O site poderá utilizar cookies e tecnologias semelhantes para seu funcionamento e, quando aplicável, para análise de utilização.",
+            text: "O site utiliza o Google Analytics 4 para medir visitas, páginas acessadas, origem do tráfego e cliques nos botões de contato de forma agregada. A ferramenta só é ativada após o consentimento do visitante.",
           },
           {
             type: "p",
-            text: "Os cookies não essenciais somente serão utilizados de acordo com as configurações e escolhas disponibilizadas ao visitante, quando aplicável.",
+            text: "A escolha pode ser alterada a qualquer momento em “Preferências de cookies”, no rodapé.",
           },
           {
             type: "link",
@@ -319,7 +319,7 @@ export const legalDocs: LegalDoc[] = [
     title: "Política de Cookies",
     description:
       "Como a CiudadLab utiliza cookies e tecnologias semelhantes no site.",
-    updatedAt: "13/08/2026",
+    updatedAt: "27/09/2026",
     intro: [
       {
         type: "p",
@@ -363,11 +363,26 @@ export const legalDocs: LegalDoc[] = [
             blocks: [
               {
                 type: "p",
-                text: "Caso sejam utilizadas ferramentas de análise de tráfego, poderão existir tecnologias destinadas a compreender como os visitantes utilizam o site, como páginas acessadas e informações relacionadas à navegação.",
+                text: "O site usa o Google Analytics 4, fornecido pela Google LLC, para medir visitas, páginas acessadas, origem do tráfego e cliques nos botões de contato de forma agregada.",
               },
               {
                 type: "p",
-                text: "Quando o tratamento depender de consentimento, esses recursos somente serão ativados após a manifestação correspondente do visitante.",
+                text: "O Google Analytics só é ativado após o consentimento no banner. Você pode mudar sua escolha a qualquer momento em “Preferências de cookies”, no rodapé.",
+              },
+              {
+                type: "list",
+                items: [
+                  "_ga — diferencia visitantes de forma agregada; duração aproximada de até 2 anos.",
+                  "_ga_<ID> — mantém o estado da sessão do Google Analytics 4; duração aproximada de até 2 anos.",
+                ],
+              },
+              {
+                type: "link",
+                before: "Veja também a ",
+                linkText: "Política de Privacidade do Google",
+                href: "https://policies.google.com/privacy?hl=pt-BR",
+                after: ".",
+                external: true,
               },
             ],
           },
@@ -400,7 +415,7 @@ export const legalDocs: LegalDoc[] = [
           },
           {
             type: "p",
-            text: "Quando houver cookies não essenciais que dependam de consentimento, suas preferências poderão ser alteradas por meio das ferramentas disponibilizadas no site.",
+            text: "Para aceitar, recusar ou alterar o uso de cookies de análise, use o botão “Preferências de cookies” disponível no rodapé do site.",
           },
         ],
       },
