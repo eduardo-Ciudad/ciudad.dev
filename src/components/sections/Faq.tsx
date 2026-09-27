@@ -29,6 +29,12 @@ const faqs: FaqItem[] = [
     link: { href: "/garantia", label: "Ver termos da garantia" },
   },
   {
+    question: "O que acontece depois que o site vai ao ar?",
+    answer:
+      "Seu site sai com Google Analytics configurado e, nos primeiros 90 dias, você tem o Radar incluso: eu acompanho os números e te mando uma leitura simples do que está funcionando.",
+    link: { href: "/radar", label: "Conhecer o Radar" },
+  },
+  {
     question: "Como funciona o escopo travado?",
     answer:
       "Antes de escrever uma linha de código, documentamos exatamente o que será entregue. Você aprova. A partir daí, prazo e preço não mudam. Se o escopo precisar mudar no meio do caminho, é tratado como um aditivo com nova precificação.",
@@ -105,7 +111,7 @@ export function Faq() {
                     </p>
                     {faq.link && (
                       <Link
-                        href="/garantia"
+                        href={faq.link.href}
                         className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-opacity hover:opacity-80"
                       >
                         {faq.link.label} <span aria-hidden="true">→</span>
