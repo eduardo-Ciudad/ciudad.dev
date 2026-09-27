@@ -175,6 +175,20 @@ export const projetos: Projeto[] = [
     },
   },
   {
+    slug: "radar",
+    nome: "Radar CiudadLab",
+    categoria: "ferramenta-interna",
+    destaque: true,
+    autoral: true,
+    imagem: "/img/radar/radar-sites.png",
+    descricao: [
+      "Painel próprio que puxa os dados do Google Analytics 4 dos sites da CiudadLab e dos clientes via API, com sincronização diária automática",
+      "Backend em Java 17 + Spring Boot com arquitetura hexagonal, PostgreSQL/Flyway e autenticação JWT com papéis",
+      "Frontend em Next.js e funil interno de prospecção com importação de CSV e score de leads",
+    ],
+    ctaPrincipal: { label: "Conhecer o Radar", url: "/radar" },
+  },
+  {
     slug: "leticia-souza",
     nome: "Letícia Souza",
     categoria: "landing-page",
