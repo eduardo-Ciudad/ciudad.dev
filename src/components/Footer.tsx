@@ -43,12 +43,12 @@ export function Footer() {
       <div className="max-w-6xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between gap-10">
           <div className="max-w-sm text-center">
-            <a
-              href="#"
+            <Link
+              href="/"
               className="text-xl font-heading font-semibold text-white"
             >
               Ciudad<span className="text-accent">Lab</span>
-            </a>
+            </Link>
             <p className="mt-3 text-white/50 text-[13px] leading-relaxed">
               Sites, lojas e sistemas sob medida para quem leva o próprio
               negócio a sério.
@@ -80,20 +80,28 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#servicos"
+                <Link
+                  href="/radar"
+                  className="text-white/50 text-[13px] hover:text-white transition-colors"
+                >
+                  Radar
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/#servicos"
                   className="text-white/50 text-[13px] hover:text-white transition-colors"
                 >
                   Serviços
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#sobre"
+                <Link
+                  href="/#sobre"
                   className="text-white/50 text-[13px] hover:text-white transition-colors"
                 >
                   Sobre
-                </a>
+                </Link>
               </li>
               <li>
                 <WhatsAppLink
@@ -116,14 +124,6 @@ export function Footer() {
                   className="text-white/50 text-[13px] hover:text-white transition-colors"
                 >
                   Garantia de 90 dias
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/radar"
-                  className="text-white/50 text-[13px] hover:text-white transition-colors"
-                >
-                  Radar
                 </Link>
               </li>
               <li>
