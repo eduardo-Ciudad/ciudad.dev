@@ -7,6 +7,7 @@ import { ChevronDown, Menu, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { navegacao } from "@/data/navegacao";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
+import { WhatsAppLink } from "@/components/WhatsAppLink";
 
 type MenuGroup = "servicos" | "projetos" | "comoTrabalhamos";
 
@@ -30,6 +31,7 @@ function isGroupActive(pathname: string, group: MenuGroup) {
   if (group === "projetos") {
     return pathname === "/projetos" || pathname.startsWith("/projetos/");
   }
+  if (group === "comoTrabalhamos" && pathname === "/radar") return true;
   return pathname === "/garantia" || pathname === "/calculadora";
 }
 
@@ -371,14 +373,13 @@ export function Navbar() {
               ? renderDesktopGroup(item.key)
               : renderDesktopLink(item.index),
           )}
-          <a
+          <WhatsAppLink
             href={WHATSAPP_CONTACT_URL}
-            target="_blank"
-            rel="noopener noreferrer"
+            location="navbar"
             className="ml-3 text-sm font-semibold bg-accent text-white px-6 py-2.5 rounded-full hover:brightness-110 transition-all duration-200"
           >
             {navegacao.cta}
-          </a>
+          </WhatsAppLink>
         </div>
 
         <button
@@ -409,15 +410,14 @@ export function Navbar() {
               {renderMobileGroup("projetos")}
               {renderMobileGroup("comoTrabalhamos")}
               {renderDesktopLink(0, true)}
-              <a
+              <WhatsAppLink
                 href={WHATSAPP_CONTACT_URL}
-                target="_blank"
-                rel="noopener noreferrer"
+                location="navbar"
                 className="text-sm font-semibold bg-accent text-white px-6 py-2.5 rounded-full hover:brightness-110 transition-all duration-200 text-center mt-1 w-full"
                 onClick={closeMobile}
               >
                 {navegacao.cta}
-              </a>
+              </WhatsAppLink>
             </div>
           </motion.div>
         )}
