@@ -5,7 +5,6 @@ import {
   ChartNoAxesCombined,
   Check,
   FileChartColumn,
-  MessageSquareText,
 } from "lucide-react";
 import { DocImage } from "@/components/DocImage";
 import { Footer } from "@/components/Footer";
@@ -17,7 +16,7 @@ import { radar } from "@/data/radar";
 import { WHATSAPP_RADAR_URL } from "@/data/whatsapp";
 
 const description =
-  "Radar é o acompanhamento pós-entrega da CiudadLab: Analytics configurado, leitura semanal e relatório mensal em linguagem simples.";
+  "Radar é o acompanhamento pós-entrega da CiudadLab: Google Analytics configurado e relatório mensal em linguagem simples.";
 
 export const metadata: Metadata = {
   title: "Radar — acompanhamento do seu site | CiudadLab",
@@ -40,7 +39,6 @@ export const metadata: Metadata = {
 
 const deliverableIcons = {
   chartNoAxesCombined: ChartNoAxesCombined,
-  messageSquareText: MessageSquareText,
   fileChartColumn: FileChartColumn,
 };
 

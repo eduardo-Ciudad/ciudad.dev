@@ -28,28 +28,23 @@ export const radar = {
         description: "Seu site já sai medindo visitas e contatos. A conta do Analytics é sua.",
       },
       {
-        icon: "messageSquareText",
-        title: "Leitura semanal",
-        description: "Um resumo curto dos números da semana, em português de gente, com o que mudou.",
-      },
-      {
         icon: "fileChartColumn",
         title: "Relatório mensal",
-        description: "O que aconteceu no mês e uma ou duas sugestões práticas pro próximo.",
+        description: "Todo mês, um resumo em português de gente: o que aconteceu, o que mudou em relação ao mês anterior e uma ou duas sugestões práticas pro próximo.",
       },
     ],
   },
   example: {
     label: "Exemplo",
-    title: "Exemplo de leitura semanal",
-    text: "Semana de 15 a 21/09: 34 visitas, 60% vindas do Google. A página de serviços foi a mais vista, mas só 1 pessoa clicou no WhatsApp. Vale testar um botão de contato mais visível logo no topo.",
+    title: "Exemplo de relatório mensal",
+    text: "Setembro: 412 visitas, 58% vindas do Google e 27% do Instagram. A página de serviços foi a mais vista e 19 pessoas clicaram no WhatsApp — 6 a mais que em agosto. Sugestão: repetir no topo da página o botão que mais recebeu clique.",
   },
   analyticsImage: {
     src: "/img/radar/radar-analytics.png",
     alt: "Tela de Analytics do ciudadlab.com.br no Radar",
     width: 1896,
     height: 848,
-    caption: "Dados reais do ciudadlab.com.br no painel do Radar.",
+    caption: "Exemplo ilustrativo. A imagem mostra o painel real do Radar.",
   },
   howItWorks: {
     title: "Como funciona",
