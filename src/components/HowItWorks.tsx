@@ -7,23 +7,23 @@ import { useRef } from "react";
 const steps = [
   {
     number: 1,
-    title: "Você manda a ideia",
-    text: "Me conta o que precisa — por WhatsApp, e-mail ou formulário. Não precisa ter documento técnico. Uma descrição simples do que você quer resolver já basta pra gente começar.",
+    title: "Você conta como é o seu negócio",
+    text: "Pelo WhatsApp mesmo. Me explica como você vende e atende hoje e o que está travando. Não precisa saber o nome técnico do que você quer.",
   },
   {
     number: 2,
-    title: "Escopo, prazo e preço fechados",
-    text: "Em até 48h você recebe uma proposta clara: o que vai ser feito, em quanto tempo e por quanto. Tudo definido antes da primeira linha de código. Sem surpresa, sem hora extra.",
+    title: "Proposta por escrito em até 48h",
+    text: "O que será feito, em quantas semanas e por quanto. O trabalho só começa depois do seu ok, e o valor não muda no caminho.",
   },
   {
     number: 3,
-    title: "Construímos com acompanhamento",
-    text: "Você acompanha o progresso semanalmente com preview do projeto rodando. Ajustes no caminho, sem burocracia. Quem programa é quem te responde.",
+    title: "Uma prévia nova toda semana",
+    text: "Você recebe um link do projeto em andamento para abrir no celular, testar e pedir ajustes enquanto ainda é fácil mudar.",
   },
   {
     number: 4,
-    title: "Entregamos rodando",
-    text: "Código no seu repositório, deploy no ar, documentação entregue. Mais 90 dias de garantia e de Radar: se quebrar, eu arrumo sem custo, e você recebe a leitura dos números do site.",
+    title: "Publicado e no seu nome",
+    text: "Site no seu domínio, código e acessos entregues a você. Depois, 90 dias de garantia e de Radar: se algo quebrar, eu corrijo sem custo, e você recebe a leitura dos números.",
     badge: "90 dias de garantia + Radar",
   },
 ];
@@ -245,7 +245,7 @@ export function HowItWorks() {
             Como funciona
           </h2>
           <p className="text-muted text-[15px] mt-3">
-            Do primeiro contato à entrega em produção.
+            Quatro etapas, do primeiro oi ao site no ar.
           </p>
         </motion.div>
 

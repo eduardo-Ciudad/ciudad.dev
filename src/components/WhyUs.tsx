@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
-import { FileCheck, ShieldCheck, Clock, MessageCircle, Code2, ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
+import { FileCheck, ShieldCheck, Clock, MapPin, Code2, ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
 import { motion, useInView, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { ScrollReveal } from "./ScrollReveal";
 import { useDragScroll } from "@/hooks/useDragScroll";
@@ -17,8 +17,8 @@ type WhyUsCardData = {
 const cards: WhyUsCardData[] = [
   {
     icon: FileCheck,
-    title: "Escopo e preço travados antes de começar",
-    description: 'Nada de "hora-trabalhada" que estoura no final. Você recebe escopo, prazo e valor fechados antes da primeira linha de código. Sem surpresa na fatura, sem reunião pra renegociar. O que foi combinado é o que é entregue.',
+    title: "Proposta fechada, sem conta surpresa",
+    description: "Antes de começar, você recebe por escrito o que vai ser feito, em quantas semanas e por quanto. Não cobro por hora: o valor da proposta é o valor final, do primeiro dia à entrega.",
   },
   {
     icon: ShieldCheck,
@@ -27,14 +27,14 @@ const cards: WhyUsCardData[] = [
   },
   {
     icon: Clock,
-    title: "Entrega em 2–4 semanas com garantia de 90 dias",
-    description: "Prazo curto porque quem planeja é quem programa — sem telefone sem fio. Depois da entrega, 90 dias de garantia: se quebrar, eu arrumo sem custo adicional. Você não precisa entender de código pra saber se vai funcionar — essa responsabilidade é minha.",
+    title: "Pronto em 2 a 4 semanas, com 90 dias de garantia",
+    description: "O prazo é curto porque não existe repasse entre equipes: quem orça é quem desenvolve. Depois que o projeto vai ao ar, qualquer defeito que aparecer em 90 dias é corrigido sem custo.",
     link: { href: "/garantia", label: "Ver termos da garantia" },
   },
   {
-    icon: MessageCircle,
-    title: "Você fala direto com quem programa",
-    description: "Sem gerente de conta, sem intermediário, sem 'vou repassar pro time'. Cada mensagem vai direto pra quem está construindo o seu projeto. Resposta em até 24h, decisões em tempo real.",
+    icon: MapPin,
+    title: "Atendimento direto, daqui de Rio Preto",
+    description: "Quem responde o seu WhatsApp é o Eduardo, o mesmo que escreve o código do seu projeto. Quando algo pede mais calma, a gente marca uma chamada de vídeo. Retorno em até 24h nos dias úteis.",
   },
   {
     icon: Code2,
@@ -140,8 +140,8 @@ export function WhyUs() {
       <div className="mx-auto max-w-6xl px-6">
         <ScrollReveal className="mb-10 text-center md:mb-12">
           <span className="mb-3 block text-xs font-semibold uppercase tracking-[0.15em] text-accent">Diferenciais</span>
-          <h2 className="font-heading text-[28px] font-bold tracking-[-0.5px] text-primary md:text-[36px] lg:text-[42px]">Por que a Ciudad<span className="text-accent">Lab</span>?</h2>
-          <p className="mx-auto mt-3 max-w-xl text-[15px] text-muted">O que separa um projeto que funciona de um que vira slide.</p>
+          <h2 className="font-heading text-[28px] font-bold tracking-[-0.5px] text-primary md:text-[36px] lg:text-[42px]">O que muda trabalhando com a Ciudad<span className="text-accent">Lab</span></h2>
+          <p className="mx-auto mt-3 max-w-xl text-[15px] text-muted">Feito para pequeno negócio: combinado por escrito, código no seu nome e atendimento de perto.</p>
         </ScrollReveal>
 
         <div className="relative -my-6 py-6">

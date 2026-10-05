@@ -13,19 +13,34 @@ type FaqItem = {
 // Valores espelham src/data/precos.ts — atualizar os dois juntos.
 const faqs: FaqItem[] = [
   {
-    question: "Quanto custa um projeto?",
+    question: "Preciso entender de tecnologia para contratar?",
     answer:
-      "Depende do escopo. Uma landing page fica entre R$ 700 e R$ 1.000, um e-commerce a partir de R$ 2.500 e sistemas sob medida variam conforme a complexidade. Você recebe o valor fechado antes de começar — sem hora extra e sem surpresa na fatura.",
+      "Não. A conversa é por WhatsApp, em português simples, e você acompanha tudo por um link de prévia no celular. Sua parte é me contar como o negócio funciona; a parte técnica fica comigo.",
   },
   {
-    question: "Qual o prazo mínimo de um projeto?",
+    question: "Quanto vou investir?",
     answer:
-      "Landing pages ficam prontas em 1–2 semanas. E-commerces em 3–4 semanas. Sistemas sob medida dependem do escopo, mas a maioria fica entre 2–4 semanas. O prazo é definido junto com o preço antes da primeira linha de código.",
+      "Landing page: de R$ 700 a R$ 1.000. Loja virtual: de R$ 2.500 a R$ 5.000. Sistema sob medida: orçado conforme o que ele precisa fazer. Em qualquer caso, o número vem fechado na proposta e não muda depois.",
   },
   {
-    question: "O que é a garantia de 90 dias?",
+    question: "O site fica no meu nome?",
     answer:
-      "Depois da entrega, qualquer bug ou problema técnico que aparecer é corrigido sem custo adicional durante 90 dias. Isso inclui erros de funcionamento, não mudanças de escopo. Se quebrar, eu arrumo.",
+      "Fica. Domínio, código e acessos são seus. Se um dia quiser trocar de desenvolvedor, leva tudo junto, sem precisar pedir nada para ninguém.",
+  },
+  {
+    question: "Em quanto tempo fica pronto?",
+    answer:
+      "Uma landing page leva de 1 a 2 semanas e uma loja virtual de 3 a 4. Sistemas costumam ficar entre 2 e 4 semanas, conforme o tamanho. A data de entrega já vem escrita na proposta.",
+  },
+  {
+    question: "E se eu quiser mudar algo no meio do projeto?",
+    answer:
+      "Ajustes dentro do que foi combinado entram nas prévias semanais sem custo. Se a mudança acrescenta algo que não estava na proposta, eu te mostro o valor e o prazo extras antes, e você decide se vale a pena.",
+  },
+  {
+    question: "E se der problema depois da entrega?",
+    answer:
+      "Por 90 dias, qualquer erro de funcionamento é corrigido sem cobrança. Pedidos de coisas novas ficam fora da garantia e são orçados à parte.",
     link: { href: "/garantia", label: "Ver termos da garantia" },
   },
   {
@@ -35,19 +50,9 @@ const faqs: FaqItem[] = [
     link: { href: "/radar", label: "Conhecer o Radar" },
   },
   {
-    question: "Como funciona o escopo travado?",
+    question: "Você atende só em São José do Rio Preto?",
     answer:
-      "Antes de escrever uma linha de código, documentamos exatamente o que será entregue. Você aprova. A partir daí, prazo e preço não mudam. Se o escopo precisar mudar no meio do caminho, é tratado como um aditivo com nova precificação.",
-  },
-  {
-    question: "Preciso entender de programação pra acompanhar?",
-    answer:
-      "Não. Você recebe previews semanais do projeto rodando e a comunicação é direta comigo — sem jargão técnico desnecessário. Você foca no seu negócio, eu foco no código.",
-  },
-  {
-    question: "O código é meu no final?",
-    answer:
-      "100%. O código é entregue no seu repositório, o deploy é feito em infraestrutura que você controla. Se quiser trocar de desenvolvedor amanhã, leva tudo com você. Sem lock-in.",
+      "Não. Todo o atendimento é feito por WhatsApp e chamada de vídeo, então funciona do mesmo jeito para qualquer cidade.",
   },
 ];
 
