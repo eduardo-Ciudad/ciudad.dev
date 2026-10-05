@@ -1,5 +1,6 @@
 export const STATUS_STATS = {
-  projetosEntregues: 6,
-  emProducao: 3,
-  testesEscritos: 318,
+  projetosEntregues: 7,
+  emProducao: 7,
+  prazoMedioSemanas: 3,
+  testesEscritos: 500,
 } as const;

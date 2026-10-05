@@ -14,7 +14,7 @@ const metrics: readonly {
 }[] = [
   { label: "projetos entregues", value: STATUS_STATS.projetosEntregues, decimals: 0 },
   { label: "em produção agora", value: STATUS_STATS.emProducao, decimals: 0 },
-  { label: "testes escritos", value: STATUS_STATS.testesEscritos, decimals: 0, suffix: "+" },
+  { label: "prazo médio de entrega", value: STATUS_STATS.prazoMedioSemanas, decimals: 0, suffix: " sem" },
 ] as const;
 
 function formatMetric(value: number, decimals: number) {
