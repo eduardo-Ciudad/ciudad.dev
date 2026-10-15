@@ -90,7 +90,7 @@ export const projetos: Projeto[] = [
     ],
     resultado: "No piloto fechado, a mesma redação recebeu 600 na Kelly e 720 de um corretor humano: a plataforma saiu mais rigorosa, não mais generosa. Os pedidos dos testadores viraram roadmap — repertório, correção por foto e plano de estudo.",
     heroImage: "/img/projetos/kelly-caso-hero.png",
-    featureImage: "/img/projetos/kelly-caso-feature.png",
+    featureImage: "/img/projetos/kelly-funcionalidade.png",
     featureImageCaption: "Tela de resultado: nota por competência e o que treinar a seguir.",
     ctaPrincipal: { label: "Conhecer a Kelly", url: KELLY_URL },
   },
