@@ -37,7 +37,7 @@ export async function generateMetadata({
   if (!projeto || !hasCase(projeto)) return {};
 
   const title = `${projeto.nome} — Case | CiudadLab`;
-  const description = projeto.solucao;
+  const description = projeto.subtitulo ?? projeto.solucao;
   const url = `/projetos/${projeto.slug}`;
 
   return {
@@ -77,9 +77,19 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
             <a href="#visao-geral" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
               Visão geral
             </a>
+            {projeto.ciclo && (
+              <a href="#o-produto" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
+                O produto
+              </a>
+            )}
             <a href="#decisoes-tecnicas" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
               Decisões técnicas
             </a>
+            {projeto.numeros && (
+              <a href="#numeros" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
+                Em números
+              </a>
+            )}
             <a href="#resultado" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
               Resultado
             </a>
@@ -105,7 +115,26 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
             <h1 className="mb-4 font-heading text-4xl font-bold tracking-[-0.5px] text-primary md:text-5xl">
               {projeto.nome}
             </h1>
-            <p className="text-lg leading-relaxed text-muted">Case do projeto</p>
+            <p className="text-lg leading-relaxed text-muted">
+              {projeto.subtitulo ?? "Case do projeto"}
+            </p>
+            {projeto.stack && (
+              <div className="mt-5 flex flex-wrap gap-2">
+                {projeto.stack.map((tecnologia) => (
+                  <span
+                    key={tecnologia}
+                    className="rounded-full border border-card-border bg-card px-3 py-1 text-xs text-primary/80"
+                  >
+                    {tecnologia}
+                  </span>
+                ))}
+                {projeto.status && (
+                  <span className="rounded-full bg-kelly-warning-bg px-3 py-1 text-xs font-semibold text-kelly-warning">
+                    {projeto.status}
+                  </span>
+                )}
+              </div>
+            )}
           </ScrollReveal>
 
           <div className="mb-14">
@@ -132,6 +161,27 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
               </div>
             </section>
           </ScrollReveal>
+
+          {projeto.ciclo && (
+            <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
+              <section id="o-produto">
+                <h2 className="mb-6 font-heading text-2xl font-semibold tracking-[-0.5px] md:text-[28px]">
+                  O ciclo do treino
+                </h2>
+                <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+                  {projeto.ciclo.map((etapa, index) => (
+                    <li key={etapa.titulo} className="rounded-xl border border-card-border bg-card p-5">
+                      <span className="font-mono text-xs text-accent">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <h3 className="mt-3 font-heading text-2xl font-semibold">{etapa.titulo}</h3>
+                      <p className="mt-2 text-sm leading-relaxed text-muted">{etapa.descricao}</p>
+                    </li>
+                  ))}
+                </ol>
+              </section>
+            </ScrollReveal>
+          )}
 
           <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
             <section id="decisoes-tecnicas">
@@ -161,6 +211,28 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
               </figure>
             </section>
           </ScrollReveal>
+
+          {projeto.numeros && (
+            <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
+              <section id="numeros">
+                <h2 className="mb-6 font-heading text-2xl font-semibold tracking-[-0.5px] md:text-[28px]">
+                  Em números
+                </h2>
+                <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+                  {projeto.numeros.map((numero) => (
+                    <div key={numero.rotulo} className="rounded-xl bg-kelly-bg p-5">
+                      <p className="font-kelly-display text-4xl font-light tracking-tight text-white">
+                        {numero.valor}
+                      </p>
+                      <p className="mt-2 font-kelly-body text-[13px] leading-snug text-kelly-text-2">
+                        {numero.rotulo}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </ScrollReveal>
+          )}
 
           <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
             <section id="resultado" className="rounded-xl border border-accent-border bg-accent-light p-6 md:p-8">
@@ -209,35 +281,69 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
           )}
 
           <section className="border-t border-divider pt-14 text-center">
-            <h2 className="mb-3 font-heading text-2xl font-semibold md:text-3xl">
-              Quer construir algo parecido?
-            </h2>
-            <p className="mx-auto mb-7 max-w-sm text-sm text-muted">
-              Conta o que você precisa. Respondo em até 24h com escopo, prazo e valor definidos.
-            </p>
-            <div className="flex flex-wrap items-center justify-center gap-3">
-              <WhatsAppLink
-                href={WHATSAPP_CONTACT_URL}
-                location="projeto"
-                className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-              >
-                Falar no WhatsApp
-                <ArrowUpRight size={16} aria-hidden="true" />
-              </WhatsAppLink>
+            {projeto.categoria === "produto" ? (
+              <div className="kelly-glow flex flex-wrap items-center gap-6 rounded-[22px] p-8 text-left md:p-10">
+                <div className="min-w-0 flex-1">
+                  <h2 className="font-kelly-display text-3xl font-light tracking-tight text-white">
+                    Quer ver a Kelly funcionando?
+                  </h2>
+                  <p className="mt-2 font-kelly-body text-[15px] text-kelly-text-2">
+                    Ou quer um produto assim para o seu negócio?
+                  </p>
+                </div>
+                <div className="flex flex-wrap gap-3">
+                  {projeto.ctaPrincipal && (
+                    <a
+                      href={projeto.ctaPrincipal.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex min-h-12 items-center rounded-full bg-white px-6 text-sm font-semibold text-[#0b1b3a] transition-colors hover:bg-white/90 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                    >
+                      Conhecer a Kelly ↗
+                    </a>
+                  )}
+                  <WhatsAppLink
+                    href={WHATSAPP_CONTACT_URL}
+                    location="projeto"
+                    className="inline-flex min-h-12 items-center rounded-full bg-accent px-6 text-sm font-semibold text-white transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
+                  >
+                    Falar no WhatsApp
+                  </WhatsAppLink>
+                </div>
+              </div>
+            ) : (
+              <>
+                <h2 className="mb-3 font-heading text-2xl font-semibold md:text-3xl">
+                  Quer construir algo parecido?
+                </h2>
+                <p className="mx-auto mb-7 max-w-sm text-sm text-muted">
+                  Conta o que você precisa. Respondo em até 24h com escopo, prazo e valor definidos.
+                </p>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <WhatsAppLink
+                    href={WHATSAPP_CONTACT_URL}
+                    location="projeto"
+                    className="inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                  >
+                    Falar no WhatsApp
+                    <ArrowUpRight size={16} aria-hidden="true" />
+                  </WhatsAppLink>
 
-              {[projeto.ctaPrincipal, projeto.ctaSecundario].filter(Boolean).map((cta) => (
-                <a
-                  key={cta!.url}
-                  href={cta!.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-accent-border px-7 py-3.5 text-sm font-semibold text-accent transition-colors hover:bg-accent-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
-                >
-                  {cta!.label}
-                  <ArrowUpRight size={16} aria-hidden="true" />
-                </a>
-              ))}
-            </div>
+                  {[projeto.ctaPrincipal, projeto.ctaSecundario].filter(Boolean).map((cta) => (
+                    <a
+                      key={cta!.url}
+                      href={cta!.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 rounded-full border border-accent-border px-7 py-3.5 text-sm font-semibold text-accent transition-colors hover:bg-accent-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+                    >
+                      {cta!.label}
+                      <ArrowUpRight size={16} aria-hidden="true" />
+                    </a>
+                  ))}
+                </div>
+              </>
+            )}
             <Link href="/projetos" className="mt-7 inline-block text-sm font-medium text-muted transition-colors hover:text-accent">
               Ver todos os projetos
             </Link>
