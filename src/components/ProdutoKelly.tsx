@@ -13,13 +13,31 @@ const competencias = [
 
 export function ProdutoKelly() {
   return (
-    <section id="kelly-academy" aria-labelledby="kelly-titulo" className="px-6 pb-24 pt-6">
+    <section id="kelly-academy" aria-labelledby="produto-titulo" className="px-6 pb-24 pt-6">
       <div className="mx-auto flex max-w-6xl flex-col gap-5">
         <ScrollReveal>
+          <div className="mb-5 flex flex-wrap items-end justify-between gap-x-12 gap-y-4">
+            <div className="flex max-w-[640px] flex-col gap-3">
+              <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">
+                Produto próprio
+              </span>
+              <h2
+                id="produto-titulo"
+                className="font-heading text-[clamp(2.2rem,1.6rem+2vw,3rem)] font-semibold leading-[1.05] tracking-[-0.02em] text-primary"
+              >
+                Não é só portfólio. <span className="text-accent">É produto rodando.</span>
+              </h2>
+            </div>
+            <p className="max-w-[400px] text-base leading-relaxed text-muted">
+              A Kelly Academy foi idealizada, construída e é mantida pela CiudadLab. O mesmo
+              cuidado que vai para o seu projeto.
+            </p>
+          </div>
+
           <div className="kelly-glow flex flex-col items-center gap-12 rounded-[28px] px-6 py-10 text-kelly-text md:px-14 md:py-16 lg:flex-row lg:gap-14">
             <div className="flex min-w-0 flex-1 flex-col gap-6">
               <p className="font-kelly-mono text-[11.5px] tracking-[0.16em] text-white/60">
-                PRODUTO PRÓPRIO · CIUDADLAB
+                CORREÇÃO DE REDAÇÃO DO ENEM
               </p>
 
               <div className="flex items-center gap-3.5">
@@ -27,17 +45,13 @@ export function ProdutoKelly() {
                 <p className="font-kelly-body text-[22px] font-semibold text-white">Kelly Academy</p>
               </div>
 
-              <h2
-                id="kelly-titulo"
-                className="max-w-[560px] font-kelly-display text-[clamp(2.4rem,1.6rem+2.4vw,3.6rem)] font-light leading-[1.04] tracking-[-0.035em] text-white"
-              >
+              <h3 className="max-w-[560px] font-kelly-display text-[clamp(2.4rem,1.6rem+2.4vw,3.6rem)] font-light leading-[1.04] tracking-[-0.035em] text-white">
                 Descubra onde sua redação perde pontos.
-              </h2>
+              </h3>
 
               <p className="max-w-[520px] font-kelly-body text-lg leading-relaxed text-kelly-text/80">
                 Plataforma de treino para a redação do ENEM. Corrige competência por competência,
-                aponta o trecho que segurou a nota e mostra o que treinar a seguir. Pensada,
-                construída e mantida aqui.
+                aponta o trecho que segurou a nota e mostra o que treinar a seguir.
               </p>
 
               <div className="grid grid-cols-3 border-y border-white/12 py-4">
