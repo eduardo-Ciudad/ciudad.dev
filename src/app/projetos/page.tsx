@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Navbar } from "@/components/Navbar";
 import { ProjetosGrid } from "@/components/ProjetosGrid";
+import { ProdutoDestaqueCard } from "@/components/ProdutoDestaqueCard";
 import { CoverflowCarousel, type CoverflowSlide } from "@/components/ui/coverflow-carousel";
 import { projetos } from "@/data/projetos";
 
@@ -26,6 +27,8 @@ const slides: CoverflowSlide[] = projetos
     targetId: projeto.slug,
   }));
 
+const produtos = projetos.filter((projeto) => projeto.categoria === "produto");
+
 export default function ProjetosPage() {
   return (
     <>
@@ -36,6 +39,9 @@ export default function ProjetosPage() {
             <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">Portfólio</span>
             <h1 className="mt-4 font-heading text-4xl font-semibold tracking-[-1px] md:text-6xl">Projetos que já saíram do papel</h1>
           </div>
+          {produtos.map((projeto) => (
+            <ProdutoDestaqueCard key={projeto.slug} projeto={projeto} />
+          ))}
           <CoverflowCarousel
             slides={slides}
             showCaption
