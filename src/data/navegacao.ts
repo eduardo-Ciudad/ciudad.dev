@@ -3,6 +3,11 @@ import { getProjeto, hasCase } from "./projetos";
 
 const projetosDoMenu = [
   {
+    slug: "kelly-academy",
+    title: "Kelly Academy",
+    meta: "Produto próprio",
+  },
+  {
     slug: "gabikids",
     title: "GabiKids",
     meta: "E-commerce",
