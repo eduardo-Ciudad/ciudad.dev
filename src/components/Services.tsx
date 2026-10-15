@@ -117,7 +117,7 @@ const services: {
         url: "/projetos#promobot",
       },
       otherProjects:
-        "Veja também o StudyMind, plataforma de estudos com IA, entre outros projetos do portfólio.",
+        "Veja também a Kelly Academy, plataforma de treino para redação com IA, entre outros projetos do portfólio.",
     },
   },
 ];

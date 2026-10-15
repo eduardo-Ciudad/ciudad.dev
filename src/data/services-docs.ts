@@ -459,7 +459,7 @@ export const servicesDocs: ServiceDoc[] = [
             },
           },
         ],
-        note: "Veja também o StudyMind, plataforma de estudos com IA, entre outros projetos do portfólio.",
+        note: "Veja também a Kelly Academy, plataforma de treino para redação com IA, entre outros projetos do portfólio.",
       },
     ],
   },

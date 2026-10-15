@@ -45,7 +45,6 @@ function AnimatedNumber({
     }
     const startValue = value * 0.88;
     motionValue.set(startValue);
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setDisplay(formatMetric(startValue, decimals));
     const unsubscribe = motionValue.on("change", (v) => {
       setDisplay(formatMetric(v, decimals));

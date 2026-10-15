@@ -13,10 +13,11 @@ const categoriaCarousel = {
   fullstack: "Projeto fullstack",
   "ferramenta-interna": "Ferramenta interna",
   "landing-page": "Landing page",
+  produto: "Produto próprio",
 } as const;
 
 const slides: CoverflowSlide[] = projetos
-  .filter((projeto) => projeto.destaque && projeto.imagem)
+  .filter((projeto) => projeto.categoria !== "produto" && projeto.destaque && projeto.imagem)
   .map((projeto) => ({
     src: projeto.imagem!,
     alt: `Preview do projeto ${projeto.nome}`,

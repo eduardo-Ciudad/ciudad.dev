@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Cormorant_Garamond, DM_Sans } from "next/font/google";
+import {
+  Cormorant_Garamond,
+  DM_Sans,
+  Figtree,
+  Geist_Mono,
+  Inter_Tight,
+} from "next/font/google";
 import Script from "next/script";
 import { IntroLoader } from "@/components/IntroLoader";
 import { CookieBanner } from "@/components/CookieBanner";
@@ -19,6 +25,27 @@ const dmSans = DM_Sans({
   variable: "--font-dm-sans",
   subsets: ["latin"],
   weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const kellyDisplay = Inter_Tight({
+  variable: "--font-kelly-display",
+  subsets: ["latin"],
+  weight: ["300"],
+  display: "swap",
+});
+
+const kellyBody = Figtree({
+  variable: "--font-kelly-body",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  display: "swap",
+});
+
+const kellyMono = Geist_Mono({
+  variable: "--font-kelly-mono",
+  subsets: ["latin"],
+  weight: ["400", "500"],
   display: "swap",
 });
 
@@ -66,7 +93,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
     process.env.NODE_ENV === "production" && Boolean(gaMeasurementId);
 
   return (
-    <html lang="pt-BR" className={`${cormorant.variable} ${dmSans.variable}`}>
+    <html
+      lang="pt-BR"
+      className={`${cormorant.variable} ${dmSans.variable} ${kellyDisplay.variable} ${kellyBody.variable} ${kellyMono.variable}`}
+    >
       <body className="font-body antialiased">
         <script
           type="application/ld+json"

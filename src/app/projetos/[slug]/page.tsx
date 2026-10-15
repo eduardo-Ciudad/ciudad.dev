@@ -19,6 +19,7 @@ const categoriaLabel = {
   fullstack: "Projeto fullstack",
   "ferramenta-interna": "Ferramenta interna",
   "landing-page": "Landing page",
+  produto: "Produto próprio",
 } as const;
 
 export const dynamicParams = false;

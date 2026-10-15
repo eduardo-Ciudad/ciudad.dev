@@ -1,12 +1,18 @@
+import { KELLY_URL } from "./kelly";
+
 export type Projeto = {
   slug: string;
   nome: string;
-  categoria: "fullstack" | "ferramenta-interna" | "landing-page";
+  categoria: "fullstack" | "ferramenta-interna" | "landing-page" | "produto";
   destaque: boolean;
   pago?: boolean;
   autoral?: boolean;
   imagem?: string;
   status?: string;
+  subtitulo?: string;
+  stack?: string[];
+  ciclo?: { titulo: string; descricao: string }[];
+  numeros?: { valor: string; rotulo: string }[];
   descricao: string[];
   problema?: string;
   solucao?: string;
@@ -44,6 +50,50 @@ export function getProjeto(slug: string) {
 }
 
 export const projetos: Projeto[] = [
+  {
+    slug: "kelly-academy",
+    nome: "Kelly Academy",
+    categoria: "produto",
+    destaque: true,
+    autoral: true,
+    status: "Em piloto",
+    imagem: "/img/projetos/kelly-caso-hero.png",
+    subtitulo: "Uma plataforma de treino para a redação do ENEM, do domínio ao deploy. Idealizada, desenhada e construída pela CiudadLab.",
+    stack: ["Java 17 · Spring Boot", "Arquitetura hexagonal", "PostgreSQL · Flyway", "Gemini", "React · Vite · TypeScript"],
+    descricao: [
+      "Correção da redação nas 5 competências do ENEM, com o trecho que segurou a nota",
+      "Repertório curado: 63 fichas em 13 eixos, com busca sem acento",
+      "Foto da redação manuscrita vira texto e vai direto para a correção",
+    ],
+    problema: "O estudante de ENEM que já sabe escrever uma redação recebe uma nota e não entende por que ela não sobe. Correção humana é cara e demora, e a nota sozinha não diz o que treinar.",
+    solucao: "Uma plataforma que corrige nas 5 competências, aponta o trecho exato que segurou a nota e entrega o próximo passo: repertório para usar, tema para praticar e evolução ao longo do tempo.",
+    ciclo: [
+      { titulo: "Escreve", descricao: "Digitando ou por foto da folha manuscrita." },
+      { titulo: "Diagnóstico", descricao: "Nota por competência e o trecho que pesou." },
+      { titulo: "Estudo", descricao: "Repertório curado por eixo e problema social." },
+      { titulo: "Nova tentativa", descricao: "A tela Evolução mostra se a nota subiu." },
+    ],
+    decisoesTecnicas: [
+      "A IA corrige, o backend decide: o Gemini recebe um prompt especializado e devolve JSON estruturado; limites, regras determinísticas e persistência ficam no Java",
+      "Arquitetura hexagonal — o domínio não depende de framework e a IA entra como adapter, então trocar de modelo não mexe nas regras do produto",
+      "Correção e transcrição por foto compartilham o mesmo cliente do Gemini, extraído numa refatoração própria antes do novo adapter",
+      "Repertório curado, não gerado: conteúdo pesquisado e revisado, carregado por migrations escritas à mão, com busca sem acento (unaccent) e consulta paginada em duas etapas",
+      "Custo de IA sob controle: limite diário por usuário no plano grátis e teto global de correções, reservados de forma atômica no banco",
+      "Auditoria de segurança documentada (injeção, rate limit, rotas e vazamento de dados) e cadastro fechado durante o piloto",
+      "Backend e PostgreSQL em Docker Compose numa VPS com Nginx e HTTPS, frontend React na Vercel e CI no GitHub Actions",
+    ],
+    numeros: [
+      { valor: "63", rotulo: "repertórios curados ativos" },
+      { valor: "52", rotulo: "problemas sociais em 13 eixos" },
+      { valor: "300+", rotulo: "testes automatizados no backend" },
+      { valor: "14", rotulo: "migrations Flyway escritas à mão" },
+    ],
+    resultado: "No piloto fechado, a mesma redação recebeu 600 na Kelly e 720 de um corretor humano: a plataforma saiu mais rigorosa, não mais generosa. Os pedidos dos testadores viraram roadmap — repertório, correção por foto e plano de estudo.",
+    heroImage: "/img/projetos/kelly-caso-hero.png",
+    featureImage: "/img/projetos/kelly-caso-feature.png",
+    featureImageCaption: "Tela de resultado: nota por competência e o que treinar a seguir.",
+    ctaPrincipal: { label: "Conhecer a Kelly", url: KELLY_URL },
+  },
   {
     slug: "gabikids",
     nome: "GabiKids",
@@ -116,14 +166,6 @@ export const projetos: Projeto[] = [
       label: "Código-fonte",
       url: "https://github.com/eduardo-Ciudad/promo-bot-mercadolivre",
     },
-  },
-  {
-    slug: "studymind",
-    nome: "StudyMind",
-    categoria: "fullstack",
-    destaque: true,
-    status: "Em manutenção",
-    descricao: ["Plataforma de estudos com IA"],
   },
   {
     slug: "dev-journal",

@@ -98,6 +98,8 @@ export function IntroLoader() {
           className="fixed inset-0 z-[100] bg-dark flex flex-col items-center justify-center"
           exit={{ y: "-100%" }}
           transition={{
+            // The ref records a pre-paint session decision and never affects visible content.
+            // eslint-disable-next-line react-hooks/refs
             duration: instantRef.current ? 0 : EXIT_DURATION,
             ease: EASE,
           }}

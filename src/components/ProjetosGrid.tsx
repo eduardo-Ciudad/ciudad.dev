@@ -17,6 +17,7 @@ const categoriaLabel = {
   fullstack: "Fullstack",
   "ferramenta-interna": "Ferramenta interna",
   "landing-page": "Landing page",
+  produto: "Produto próprio",
 } satisfies Record<Projeto["categoria"], string>;
 
 function ProjetoCard({ projeto, delay }: { projeto: Projeto; delay: number }) {
@@ -313,9 +314,10 @@ function ProjetosCarousel({
 }
 
 export function ProjetosGrid({ projetos }: ProjetosGridProps) {
-  const fullstack = projetos.filter((projeto) => projeto.categoria === "fullstack");
-  const ferramentas = projetos.filter((projeto) => projeto.categoria === "ferramenta-interna");
-  const landingPages = projetos.filter((projeto) => projeto.categoria === "landing-page");
+  const projetosDaGrade = projetos.filter((projeto) => projeto.categoria !== "produto");
+  const fullstack = projetosDaGrade.filter((projeto) => projeto.categoria === "fullstack");
+  const ferramentas = projetosDaGrade.filter((projeto) => projeto.categoria === "ferramenta-interna");
+  const landingPages = projetosDaGrade.filter((projeto) => projeto.categoria === "landing-page");
 
   return (
     <div className="space-y-16 md:space-y-24">

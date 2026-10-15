@@ -25,6 +25,29 @@
   --color-divider: rgba(0, 0, 0, 0.08);
   --font-heading: var(--font-cormorant);
   --font-body: var(--font-dm-sans);
+  --font-kelly-display: var(--font-kelly-display);
+  --font-kelly-body: var(--font-kelly-body);
+  --font-kelly-mono: var(--font-kelly-mono);
+  --color-kelly-bg: #0b0c12;
+  --color-kelly-surface: #12131b;
+  --color-kelly-border: #1f2130;
+  --color-kelly-text: #e6e8ef;
+  --color-kelly-text-2: #b4b8c8;
+  --color-kelly-text-3: #8b8fa3;
+  --color-kelly-accent-text: #a3b6ff;
+  --color-kelly-tint: #1a1f3d;
+  --color-kelly-warning: #f5b94a;
+  --color-kelly-warning-bg: #2e2a1f;
+  --color-kelly-c1: #7db8ff;
+  --color-kelly-c1-bg: #22344c;
+  --color-kelly-c2: #b9a2fb;
+  --color-kelly-c2-bg: #30294a;
+  --color-kelly-c3: #4fd1b5;
+  --color-kelly-c3-bg: #1f3a36;
+  --color-kelly-c4: #f5b94a;
+  --color-kelly-c4-bg: #3d3120;
+  --color-kelly-c5: #f58db0;
+  --color-kelly-c5-bg: #412834;
 }
 
 html {
@@ -49,6 +72,14 @@ body {
 
 .no-scrollbar::-webkit-scrollbar {
   display: none;
+}
+
+.kelly-glow {
+  background-color: #0b0c12;
+  background-image:
+    radial-gradient(60% 80% at 8% 0%, rgba(47, 91, 255, 0.38) 0%, rgba(47, 91, 255, 0) 70%),
+    radial-gradient(50% 70% at 100% 20%, rgba(124, 82, 230, 0.3) 0%, rgba(124, 82, 230, 0) 70%),
+    radial-gradient(60% 60% at 70% 110%, rgba(18, 120, 120, 0.32) 0%, rgba(18, 120, 120, 0) 70%);
 }
 
 .blog-prose {
