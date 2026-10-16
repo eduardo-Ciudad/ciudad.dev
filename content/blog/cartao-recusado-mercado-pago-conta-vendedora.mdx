@@ -1,0 +1,76 @@
+---
+title: "Pix aprovava, cartão recusava: o erro de pagamento que não estava no código"
+description: "Bastidor real do checkout da GabiKids com Mercado Pago: todo cartão recusado por segurança, uma integração com nota 98/100 e uma solução que só apareceu numa ligação para o suporte."
+slug: "cartao-recusado-mercado-pago-conta-vendedora"
+date: "2026-10-16"
+tags: ["bastidores", "e-commerce", "pagamentos"]
+case: "gabikids"
+---
+
+A [GabiKids](/projetos/gabikids) já vendia no Pix sem problema nenhum. No cartão de crédito, toda compra voltava com a mesma mensagem: **recusado por motivos de segurança**. Comprador diferente, cartão diferente, celular diferente. O resultado não mudava.
+
+Este texto conta como a gente procurou o problema no lugar errado por um bom tempo, o que de fato estava faltando e o checklist que eu passei a seguir antes de ligar o cartão em qualquer loja nova.
+
+## A resposta curta
+
+- O Mercado Pago recusava todo pagamento com cartão com o código `cc_rejected_high_risk`, que vem do antifraude.
+- Melhoramos a integração até **98 de 100** na medição de qualidade do próprio Mercado Pago. Não resolveu.
+- O problema estava na **conta vendedora**: faltavam dados de configuração que o painel não mostrava como pendência.
+- Só uma ligação para o suporte encontrou e corrigiu. Depois do ajuste, o cartão voltou a aprovar.
+
+## O que significa cc_rejected_high_risk
+
+A primeira dúvida foi se o cartão estava desabilitado na conta. Não estava. Quando um meio de pagamento não está liberado, o Mercado Pago nem cria o pagamento. Aqui o pagamento era criado, passava pela análise de risco e era recusado lá.
+
+Esse antifraude avalia quem compra e também **quem recebe**. E ele não explica o motivo da recusa, nem no painel nem na API. Isso é de propósito: se dissesse, quem frauda aprenderia a contornar.
+
+O Pix aprovar e o cartão não também tinha explicação. No cartão existe estorno (chargeback), e quem responde por ele é a conta que recebe. No Pix esse risco não existe da mesma forma.
+
+## Primeiro suspeito: a integração
+
+A loja usa o Checkout Transparente: o formulário de cartão do Mercado Pago (Card Payment Brick) dentro do nosso checkout, com o pagamento criado pelo nosso backend. Olhando o código, a gente mandava o mínimo. Antifraude com pouca informação tende a desconfiar, então completamos o envio:
+
+| O que passamos a enviar | Por que ajuda |
+| --- | --- |
+| CPF e nome do comprador | Liga o pagamento a uma pessoa real |
+| Device ID (script de segurança do Mercado Pago) | Identifica o aparelho usado na compra |
+| Itens, com descrição | Mostra o que está sendo vendido |
+| Endereço de entrega | Confere com os dados do comprador |
+| Nome que aparece na fatura | Evita contestação por compra "desconhecida" |
+
+A medição de qualidade do Mercado Pago subiu para 98 de 100. O cartão continuou recusando.
+
+## Segundo suspeito: a conta
+
+No painel havia uma pendência de segurança no cadastro da conta. Fazia sentido: conta com verificação incompleta parece mais arriscada. A pendência foi resolvida no mesmo dia. O cartão continuou recusando.
+
+## Dois erros que pioraram o quadro
+
+Vale contar, porque são fáceis de cometer:
+
+- **Testar com a conta da própria dona da loja.** Para o antifraude, isso parece autocompra, um padrão clássico de fraude. Esse teste não prova nada.
+- **Insistir.** Foram umas quatro recusas em menos de duas horas na mesma conta nova. Cada tentativa recusada piora o histórico da conta e dos cartões usados.
+
+A regra que ficou: recusou por risco, **para de testar** e fala com o Mercado Pago.
+
+## Enquanto isso, a loja não podia parar
+
+Em vez de deixar o cliente descobrir a recusa no fim da compra, colocamos um aviso no checkout: pagamento no crédito temporariamente indisponível, com o Pix como opção principal e o WhatsApp da loja para quem precisasse parcelar. Foi uma mudança pequena, de propósito, fácil de desfazer depois.
+
+## A ligação que resolveu
+
+O atendimento por chat respondeu de forma genérica ("podem ser muitas tentativas"). Na ligação, o caminho foi ser direto: sou vendedor, todo cartão recusa com `cc_rejected_high_risk`, o Pix funciona, a integração tem 98/100, e aqui estão os IDs dos pagamentos recusados.
+
+Com acesso à conta, o atendente encontrou o que nenhum painel mostrava: **dados de configuração da conta que nunca tinham sido preenchidos**. Feito o ajuste, o pagamento com cartão aprovou e o aviso provisório saiu do checkout no mesmo dia.
+
+## Checklist antes de ligar o cartão numa loja nova
+
+1. **Cadastro da conta vendedora completo**, incluindo os dados do negócio, mesmo os que o painel não marca como obrigatórios.
+2. **Integração enviando dados completos** do comprador, device ID, itens e endereço.
+3. **Medição de qualidade** feita com um pagamento real de produção.
+4. **Primeiro teste com um comprador de verdade**, nunca com a conta do dono da loja.
+5. **Recusou com `high_risk`?** Pare, junte os IDs dos pagamentos e ligue. Insistir só piora.
+
+## Resumindo
+
+Às vezes o bug não está no código. Melhorar a integração valeu a pena e deixou a loja mais bem avaliada pelo Mercado Pago, mas a causa estava no cadastro da conta. A parte que mais pesou foi saber a hora de parar de testar e pedir ajuda com as informações certas na mão.
