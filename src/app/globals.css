@@ -118,6 +118,31 @@ body {
 .blog-prose th { background: var(--color-accent-light); color: var(--color-primary); font-weight: 600; }
 .blog-prose td { color: var(--color-muted); }
 .blog-prose tr:last-child td { border-bottom: 0; }
+.blog-prose code {
+  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-size: 0.86em;
+  color: var(--color-primary);
+  background: var(--color-accent-light);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  overflow-wrap: anywhere;
+}
+.blog-prose pre {
+  background: var(--color-dark);
+  color: #e9e6df;
+  border-radius: 12px;
+  padding: 1.1rem 1.25rem;
+  overflow-x: auto;
+  font-size: 0.85rem;
+  line-height: 1.65;
+}
+.blog-prose pre code {
+  background: none;
+  color: inherit;
+  padding: 0;
+  font-size: inherit;
+  overflow-wrap: normal;
+}
 
 @media (min-width: 768px) {
   .blog-prose { font-size: 1.0625rem; }
