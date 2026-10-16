@@ -1,0 +1,68 @@
+---
+title: "Como nasceu a Kelly Academy: o nome, a marca e a busca por uma nota justa"
+description: "A outra metade do bastidor da Kelly Academy: o pivô que deu origem ao produto, a escolha do nome e da identidade visual e o trabalho para a correção por IA parar de dar 1000 para quem não merecia."
+slug: "kelly-academy-nome-marca-nota-justa"
+date: "2026-10-16"
+tags: ["bastidores", "produto", "inteligência artificial"]
+case: "kelly-academy"
+---
+
+No [primeiro bastidor](/blog/kelly-academy-ia-corrige-backend-decide) eu expliquei a arquitetura da [Kelly Academy](/projetos/kelly-academy): a IA avalia, o backend decide. Este texto é sobre o resto. As decisões que não aparecem no código, os redesenhos que eu precisei fazer e o problema mais difícil do produto até agora: fazer a nota ser justa.
+
+## Começou como outro produto
+
+A Kelly nasceu de um pivô. Antes existia o StudyMind, uma plataforma de estudos com IA para qualquer matéria. Ampla demais para um produto pequeno. Em setembro de 2026 eu reduzi o foco a uma coisa só: **a redação do ENEM**.
+
+O público ficou bem definido: estudante que já consegue escrever uma redação, mas não entende por que a nota trava. O projeto recomeçou do zero, sem aproveitar o código antigo.
+
+## Um nome que não soasse como ferramenta
+
+"StudyMind Redação" descrevia o produto, mas era longo e genérico. Testei nomes com trocadilho de IA, como **essAI** (de *essay*) e **ensaIA**. Ficavam espertos no papel, mas soavam como mais uma ferramenta.
+
+O nome final foi **Kelly Academy**. Um nome de gente, porque a experiência que eu queria era a de uma professora que corrige com cuidado, não a de um robô que cospe nota.
+
+## A marca, em três tentativas
+
+1. **Logo gerada por IA.** Descartada. Parecia qualquer outra logo de app.
+2. **A folha.** Um símbolo de folha de redação com o canto dobrado e um "k". Funcionou no primeiro rebranding, mas era literal demais.
+3. **Três curvas.** No fim eu mesmo desenhei a logo atual: três curvas, com uma delas cruzando todas.
+
+A tipografia passou pelo mesmo filtro. A primeira fonte dos títulos ficou simpática demais para um produto que precisa passar rigor. Troquei por uma fonte fina e mais séria nos títulos e mantive uma fonte arredondada no texto corrido, para não ficar frio. O tema escuro com acento azul ficou, e cada uma das cinco competências do ENEM ganhou uma cor própria, usada em toda a interface.
+
+## A landing que precisou ser refeita
+
+A primeira landing ficou boa no computador e ruim no celular: pesada para carregar, com informação demais e dividida em blocos que não convidavam a rolar a página. Refiz com uma referência mais leve, no estilo de Linear, Stripe e Notion, com a folha de redação contando o processo em quatro etapas enquanto a pessoa rola.
+
+A lição foi simples: desenhar antes de codar, e olhar o celular desde o primeiro esboço.
+
+## A parte difícil: uma nota justa
+
+O piloto começou fechado, com dois amigos testando, cadastro só por convite e um teto de correções por dia somando todo mundo. O primeiro retorno foi bom de ouvir: a mesma redação tirou **600 na Kelly e 720 com um corretor humano**. A plataforma estava mais rigorosa.
+
+Depois veio o problema oposto, e esse é pior: uma redação recebeu **1000** sem merecer. Nota máxima errada tira do aluno o motivo para treinar. Um 600 rigoroso ensina mais que um 1000 de presente.
+
+### Qual régua usar
+
+A primeira decisão foi escolher a régua. A Kelly não tenta imitar a correção humana do ENEM, que tem corretores avaliando mais de cem redações por dia. A régua é a **matriz oficial do INEP**, a mesma da cartilha do participante. A nota oficial serve como teto, não como meta: a Kelly não infla nota para agradar.
+
+### O que está mudando na correção
+
+- **Prompt reescrito com as regras da cartilha**, competência por competência, em vez de instruções gerais.
+- **Coerência entre nota e problemas.** Se a IA aponta problemas sérios numa competência, a nota dela não pode ser a máxima. Quando a evidência não sustenta a nota, o backend ajusta sozinho e mostra ao aluno o motivo do ajuste.
+- **Modelo e raciocínio testados.** A correção usa um modelo leve do Gemini com raciocínio no nível médio. O nível alto custou mais e não melhorou a nota.
+- **Um conjunto de calibração**: redações com nota conhecida, usadas para medir cada mudança antes de ela ir para produção.
+
+```text
+// Regra ilustrativa: a IA sugere, o backend confere
+se competencia.problemasGraves > 0 e competencia.nota == 200:
+    competencia.nota = tetoPelosProblemas(competencia)
+    competencia.motivoAjuste = "Nota limitada: 2 desvios graves apontados no texto"
+```
+
+## O que vem agora
+
+Os pedidos do piloto viraram roadmap. Repertório e correção por foto já estão no ar. Na fila estão o plano de estudo focado na competência mais fraca, a prática por partes (só a introdução, só uma conclusão), a Julia, uma assistente para tirar dúvidas rápidas sobre a correção, e a abertura do cadastro para qualquer estudante.
+
+## Resumindo
+
+Criar um produto próprio é tomar decisão o tempo todo, e quase nenhuma é de código: o foco, o nome, a marca, quando refazer uma tela. Na parte técnica, a lição foi que corrigir com IA não termina quando a IA responde. A nota só vale se for justa, e justa quer dizer medida pela mesma régua, sempre.
