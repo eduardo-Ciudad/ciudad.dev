@@ -1,0 +1,73 @@
+---
+title: "Por que a nossa assistente de IA só faz uma coisa"
+description: "Os bastidores da Júlia, a assistente da Kelly Academy: escopo fechado, limites de uso e controle de custo desde o primeiro dia."
+slug: "assistente-ia-escopo-fechado-julia"
+date: "2026-10-22"
+tags: ["inteligência artificial", "bastidores", "kelly academy", "sistema personalizado"]
+case: "kelly-academy"
+---
+
+Quando alguém fala em colocar inteligência artificial num sistema, a primeira imagem costuma ser um chat que responde qualquer coisa. Um ChatGPT dentro do site. Foi exatamente isso que decidimos **não** fazer na Júlia, a assistente da [Kelly Academy](/projetos/kelly-academy), plataforma de treino da redação do ENEM desenvolvida pela CiudadLab.
+
+A Júlia faz uma coisa só: explica a correção da redação do aluno. Neste post contamos por que chegamos nessa decisão e como ela simplificou todo o resto.
+
+## O problema que ela resolve
+
+Na Kelly Academy, o aluno escreve a redação e recebe uma correção por competência, no modelo da matriz do INEP. A correção é rigorosa e detalhada, mas gera uma dúvida natural: *por que eu perdi pontos aqui?* ou *o que exatamente significa esse problema na competência 3?*
+
+Antes, essa dúvida ficava sem resposta dentro da plataforma. O aluno lia a correção, não entendia um ponto e seguia em frente com a mesma dificuldade. A Júlia existe para fechar essa lacuna.
+
+## Primeira versão do escopo: grande demais
+
+No começo, a ideia era uma assistente que também tirasse dúvidas sobre a plataforma: como funciona o Repertório, onde fica a evolução, como enviar uma redação por foto. Parecia útil.
+
+Quando colocamos no papel, apareceram três problemas:
+
+1. **Respostas genéricas.** Quanto mais assuntos a IA cobre, menos contexto ela tem sobre cada um. Uma pergunta sobre a correção competiria com perguntas sobre navegação.
+2. **Custo imprevisível.** Cada mensagem consome tokens. Um chat aberto para qualquer assunto é um convite para conversas longas que não ajudam o aluno a escrever melhor.
+3. **Difícil de avaliar.** Se a Júlia responde tudo, como saber se ela está respondendo bem?
+
+Para dúvidas sobre o sistema, uma interface clara e um bom tour resolvem melhor do que uma IA. Então cortamos.
+
+## A versão final: a Júlia conhece a sua redação
+
+Com o escopo fechado, cada conversa com a Júlia fica **vinculada a uma redação específica**. Quando o aluno abre o chat, ela já recebe o contexto daquela correção: o texto, as notas por competência e o diagnóstico. Não precisa adivinhar do que o aluno está falando.
+
+Isso muda a qualidade da resposta. Em vez de explicar coesão de forma genérica, ela pode apontar onde, naquele texto, a coesão falhou.
+
+Algumas decisões que vieram junto:
+
+- **A conversa vale durante a sessão.** O histórico continua enquanto o aluno estiver logado e recomeça a cada novo login. As mensagens ficam guardadas no banco, e isso está descrito na política de privacidade.
+- **Redações anuladas ficam de fora.** Se a correção anulou o texto, não há competência para explicar, e a Júlia não abre.
+- **Ela aparece na hora certa.** O tour de apresentação só é exibido depois que o aluno recebe a primeira correção. Antes disso, não há nada para ela explicar.
+
+## Limites desde o primeiro dia
+
+Toda feature com IA generativa tem um custo variável. Por isso, os limites foram desenhados junto com a funcionalidade, não depois da primeira fatura:
+
+- até **10 perguntas por conversa**;
+- até **20 perguntas por dia** por aluno;
+- um **teto global diário** para a plataforma inteira.
+
+Quando algum limite é atingido, o sistema avisa com clareza em vez de simplesmente falhar.
+
+Também separamos a Júlia em um **projeto próprio no Google Cloud**, com chave de API independente da usada na correção das redações. O motivo não é ganhar cota, e sim isolamento: se a Júlia tiver um pico de uso, a correção das redações, que é o coração do produto, continua funcionando. E fica fácil enxergar quanto cada parte custa.
+
+## Como ela foi construída
+
+O backend da Kelly Academy é em Java com Spring Boot, em arquitetura hexagonal. A Júlia seguiu o mesmo padrão: primeiro o domínio (conversa, mensagem, cota diária), depois a persistência, a integração com o modelo de IA e, por fim, os casos de uso e os endpoints. Cada etapa entrou com testes unitários antes de seguir para a próxima.
+
+Na primeira versão a resposta é síncrona: o aluno envia a pergunta e recebe a resposta completa. Respostas em streaming, aparecendo aos poucos, ficaram para uma próxima etapa.
+
+A identidade visual também passou por algumas versões. A primeira era uma personagem ilustrada, mas destoava do visual da plataforma. A versão final é uma marca mais simples: um balão de conversa que forma a letra "j", que funciona bem no botão flutuante e combina com o restante da Kelly Academy.
+
+## O que levamos disso para projetos de clientes
+
+A lição vale para qualquer negócio que queira IA no seu sistema:
+
+- **Comece pelo problema, não pela tecnologia.** "Quero um chat com IA" não é um requisito. "O cliente não entende o orçamento que recebeu" é.
+- **Escopo fechado gera respostas melhores.** Quanto mais contexto específico a IA recebe, menos ela inventa.
+- **Custo é parte do desenho.** Limites por usuário e um teto global evitam surpresas e deixam o produto sustentável.
+- **Isole o que é crítico.** A funcionalidade principal não pode cair por causa de uma funcionalidade auxiliar.
+
+Se você tem um sistema e está pensando em colocar IA nele, ou quer construir um do zero, conheça o nosso trabalho com [sistemas personalizados](/servicos/sistema-personalizado) ou fale com a gente pelo WhatsApp.
