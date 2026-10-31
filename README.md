@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CiudadLab · Site institucional
 
-## Getting Started
+![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=nextdotjs)
+![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react)
+![Tailwind](https://img.shields.io/badge/Tailwind-4-06B6D4?style=flat-square&logo=tailwindcss)
 
-First, run the development server:
+Site da [CiudadLab](https://ciudadlab.com.br), estúdio de desenvolvimento que eu fundei para criar sites, lojas virtuais e sistemas sob medida. Reúne os serviços, os projetos entregues, os produtos próprios (Radar e Kelly Academy) e um blog com bastidores técnicos dos projetos.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## O que tem
+
+* **Home:** serviços, projetos, como funciona, diferenciais, perguntas frequentes e o founder
+* **Serviços** (`/servicos/[slug]`): landing page, e-commerce e sistema personalizado, cada um com um resumo e os detalhes técnicos em uma camada separada
+* **Projetos** (`/projetos` e `/projetos/[slug]`): cases de clientes e projetos autorais, como a [GabiKids](https://gabikidstore.com) e a [Kelly Academy](https://kellyacademy.com.br)
+* **Radar** (`/radar`): acompanhamento mensal dos sites entregues com dados do Google Analytics
+* **Blog** (`/blog`): posts em MDX sobre preço de site, loja própria ou marketplace e bastidores de problemas reais dos projetos
+* **Calculadora** (`/calculadora`): o visitante estima quanto perde com atendimento manual e manda o resultado pelo WhatsApp
+* **Garantia** (`/garantia`), privacidade, termos e cookies
+
+## Decisões técnicas
+
+**Conteúdo separado dos componentes.** Serviços, projetos, preços, FAQ, garantia e textos legais ficam em arquivos tipados em `src/data`. Mudar um preço ou acrescentar um case não exige mexer em componente.
+
+**Blog sem CMS.** Os posts são arquivos MDX em `content/blog`, com frontmatter lido pelo `gray-matter` e renderizados com `next-mdx-remote` e `remark-gfm`.
+
+**SEO no próprio Next.** `sitemap.ts` e `robots.ts` gerados pelo App Router, metadados e canonical por página, imagem Open Graph gerada dinamicamente e JSON-LD de `Organization`.
+
+**Conversão medida com consentimento.** O Google Analytics 4 roda com Consent Mode e só armazena dados depois que o visitante aceita os cookies. Cada botão de WhatsApp envia um evento `generate_lead` com a seção de origem, para saber qual parte do site gera contato.
+
+## Stack
+
+* Next.js 16 (App Router), React 19, TypeScript
+* Tailwind CSS 4 e Framer Motion
+* MDX com next-mdx-remote, gray-matter e remark-gfm
+* Deploy na Vercel
+
+## Estrutura
+
+```
+├── content/blog/        # Posts em MDX
+├── public/img/          # Imagens dos projetos e do site
+└── src/
+    ├── app/             # Rotas do App Router, sitemap, robots e imagem OG
+    ├── components/      # Seções da home e componentes de interface
+    ├── data/            # Conteúdo tipado: serviços, projetos, preços, legal...
+    ├── hooks/
+    └── lib/             # Blog, analytics e utilitários
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Como rodar
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+git clone https://github.com/eduardo-Ciudad/ciudad.dev.git
+cd ciudad.dev
+cp .env.example .env.local   # NEXT_PUBLIC_GA_MEASUREMENT_ID é opcional em desenvolvimento
+npm install
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+O site abre em `http://localhost:3000`.
 
-## Learn More
+| Comando | O que faz |
+|---|---|
+| `npm run dev` | Servidor de desenvolvimento |
+| `npm run build` | Build de produção |
+| `npm start` | Serve o build |
+| `npm run lint` | ESLint |
 
-To learn more about Next.js, take a look at the following resources:
+## Autor
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Eduardo · [CiudadLab](https://ciudadlab.com.br) · [LinkedIn](https://www.linkedin.com/in/eduardociudadf) · [GitHub](https://github.com/eduardo-Ciudad)
