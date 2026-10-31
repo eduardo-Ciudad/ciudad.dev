@@ -3,9 +3,14 @@ import { KELLY_URL } from "./kelly";
 export type Projeto = {
   slug: string;
   nome: string;
+  nomeCurto?: string;
   categoria: "fullstack" | "ferramenta-interna" | "landing-page" | "produto";
-  destaque: boolean;
-  pago?: boolean;
+  grupo: "cliente" | "produto" | "entrega" | "laboratorio";
+  segmento?: string;
+  antes?: string;
+  depois?: string;
+  resumo?: string;
+  etiqueta?: string;
   autoral?: boolean;
   imagem?: string;
   status?: string;
@@ -49,46 +54,47 @@ export function getProjeto(slug: string) {
   return projetos.find((projeto) => projeto.slug === slug);
 }
 
-export const projetos: Projeto[] = [
+const projetosBase: Projeto[] = [
   {
     slug: "kelly-academy",
     nome: "Kelly Academy",
     categoria: "produto",
-    destaque: true,
+    grupo: "produto",
     autoral: true,
-    status: "Em piloto",
+    status: "Beta aberto",
     imagem: "/img/projetos/kelly-caso-hero.png",
-    subtitulo: "Uma plataforma de treino para a redação do ENEM, do domínio ao deploy. Idealizada, desenhada e construída pela CiudadLab.",
-    stack: ["Java 17 · Spring Boot", "Arquitetura hexagonal", "PostgreSQL · Flyway", "Gemini", "React · Vite · TypeScript"],
+    subtitulo: "Plataforma de treino para a redação do ENEM, com correção por IA, repertório verificado e uma assistente que explica a nota. Idealizada, desenhada e construída pela CiudadLab.",
+    stack: ["Java 17 · Spring Boot 4.1", "Arquitetura hexagonal", "PostgreSQL 16 · Flyway", "Gemini", "Stripe", "React · Vite · TypeScript"],
     descricao: [
-      "Correção da redação nas 5 competências do ENEM, com o trecho que segurou a nota",
-      "Repertório curado: 63 fichas em 13 eixos, com busca sem acento",
-      "Foto da redação manuscrita vira texto e vai direto para a correção",
+      "Correção nas 5 competências, com o trecho que pesou e ajuste automático quando a nota não se sustenta",
+      "Júlia, a assistente que explica a correção daquela redação",
+      "113 repertórios verificados, foto da redação manuscrita e tema próprio",
     ],
-    problema: "O estudante de ENEM que já sabe escrever uma redação recebe uma nota e não entende por que ela não sobe. Correção humana é cara e demora, e a nota sozinha não diz o que treinar.",
-    solucao: "Uma plataforma que corrige nas 5 competências, aponta o trecho exato que segurou a nota e entrega o próximo passo: repertório para usar, tema para praticar e evolução ao longo do tempo.",
+    problema: "O estudante de ENEM que já sabe escrever recebe uma nota e não entende por que ela não sobe. A correção humana é cara e demora, e a nota sozinha não diz o que treinar. Uma correção por IA sem controle tem o problema oposto: pode dar 1000 para quem não merece.",
+    solucao: "Uma plataforma que corrige pela matriz do INEP, competência por competência, aponta o trecho que segurou a nota e explica o porquê. O aluno escreve sobre um tema do banco, sobre um tema próprio ou manda a foto da folha. Depois, a Júlia tira dúvidas sobre aquela correção, o Repertório entrega o que usar no próximo texto e a Evolução mostra se a nota está subindo.",
     ciclo: [
-      { titulo: "Escreve", descricao: "Digitando ou por foto da folha manuscrita." },
-      { titulo: "Diagnóstico", descricao: "Nota por competência e o trecho que pesou." },
-      { titulo: "Estudo", descricao: "Repertório curado por eixo e problema social." },
+      { titulo: "Escreve", descricao: "Digitando ou pela foto da folha, sobre um tema do banco ou próprio." },
+      { titulo: "Diagnóstico", descricao: "Nota por competência, o trecho que pesou e o motivo de cada ajuste." },
+      { titulo: "Entende e estuda", descricao: "A Júlia explica a correção e o Repertório mostra o que usar." },
       { titulo: "Nova tentativa", descricao: "A tela Evolução mostra se a nota subiu." },
     ],
     decisoesTecnicas: [
-      "A IA corrige, o backend decide: o Gemini recebe um prompt especializado e devolve JSON estruturado; limites, regras determinísticas e persistência ficam no Java",
-      "Arquitetura hexagonal — o domínio não depende de framework e a IA entra como adapter, então trocar de modelo não mexe nas regras do produto",
-      "Correção e transcrição por foto compartilham o mesmo cliente do Gemini, extraído numa refatoração própria antes do novo adapter",
-      "Repertório curado, não gerado: conteúdo pesquisado e revisado, carregado por migrations escritas à mão, com busca sem acento (unaccent) e consulta paginada em duas etapas",
-      "Custo de IA sob controle: limite diário por usuário no plano grátis e teto global de correções, reservados de forma atômica no banco",
-      "Auditoria de segurança documentada (injeção, rate limit, rotas e vazamento de dados) e cadastro fechado durante o piloto",
-      "Backend e PostgreSQL em Docker Compose numa VPS com Nginx e HTTPS, frontend React na Vercel e CI no GitHub Actions",
+      "A IA corrige, o backend decide: o Gemini lista problemas e evidências antes da nota, num JSON estruturado, e uma regra de domínio confere a nota contra a matriz do INEP. Quando a evidência não sustenta a nota, o backend limita a nota e mostra o motivo ao aluno",
+      "Régua fixa para a nota: prompt reescrito com as regras da cartilha do participante e um conjunto de calibração com redações de nota conhecida, usado para medir cada mudança antes de ela ir para produção",
+      "Arquitetura hexagonal: o domínio não conhece Spring, JPA, Gemini nem Stripe. Cada integração entra como adapter, então trocar de modelo ou de meio de pagamento não mexe nas regras do produto",
+      "Repertório verificado, não gerado: a IA pesquisa em lotes, mas cada item é conferido contra a fonte original antes de entrar no banco por migrations escritas à mão. A base foi de 63 para 113 repertórios, com busca sem acento (unaccent) e filtros em JSONB",
+      "Júlia com escopo fechado: ela só explica a correção de uma redação específica e recebe o texto, as notas e o diagnóstico como contexto. Tem limite de 10 perguntas por conversa, 20 por dia e um teto global",
+      "Custo de IA sob controle: correção, transcrição e Júlia rodam em projetos do Gemini separados, cada recurso tem limite por aluno definido pelo plano e há um teto global diário reservado de forma atômica no banco",
+      "Planos consultados num lugar só: uma regra de domínio decide o que cada aluno pode fazer, considerando a assinatura do Stripe (Checkout e webhook com assinatura validada) e a concessão manual de Pro pelo painel admin",
+      "Contas e segurança: verificação de e-mail, recuperação e troca de senha, JWT com versão de sessão que derruba os tokens antigos e auditorias de segurança documentadas. Backend em Docker Compose numa VPS com Nginx e HTTPS, frontend na Vercel e CI no GitHub Actions",
     ],
     numeros: [
-      { valor: "63", rotulo: "repertórios curados ativos" },
-      { valor: "52", rotulo: "problemas sociais em 13 eixos" },
-      { valor: "300+", rotulo: "testes automatizados no backend" },
-      { valor: "14", rotulo: "migrations Flyway escritas à mão" },
+      { valor: "113", rotulo: "repertórios verificados ativos" },
+      { valor: "56", rotulo: "problemas sociais em 13 eixos" },
+      { valor: "1.300+", rotulo: "testes automatizados no backend" },
+      { valor: "26", rotulo: "migrations Flyway escritas à mão" },
     ],
-    resultado: "No piloto fechado, a mesma redação recebeu 600 na Kelly e 720 de um corretor humano: a plataforma saiu mais rigorosa, não mais generosa. Os pedidos dos testadores viraram roadmap — repertório, correção por foto e plano de estudo.",
+    resultado: "No piloto fechado, a mesma redação recebeu 600 na Kelly e 720 de um corretor humano. Depois veio o problema oposto: um 1000 sem merecer. As duas coisas viraram regra: a nota segue a matriz do INEP e o backend corrige o que a evidência não sustenta. Os pedidos dos testadores entraram no produto, como o repertório e a correção por foto, e a Kelly saiu do piloto para um beta aberto, já com a estrutura de planos Grátis e Pro pronta.",
     heroImage: "/img/projetos/kelly-caso-hero.png",
     featureImage: "/img/projetos/kelly-funcionalidade.png",
     featureImageCaption: "Tela de resultado: nota por competência e o que treinar a seguir.",
@@ -98,7 +104,10 @@ export const projetos: Projeto[] = [
     slug: "gabikids",
     nome: "GabiKids",
     categoria: "fullstack",
-    destaque: true,
+    grupo: "cliente",
+    segmento: "Loja virtual · Moda infantil",
+    antes: "Vendia só pelo Instagram e WhatsApp, confirmando tamanho e cor na mão em cada conversa.",
+    depois: "A cliente compra sozinha, do início ao fim, com estoque e preço sincronizados com o Bling.",
     imagem: "/img/projetos/hero-ecommerce-v3.png",
     descricao: [
       "Catálogo com variação de tamanho",
@@ -122,8 +131,12 @@ export const projetos: Projeto[] = [
   {
     slug: "sistema-financeiro-multi-tenant",
     nome: "Sistema Financeiro Multi-Tenant",
+    nomeCurto: "Sistema Financeiro",
     categoria: "fullstack",
-    destaque: true,
+    grupo: "cliente",
+    segmento: "Sistema sob medida · Revenda",
+    antes: "Sem saber ao certo quanto entrava e saía; compras, vendas e estoque desencontrados.",
+    depois: "Estoque, vendas e financeiro num lugar só, com histórico que nunca é apagado.",
     imagem: "/img/projetos/sistema-personalizado-controle-financeiro.png",
     descricao: [
       "Isolamento de dados por usuário",
@@ -151,17 +164,15 @@ export const projetos: Projeto[] = [
     slug: "promobot",
     nome: "PromoBot",
     categoria: "fullstack",
-    destaque: true,
+    grupo: "laboratorio",
+    etiqueta: "Pausado",
+    resumo: "Monitora ofertas, enriquece com IA numa fila RabbitMQ e publica no Telegram sozinho.",
     imagem: "/img/projetos/promo-bot.png",
     descricao: [
       "Scraper próprio monitora ofertas automaticamente todos os dias",
       "Pipeline assíncrono via fila de mensagens (RabbitMQ) para enriquecer cada oferta com IA generativa",
       "Entrega automática nos grupos de Telegram, sem intervenção manual",
     ],
-    ctaPrincipal: {
-      label: "Ver no Telegram",
-      url: "https://t.me/+FYCoutT-cSxiNjZh",
-    },
     ctaSecundario: {
       label: "Código-fonte",
       url: "https://github.com/eduardo-Ciudad/promo-bot-mercadolivre",
@@ -171,7 +182,8 @@ export const projetos: Projeto[] = [
     slug: "dev-journal",
     nome: "Dev Journal",
     categoria: "fullstack",
-    destaque: true,
+    grupo: "laboratorio",
+    resumo: "Diário de estudos com API REST própria e painel de horas, commits e sequência de dias.",
     imagem: "/img/projetos/dev-jornal.png",
     descricao: [
       "Dashboard com estatísticas de estudo: dias registrados, horas, commits, streak, tecnologias mais usadas",
@@ -186,8 +198,11 @@ export const projetos: Projeto[] = [
   {
     slug: "conversor-pdf-centrofarma-eldorado",
     nome: "Conversor de PDF (Centrofarma Eldorado)",
+    nomeCurto: "Centrofarma Eldorado",
     categoria: "ferramenta-interna",
-    destaque: true,
+    grupo: "entrega",
+    segmento: "Ferramenta interna · Farmácia",
+    resumo: "O farmacêutico preenche uma vez e a declaração de serviço sai em PDF, pronta para assinar.",
     imagem: "/img/projetos/centrofarma-eldorado.png",
     descricao: [
       "Elimina preenchimento manual — farmacêutico digita uma vez, PDF sai pronto pra assinar",
@@ -202,8 +217,10 @@ export const projetos: Projeto[] = [
   {
     slug: "jarvis",
     nome: "Jarvis — Assistente Pessoal",
+    nomeCurto: "Jarvis",
     categoria: "ferramenta-interna",
-    destaque: true,
+    grupo: "laboratorio",
+    resumo: "Assistente de voz local: ouve com Whisper, pensa com Claude e responde com ElevenLabs.",
     autoral: true,
     imagem: "/img/projetos/jarvis-site.png",
     descricao: [
@@ -220,7 +237,9 @@ export const projetos: Projeto[] = [
     slug: "radar",
     nome: "Radar CiudadLab",
     categoria: "ferramenta-interna",
-    destaque: true,
+    grupo: "produto",
+    segmento: "Produto próprio · Incluso no pós-entrega",
+    resumo: "Painel que lê o Google Analytics do seu site e mostra o que importa. Vem configurado em todo projeto, com 90 dias de leitura mensal dos números.",
     autoral: true,
     imagem: "/img/radar/radar-sites.png",
     descricao: [
@@ -234,8 +253,10 @@ export const projetos: Projeto[] = [
     slug: "leticia-souza",
     nome: "Letícia Souza",
     categoria: "landing-page",
-    destaque: true,
-    pago: true,
+    grupo: "cliente",
+    segmento: "Site · Música para eventos",
+    antes: "Instagram forte, mas perdia contrato por não conseguir responder todo mundo a tempo.",
+    depois: "O visitante avança sozinho até o contato, sem depender da velocidade da resposta no direct.",
     imagem: "/img/projetos/leticia-souza-landingpage.png",
     descricao: [
       "+200 eventos realizados, resposta em até 1h pelo WhatsApp",
@@ -262,8 +283,10 @@ export const projetos: Projeto[] = [
     slug: "vinicius-mascagni",
     nome: "Vinícius Mascagni",
     categoria: "landing-page",
-    destaque: true,
-    pago: true,
+    grupo: "cliente",
+    segmento: "Site · Personal trainer",
+    antes: "Só Instagram; cada contato começava do zero, sem plano nem preço para mostrar.",
+    depois: "Planos e preços visíveis antes da conversa, e menos tempo explicando tudo para cada lead.",
     imagem: "/img/projetos/landing-page-vinicius-mascagni.png",
     descricao: [
       "Hero com contador animado de resultados",
@@ -289,8 +312,8 @@ export const projetos: Projeto[] = [
     slug: "sao-francisco-hortifruti",
     nome: "São Francisco Hortifruti",
     categoria: "landing-page",
-    destaque: false,
-    pago: false,
+    grupo: "laboratorio",
+    resumo: "Demonstração para comércio local: avaliações do Google, catálogo e pedido pelo WhatsApp.",
     autoral: true,
     imagem: "/img/projetos/sao-francisco-hortifruit.png",
     descricao: [
@@ -306,9 +329,11 @@ export const projetos: Projeto[] = [
   {
     slug: "ueitila-mendes-cantora",
     nome: "Ueitila Mendes (Cantora)",
+    nomeCurto: "Ueitila Mendes",
     categoria: "landing-page",
-    destaque: false,
-    pago: false,
+    grupo: "entrega",
+    segmento: "Site · Cantora",
+    resumo: "Repertório por gênero, agenda, depoimentos e contato reunidos numa página só.",
     imagem: "/img/projetos/landing-page-overview.png",
     descricao: [
       "Mais de 100 shows realizados, avaliação média 5 estrelas, atuação em SP, MG e MT",
@@ -324,7 +349,8 @@ export const projetos: Projeto[] = [
     slug: "trilhax",
     nome: "TrilhaX",
     categoria: "landing-page",
-    destaque: true,
+    grupo: "laboratorio",
+    resumo: "Front-end de plataforma de trilhas de carreira, com área do aluno e painel admin.",
     autoral: true,
     imagem: "/img/projetos/trilhax-site.png",
     descricao: [
@@ -341,7 +367,8 @@ export const projetos: Projeto[] = [
     slug: "fluxo-digital",
     nome: "Fluxo Digital",
     categoria: "landing-page",
-    destaque: true,
+    grupo: "laboratorio",
+    resumo: "Vitrine de vendas estática, com portfólio embutido e foco em velocidade e conversão.",
     autoral: true,
     imagem: "/img/projetos/vitrine-digital.png",
     descricao: [
@@ -354,4 +381,23 @@ export const projetos: Projeto[] = [
       url: "https://github.com/eduardo-Ciudad/fluxo-digital",
     },
   },
+];
+
+const ordemLaboratorio = [
+  "promobot",
+  "jarvis",
+  "dev-journal",
+  "trilhax",
+  "fluxo-digital",
+  "sao-francisco-hortifruti",
+];
+
+export const projetos = [
+  ...projetosBase.filter((projeto) => projeto.grupo !== "laboratorio"),
+  ...projetosBase
+    .filter((projeto) => projeto.grupo === "laboratorio")
+    .sort(
+      (a, b) =>
+        ordemLaboratorio.indexOf(a.slug) - ordemLaboratorio.indexOf(b.slug),
+    ),
 ];
