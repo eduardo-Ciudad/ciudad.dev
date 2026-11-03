@@ -1,0 +1,156 @@
+---
+title: "Esse aluno é Pro? Planos Grátis e Pro sem espalhar if pelo código"
+description: "Bastidor técnico da Kelly Academy: como cada caso de uso consulta o plano do aluno numa linha só, por que o plano ficou fora do token e como isso deixou os testes simples."
+slug: "planos-gratis-pro-sem-if"
+date: "2026-11-04"
+tags: ["arquitetura", "java", "kelly academy"]
+case: "kelly-academy"
+---
+
+A Kelly Academy é a plataforma de treino de redação do ENEM que estamos construindo na CiudadLab. O aluno escreve, a IA corrige pela matriz do INEP e ele acompanha a evolução por competência. Quando o pagamento entrou, a plataforma ganhou dois planos, e cada funcionalidade passou a depender da mesma pergunta: esse aluno é Pro?
+
+Este texto mostra como essa pergunta ficou respondida num lugar só, com o código real do backend em Java e Spring Boot.
+
+## A resposta curta
+
+- O plano é uma regra de domínio: um enum `Plano` sabe os próprios limites e quais recursos libera.
+- Um caso de uso calcula o plano a partir do registro local das assinaturas, sem chamar o Stripe a cada requisição.
+- Quem precisa de um recurso do Pro chama `exigir(usuarioId, recurso)`. Se o plano não libera, sai uma exceção do domínio que vira um 403.
+- O plano não vai no token. A role continua só para permissão, como aluno ou admin.
+
+## O que cada plano tem
+
+| Recurso | Grátis | Pro |
+| --- | --- | --- |
+| Correções por dia | 3 | 10 |
+| Transcrições de redação por foto | 2 por dia | 10 por dia |
+| Júlia, a assistente que explica a correção | Aparece, mas convida para o Pro | Liberada |
+| Possíveis temas do ENEM 2026 | Bloqueado | Liberado |
+| Repertório | 1 por problema social | Completo |
+
+São dois tipos de regra. Uma é quantidade: quantas vezes por dia. A outra é acesso: o recurso existe ou não para aquele plano. As duas precisavam morar no mesmo lugar.
+
+## Os dois caminhos que eu evitei
+
+### 1. O if em cada service
+
+O caminho mais rápido é cada service conferir o plano do seu jeito. A correção olha a assinatura e escolhe entre 3 e 10. A transcrição faz o mesmo com outros números. A Júlia confere se é Pro antes de responder. Funciona no primeiro dia. No terceiro, mudar um limite significa procurar em quantos arquivos aquele número aparece, e esquecer um deles é um bug que nenhum teste pega.
+
+### 2. O plano como role no token
+
+A outra tentação era colocar `ROLE_PRO` no JWT e deixar o Spring Security barrar as rotas. O problema é o tempo de vida do token, que na Kelly chega a duas horas. O aluno paga e continua Grátis até o token vencer. Pior: ele cancela e continua Pro. Role é sobre quem a pessoa é dentro do sistema. Plano é sobre o que ela contratou, e isso muda no meio da sessão.
+
+## O plano como regra de domínio
+
+A primeira peça é o enum. Ele concentra os limites de quantidade e a lista de recursos que cada plano libera.
+
+```java title="Plano.java"
+public enum RecursoPro { JULIA, TEMAS_POSSIVEIS, REPERTORIO_COMPLETO }
+
+public enum Plano {
+    GRATIS(3, 2, Set.of()),
+    PRO(10, 10, EnumSet.allOf(RecursoPro.class));
+
+    private final int correcoesPorDia;
+    private final int transcricoesPorDia;
+    private final Set<RecursoPro> recursos;
+
+    public int limiteDiario(RecursoIA recurso) {
+        // CORRECAO devolve correcoesPorDia, TRANSCRICAO devolve transcricoesPorDia
+    }
+
+    public boolean libera(RecursoPro recurso) {
+        return recursos.contains(recurso);
+    }
+}
+```
+
+O enum não sabe nada de Stripe, banco ou HTTP. É Java puro, e por isso é a parte mais fácil de testar e de mudar. Quando decidimos que o Grátis teria 2 transcrições por dia em vez de 1, a mudança foi esse número.
+
+## Quem decide o plano do aluno
+
+A segunda peça é o caso de uso que responde a pergunta. Ele lê as assinaturas do aluno pelo port do repositório e devolve PRO se alguma dá acesso agora.
+
+```java title="ConsultarPlanoService.java"
+@Service
+public class ConsultarPlanoService {
+    private final AssinaturaRepositoryPort assinaturaRepository;
+    private final Clock clock;
+
+    public Plano doUsuario(UUID usuarioId) {
+        OffsetDateTime agora = OffsetDateTime.now(clock);
+        boolean pro = assinaturaRepository.listarPorUsuario(usuarioId).stream()
+                .anyMatch(a -> a.daAcessoPro(agora));
+        return pro ? Plano.PRO : Plano.GRATIS;
+    }
+
+    public void exigir(UUID usuarioId, RecursoPro recurso) {
+        if (!doUsuario(usuarioId).libera(recurso)) {
+            throw new RecursoExclusivoProException(recurso);
+        }
+    }
+}
+```
+
+Três detalhes importam aqui:
+
+- **Não chama o Stripe.** O webhook do Stripe atualiza um espelho local das assinaturas. A consulta do plano lê esse espelho, então não depende de rede nem de cota de API a cada requisição.
+- **Quem decide se a assinatura vale é a própria assinatura.** A regra de status e de período fica em `daAcessoPro(agora)`, dentro do domínio, e não espalhada pelo service.
+- **O relógio é injetado.** Com um `Clock` no construtor, o teste controla o "agora" e consegue simular uma assinatura que venceu ontem.
+
+## Uma linha em cada caso de uso
+
+Com isso, liberar um recurso do Pro em qualquer caso de uso é uma chamada:
+
+```java title="caso de uso da Júlia"
+consultarPlano.exigir(usuarioId, RecursoPro.JULIA);
+```
+
+E os limites de quantidade passam a vir do plano, em vez de valores soltos na configuração:
+
+```java title="EnviarRedacaoService.java"
+int limite = consultarPlano.doUsuario(usuarioId).limiteDiario(RecursoIA.CORRECAO);
+```
+
+A correção, a transcrição, a Júlia, os possíveis temas e o detalhe do repertório usam essas duas formas. Nenhum deles sabe quais números ou recursos pertencem a cada plano. O arquivo de configuração ficou só com os tetos globais de uso da IA, que protegem o custo da plataforma inteira e não dependem do plano de ninguém.
+
+## O 403 que o front entende
+
+A `RecursoExclusivoProException` é uma exceção do domínio. O handler global da API transforma ela num 403 com um código fixo e o nome do recurso:
+
+```json title="403 Forbidden · application/json"
+{
+  "status": 403,
+  "detail": "Este recurso está disponível apenas no plano Pro.",
+  "codigo": "PLANO_PRO_NECESSARIO",
+  "recurso": "JULIA"
+}
+```
+
+O campo `recurso` é o que permite ao front mostrar o convite certo: na Júlia, um aviso de que ela é do Pro com o link para assinar; no repertório, um "o Pro libera os outros". O front também lê o plano por um endpoint próprio, `GET /usuarios/me/plano`, mas só para mostrar e esconder coisas. Quem decide de verdade é sempre o backend.
+
+> O domínio decide a regra. Stripe, token e banco só informam.
+
+## Os testes que isso permitiu
+
+Separar as peças deixou cada teste pequeno. O `PlanoTest` confere os números e os recursos de cada plano sem subir nada do Spring. O teste do `ConsultarPlanoService` usa um repositório falso e um relógio fixo, e cobre cada situação da assinatura:
+
+| Situação da assinatura | Plano esperado |
+| --- | --- |
+| Sem assinatura | Grátis |
+| Ativa, dentro do período | Pro |
+| Em período de teste | Pro |
+| Pagamento em atraso | Grátis |
+| Ativa, mas com o período vencido | Grátis |
+| Cancelada no fim do período, ainda dentro do prazo | Pro |
+| Uma cancelada e uma ativa | Pro |
+
+Mais dois testes fecham o `exigir`: no Grátis ele lança a exceção, no Pro ele passa. E o handler tem um teste parametrizado por `RecursoPro`, que confere status, código e nome do recurso para cada um. Quando um recurso novo entrar no enum, o teste do handler já cobre ele sem ninguém lembrar.
+
+## O que ficou para depois
+
+Neste MVP, quem está com o pagamento em atraso aparece como Grátis, sem um aviso de pagamento pendente. Também não tratamos o rebaixamento: um aluno que sai do Pro mantém o histórico, mas ainda não existe uma regra para o que ele já tinha usado. Os dois entram sem quebrar nada, porque a decisão continua num lugar só.
+
+## Resumindo
+
+Arquitetura hexagonal não é sobre o nome das pastas. Na Kelly, ela apareceu numa decisão concreta: o plano do aluno é regra de negócio e mora no domínio, o Stripe e o token ficam do lado de fora, e cada caso de uso pergunta em uma linha. O resultado é um limite que se muda num número e um recurso novo que se libera numa chamada.
