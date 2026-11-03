@@ -25,7 +25,25 @@ function ResponsiveTable(props: ComponentPropsWithoutRef<"table">) {
   );
 }
 
+function CodeFigure({ children, ...props }: ComponentPropsWithoutRef<"figure">) {
+  const isCodeBlock = "data-rehype-pretty-code-figure" in props;
+
+  if (!isCodeBlock) return <figure {...props}>{children}</figure>;
+
+  return (
+    <figure {...props}>
+      <div className="code-window-bar" aria-hidden="true">
+        <span className="code-window-dot code-window-dot-red" />
+        <span className="code-window-dot code-window-dot-yellow" />
+        <span className="code-window-dot code-window-dot-green" />
+      </div>
+      {children}
+    </figure>
+  );
+}
+
 export const blogMdxComponents = {
   a: MdxLink,
+  figure: CodeFigure,
   table: ResponsiveTable,
 };
