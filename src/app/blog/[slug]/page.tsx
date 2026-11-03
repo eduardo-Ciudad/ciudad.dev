@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
+import rehypePrettyCode from "rehype-pretty-code";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { BlogArticleCta } from "@/components/BlogArticleCta";
@@ -107,7 +108,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
             <MDXRemote
               source={post.content}
               components={blogMdxComponents}
-              options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }}
+              options={{
+                mdxOptions: {
+                  remarkPlugins: [remarkGfm],
+                  rehypePlugins: [[rehypePrettyCode, { theme: "one-dark-pro" }]],
+                },
+              }}
             />
           </div>
           <div className="mx-auto mt-16 max-w-3xl px-6 md:mt-24">
