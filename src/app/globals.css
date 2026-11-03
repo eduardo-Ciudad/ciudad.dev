@@ -29,6 +29,7 @@
   --font-kelly-display: var(--font-kelly-display);
   --font-kelly-body: var(--font-kelly-body);
   --font-kelly-mono: var(--font-kelly-mono);
+  --font-code: var(--font-jetbrains-mono);
   --color-kelly-bg: #0b0c12;
   --color-kelly-surface: #12131b;
   --color-kelly-border: #1f2130;
@@ -120,7 +121,7 @@ body {
 .blog-prose td { color: var(--color-muted); }
 .blog-prose tr:last-child td { border-bottom: 0; }
 .blog-prose code {
-  font-family: ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  font-family: var(--font-code), ui-monospace, monospace;
   font-size: 0.86em;
   color: var(--color-primary);
   background: var(--color-accent-light);
@@ -128,14 +129,58 @@ body {
   border-radius: 4px;
   overflow-wrap: anywhere;
 }
-.blog-prose pre {
-  background: var(--color-dark);
-  color: #e9e6df;
+.blog-prose figure[data-rehype-pretty-code-figure] {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
-  padding: 1.1rem 1.25rem;
+  background: #2b2e37;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+.blog-prose .code-window-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 49px;
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: #252830;
+}
+.blog-prose .code-window-dot {
+  width: 12px;
+  height: 12px;
+  flex: 0 0 12px;
+  border-radius: 999px;
+}
+.blog-prose .code-window-dot-red { background: #ff5f57; }
+.blog-prose .code-window-dot-yellow { background: #febc2e; }
+.blog-prose .code-window-dot-green { background: #28c840; }
+.blog-prose figcaption[data-rehype-pretty-code-title] {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: 1;
+  max-width: calc(100% - 9rem);
+  height: 49px;
+  overflow: hidden;
+  transform: translateX(-50%);
+  color: #9097a6;
+  font-family: var(--font-code), ui-monospace, monospace;
+  font-size: 12.5px;
+  line-height: 49px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.blog-prose pre {
+  margin: 0;
   overflow-x: auto;
-  font-size: 0.85rem;
-  line-height: 1.65;
+  background: #2b2e37 !important;
+  padding: 20px 24px 22px;
+  font-family: var(--font-code), ui-monospace, monospace;
+  font-size: 14px;
+  line-height: 1.75;
+  white-space: pre;
+  overscroll-behavior-inline: contain;
 }
 .blog-prose pre code {
   background: none;
@@ -144,6 +189,7 @@ body {
   font-size: inherit;
   overflow-wrap: normal;
 }
+.blog-prose pre code span { background: transparent !important; }
 
 @media (min-width: 768px) {
   .blog-prose { font-size: 1.0625rem; }
