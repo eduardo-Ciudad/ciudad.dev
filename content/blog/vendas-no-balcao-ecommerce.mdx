@@ -1,0 +1,70 @@
+---
+title: "Vendeu no balcão. E o site, fica sabendo? Como funcionam as vendas locais em um e-commerce"
+description: "Bastidor da GabiKids: uma peça vendida na loja física continuava à venda no site por quase duas horas. Em vez de acelerar a sincronização, invertemos o caminho da venda."
+slug: "vendas-no-balcao-ecommerce"
+date: "2026-11-03"
+tags: ["bastidores", "e-commerce", "bling"]
+case: "gabikids"
+---
+
+A GabiKids vende roupa infantil pelo site e também pessoalmente, para quem chega até a loja. O estoque é um só, e quem manda nele é o Bling, o sistema de gestão onde a lojista cadastra produtos, grades e quantidades. O site lê esses dados do Bling e mostra o que está disponível.
+
+Funciona bem enquanto toda venda acontece pelo site. O problema começa quando a venda acontece no balcão.
+
+## A resposta curta
+
+- Uma venda presencial registrada só no Bling demorava até a próxima sincronização completa para chegar ao site, entre 1h30 e 2h.
+- Nesse intervalo, o site continuava vendendo uma peça que já tinha saído da loja.
+- Em vez de deixar a sincronização mais rápida, passamos a registrar a venda do balcão pelo próprio site.
+- O site já mandava os pedidos para o Bling automaticamente. A venda do balcão aproveita esse mesmo caminho e chega lá em segundos.
+
+## O problema: o estoque atrasado
+
+Antes do site existir, a lojista vendia no balcão e depois dava baixa no Bling, quando tinha tempo. Com o e-commerce no ar, esse hábito virou um risco. A sincronização de produtos do Bling para o site é completa: percorre o catálogo inteiro, com centenas de produtos e variações de cor e tamanho, e leva entre uma hora e meia e duas horas para terminar.
+
+Então, mesmo quando a baixa era feita na hora, o site só ficava sabendo depois da próxima sincronização. Imagine o vestido tamanho 4 que era a última unidade: vendido no balcão às 10h, ele continuava disponível no site até perto do meio-dia. Se alguém comprasse nesse intervalo, a loja teria que cancelar o pedido e pedir desculpas para uma cliente que pagou por uma peça que não existe mais.
+
+A própria lojista trouxe a reclamação: registrar a venda no Bling não resolvia, porque o site demorava para perceber.
+
+## O caminho óbvio, e por que eu não segui
+
+A primeira resposta que vem à cabeça é fazer o Bling avisar o site mais rápido. Sincronizar com mais frequência, sincronizar só o que mudou ou ouvir eventos do Bling em tempo real. Todas são possíveis, mas cada uma é um projeto: mais chamadas na API, mais pontos de falha, mais memória na VPS e mais casos para testar. E todas continuam dependendo de a lojista lembrar de dar baixa no Bling depois de vender.
+
+Foi olhando para o que o sistema já fazia que a ideia apareceu.
+
+## A ideia: o site já sabe falar com o Bling
+
+Algumas semanas antes, tínhamos colocado em produção o envio de pedidos do site para o Bling. Quando um pedido do site é pago, o backend cria o pedido de venda no Bling e baixa o estoque lá, sozinho. No primeiro teste real, o pedido apareceu no Bling três segundos depois da confirmação do pagamento. Esse fluxo tem fila, tentativa automática quando o Bling falha e proteção contra pedido duplicado.
+
+> Se o caminho do site para o Bling já é automático e confiável, a venda do balcão não precisa passar pelo Bling primeiro. Ela pode nascer no site.
+
+Invertendo o caminho, os dois lados ficam certos ao mesmo tempo. O estoque do site cai no momento da venda, porque a venda foi registrada nele. E o Bling recebe o pedido pelo mesmo fluxo que já funciona para as vendas online. Ninguém precisa esperar sincronização nenhuma, e a lojista faz um registro só, em vez de dois.
+
+1. Venda no balcão
+2. Registro no admin do site
+3. Estoque do site atualizado na hora
+4. Pedido e baixa no Bling em segundos
+
+## A solução: venda no balcão pelo admin
+
+Antes de desenhar qualquer tela, mandei cinco perguntas para a lojista: como ela recebe no balcão, se emite nota, se anota o nome do cliente, se dá desconto e se quer ver loja e site separados. As respostas definiram o escopo:
+
+| Como é no balcão | Como ficou no sistema |
+| --- | --- |
+| Recebe em dinheiro, Pix, maquininha, link de pagamento e fiado para clientes conhecidas | Cada uma virou uma forma de pagamento, também cadastrada no Bling. Fiado é só mais uma forma, e entra no faturamento |
+| Não emite nota na venda presencial | Sem CPF obrigatório, sem frete e sem endereço |
+| Às vezes anota o nome, às vezes a venda é anônima | Campo de texto livre, como "Cris vizinha". No Bling, a venda vai para um contato genérico de balcão |
+| Dá desconto na hora | Desconto em reais, direto na venda |
+| Quer saber quanto vende em cada canal | O painel do admin separa site e balcão |
+
+Na tela, a lojista busca a peça pelo nome, pelo SKU ou pelo código de barras, escolhe cor, tamanho e quantidade, informa a forma de pagamento e confirma. A venda já nasce como entregue no site e como atendida no Bling, porque a cliente saiu da loja com a sacola na mão.
+
+Algumas coisas ficaram de fora de propósito, como editar uma venda depois de registrada. A primeira versão resolve o problema real, e o resto vem quando a lojista usar no dia a dia e disser o que falta.
+
+## Um bônus no caminho
+
+Mexendo no envio para o Bling, corrigimos um detalhe que estava na fila: o servidor roda no horário UTC, e pedidos pagos entre 21h e meia-noite entravam no Bling com a data do dia seguinte. Agora a data é convertida para o horário de Brasília antes do envio.
+
+## Resumindo
+
+Quando dois sistemas precisam concordar sobre o estoque, a pergunta nem sempre é como sincronizar mais rápido. Às vezes é por onde a informação deveria entrar. Na GabiKids, a venda do balcão passou a entrar pelo site, que já sabia avisar o Bling. O resultado é um estoque só, certo nos dois lugares, e uma lojista que registra cada venda uma vez.
