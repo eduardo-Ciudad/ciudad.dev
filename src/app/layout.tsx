@@ -5,6 +5,7 @@ import {
   Figtree,
   Geist_Mono,
   Inter_Tight,
+  JetBrains_Mono,
 } from "next/font/google";
 import Script from "next/script";
 import { IntroLoader } from "@/components/IntroLoader";
@@ -46,6 +47,13 @@ const kellyMono = Geist_Mono({
   variable: "--font-kelly-mono",
   subsets: ["latin"],
   weight: ["400", "500"],
+  display: "swap",
+});
+
+const jetBrainsMono = JetBrains_Mono({
+  variable: "--font-jetbrains-mono",
+  subsets: ["latin"],
+  weight: ["400"],
   display: "swap",
 });
 
@@ -95,7 +103,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="pt-BR"
-      className={`${cormorant.variable} ${dmSans.variable} ${kellyDisplay.variable} ${kellyBody.variable} ${kellyMono.variable}`}
+      className={`${cormorant.variable} ${dmSans.variable} ${kellyDisplay.variable} ${kellyBody.variable} ${kellyMono.variable} ${jetBrainsMono.variable}`}
     >
       <body className="font-body antialiased">
         <script
