@@ -72,6 +72,9 @@ export default function RadarPage() {
             <p className="max-w-[720px] text-lg leading-relaxed text-muted md:text-xl">
               {radar.subtitle}
             </p>
+            <Link href="/projetos/radar" className="mt-6 inline-flex text-sm font-semibold text-primary underline-offset-4 transition-colors hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+              Ver o case completo <span aria-hidden="true" className="ml-1">→</span>
+            </Link>
           </ScrollReveal>
 
           <ScrollReveal className="mb-16 md:mb-20">
