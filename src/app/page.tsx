@@ -29,8 +29,8 @@ export default function Home() {
         <Services />
         <HowItWorks />
         <Testimonials />
-        <Faq />
         <ProdutoKelly />
+        <Faq />
         <About />
         <CtaFinal />
       </main>
