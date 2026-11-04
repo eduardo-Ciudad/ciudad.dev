@@ -1,13 +1,14 @@
 import Link from "next/link";
 import type { Projeto } from "@/data/projetos";
 import { CapaProjeto } from "./CapaProjeto";
+import { PROJECT_CARD_HOVER_CLASS } from "./cardHover";
 
 export function CaseClienteCard({ projeto }: { projeto: Projeto }) {
   const nome = projeto.nomeCurto ?? projeto.nome;
   return (
     <article
       id={projeto.slug}
-      className="group flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[18px] border border-card-border bg-card transition-[transform,border-color,box-shadow] duration-300 hover:-translate-y-[3px] hover:border-black/10 hover:shadow-[0_10px_24px_-16px_rgba(0,0,0,0.18)] motion-reduce:transform-none"
+      className={`group flex h-full scroll-mt-24 flex-col overflow-hidden rounded-[18px] border border-card-border bg-card ${PROJECT_CARD_HOVER_CLASS}`}
     >
       {projeto.imagem && <CapaProjeto src={projeto.imagem} nome={nome} />}
       <div className="flex flex-1 flex-col gap-4 p-7">

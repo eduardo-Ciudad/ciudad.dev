@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
 import { KELLY_STATS, KELLY_STATUS, KELLY_URL } from "@/data/kelly";
+import { PROJECT_CARD_HOVER_CLASS } from "./projetos/cardHover";
 import { ScrollReveal } from "./ScrollReveal";
 
 type ProdutoCardProps = {
@@ -15,7 +16,7 @@ type ProdutoCardProps = {
 
 export function ProdutoCard({ capa, rotulo, selo, titulo, descricao, blocoDoMeio, acoes }: ProdutoCardProps) {
   return (
-    <article className="group flex h-full min-w-0 flex-col overflow-hidden rounded-[18px] border border-black/8 bg-card transition-[transform,box-shadow,border-color] duration-250 ease-[ease] hover:-translate-y-[3px] hover:border-black/14 hover:shadow-[0_10px_24px_-16px_rgba(0,0,0,0.18)] motion-reduce:hover:translate-y-0">
+    <article className={`group flex h-full min-w-0 flex-col overflow-hidden rounded-[18px] border border-black/8 bg-card ${PROJECT_CARD_HOVER_CLASS}`}>
       <div className="min-w-0 overflow-hidden bg-cover px-4 pt-5 sm:px-7 sm:pt-7">
         <div className="transition-transform duration-400 ease-[ease] group-hover:scale-[1.02] motion-reduce:transition-none motion-reduce:group-hover:scale-100">
           {capa}
