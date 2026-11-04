@@ -1,5 +1,6 @@
 import type { ComponentPropsWithoutRef } from "react";
 import Link from "next/link";
+import { WindowBar } from "@/components/WindowFrame";
 
 function MdxLink({ href = "", children, ...props }: ComponentPropsWithoutRef<"a">) {
   if (href.startsWith("/")) {
@@ -32,11 +33,7 @@ function CodeFigure({ children, ...props }: ComponentPropsWithoutRef<"figure">) 
 
   return (
     <figure {...props}>
-      <div className="code-window-bar" aria-hidden="true">
-        <span className="code-window-dot code-window-dot-red" />
-        <span className="code-window-dot code-window-dot-yellow" />
-        <span className="code-window-dot code-window-dot-green" />
-      </div>
+      <WindowBar />
       {children}
     </figure>
   );
