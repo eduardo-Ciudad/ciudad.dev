@@ -16,6 +16,9 @@ export type Projeto = {
   status?: string;
   subtitulo?: string;
   stack?: string[];
+  caseLabel?: string;
+  caseDescription?: string;
+  cicloTitulo?: string;
   ciclo?: { titulo: string; descricao: string }[];
   numeros?: { valor: string; rotulo: string }[];
   descricao: string[];
@@ -24,30 +27,47 @@ export type Projeto = {
   decisoesTecnicas?: string[];
   resultado?: string;
   heroImage?: string;
+  heroIlustracao?: "radar";
   featureImage?: string;
   featureImageCaption?: string;
   ctaPrincipal?: { label: string; url: string };
   ctaSecundario?: { label: string; url: string };
+  blocoProprio?: "radar-mes";
 };
 
 export type ProjetoComCase = Projeto & {
   problema: string;
   solucao: string;
   decisoesTecnicas: string[];
-  resultado: string;
-  heroImage: string;
-  featureImage: string;
-};
+} & (
+  | {
+      heroImage: string;
+      featureImage: string;
+      resultado: string;
+      heroIlustracao?: never;
+      blocoProprio?: never;
+    }
+  | {
+      heroIlustracao: "radar";
+      blocoProprio: "radar-mes";
+      heroImage?: never;
+      featureImage?: never;
+      resultado?: never;
+    }
+);
 
 export function hasCase(projeto: Projeto): projeto is ProjetoComCase {
-  return Boolean(
-    projeto.problema &&
-      projeto.solucao &&
-      projeto.decisoesTecnicas?.length &&
-      projeto.resultado &&
-      projeto.heroImage &&
-      projeto.featureImage,
+  const temConteudoBase = Boolean(
+    projeto.problema && projeto.solucao && projeto.decisoesTecnicas?.length,
   );
+  const temCaseTradicional = Boolean(
+    projeto.heroImage && projeto.featureImage && projeto.resultado,
+  );
+  const temCaseComBlocoProprio = Boolean(
+    projeto.heroIlustracao === "radar" && projeto.blocoProprio === "radar-mes",
+  );
+
+  return temConteudoBase && (temCaseTradicional || temCaseComBlocoProprio);
 }
 
 export function getProjeto(slug: string) {
@@ -72,6 +92,7 @@ const projetosBase: Projeto[] = [
     ],
     problema: "O estudante de ENEM que já sabe escrever recebe uma nota e não entende por que ela não sobe. A correção humana é cara e demora, e a nota sozinha não diz o que treinar. Uma correção por IA sem controle tem o problema oposto: pode dar 1000 para quem não merece.",
     solucao: "Uma plataforma que corrige pela matriz do INEP, competência por competência, aponta o trecho que segurou a nota e explica o porquê. O aluno escreve sobre um tema do banco, sobre um tema próprio ou manda a foto da folha. Depois, a Júlia tira dúvidas sobre aquela correção, o Repertório entrega o que usar no próximo texto e a Evolução mostra se a nota está subindo.",
+    cicloTitulo: "O ciclo do treino",
     ciclo: [
       { titulo: "Escreve", descricao: "Digitando ou pela foto da folha, sobre um tema do banco ou próprio." },
       { titulo: "Diagnóstico", descricao: "Nota por competência, o trecho que pesou e o motivo de cada ajuste." },
@@ -242,11 +263,34 @@ const projetosBase: Projeto[] = [
     resumo: "Painel que lê o Google Analytics do seu site e mostra o que importa. Vem configurado em todo projeto, com 90 dias de leitura mensal dos números.",
     autoral: true,
     imagem: "/img/radar/radar-sites.png",
+    status: "Em implantação",
+    subtitulo: "O Google Analytics do seu site, traduzido para o que importa no seu negócio: de onde vem o cliente, que página funciona e onde ele desiste.",
+    caseLabel: "Produto próprio · Analytics",
+    caseDescription: "Radar CiudadLab: o Google Analytics do seu site traduzido em uma leitura simples do que trouxe cliente e do que precisa mudar.",
+    stack: ["Java 17 · Spring Boot", "Arquitetura hexagonal", "Google Analytics Data API", "PostgreSQL · Flyway", "Next.js"],
     descricao: [
       "Painel próprio que puxa os dados do Google Analytics 4 dos sites da CiudadLab e dos clientes via API, com sincronização diária automática",
       "Backend em Java 17 + Spring Boot com arquitetura hexagonal, PostgreSQL/Flyway e autenticação JWT com papéis",
       "Frontend em Next.js e funil interno de prospecção com importação de CSV e score de leads",
     ],
+    problema: "Quase todo site tem o Google Analytics instalado, e quase nenhum dono de negócio abre. O painel é feito para analista: dezenas de relatórios, termos em inglês e nenhuma resposta direta para a pergunta que importa, que é se o site está trazendo cliente.",
+    solucao: "O Radar lê o Analytics todo dia, compara com o período anterior e entrega uma leitura curta em português: o que cresceu, o que caiu e qual página merece atenção. O dono do negócio recebe a conclusão, não o painel.",
+    cicloTitulo: "Como funciona",
+    ciclo: [
+      { titulo: "Conecta", descricao: "O site dá ao Radar acesso só de leitura ao Analytics, por uma conta de serviço do Google." },
+      { titulo: "Sincroniza", descricao: "Todo dia às 6h, o Radar busca os números do dia anterior e guarda o histórico." },
+      { titulo: "Compara", descricao: "Últimos 7, 28 ou 90 dias, sempre lado a lado com o período anterior." },
+      { titulo: "Traduz", descricao: "Uma leitura em linguagem simples, com o alerta do que merece atenção." },
+    ],
+    decisoesTecnicas: [
+      "Acesso só de leitura: O Radar entra no Analytics por uma conta de serviço com papel de leitor. Ele não altera nada na conta do cliente e o acesso pode ser revogado a qualquer momento.",
+      "Histórico próprio: Os números são sincronizados uma vez por dia e guardados em PostgreSQL. As telas leem do banco do Radar, sem chamar a API do Google a cada clique.",
+      "Arquitetura hexagonal: O Google Analytics entra como adapter. A regra de comparar períodos e montar a leitura fica no domínio, sem depender da API.",
+      "SQL onde faz sentido: As tabelas de métricas usam JDBC com consultas escritas à mão, que é mais simples para agregação por período. JPA fica para o módulo de leads.",
+      "Segurança: Spring Security com JWT, papéis de administrador e leitor, e a sincronização manual liberada só para o administrador. No frontend, o token fica num cookie httpOnly.",
+    ],
+    heroIlustracao: "radar",
+    blocoProprio: "radar-mes",
     ctaPrincipal: { label: "Conhecer o Radar", url: "/radar" },
   },
   {
