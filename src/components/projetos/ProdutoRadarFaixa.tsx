@@ -13,9 +13,12 @@ export function ProdutoRadarFaixa({ projeto }: { projeto: Projeto }) {
         <h3 className="mt-1 font-heading text-[32px] font-semibold leading-none">Radar CiudadLab</h3>
         <p className="mt-3 max-w-2xl text-[15px] leading-relaxed text-muted">{projeto.resumo}</p>
       </div>
-      <div className="w-full px-6 pb-6 sm:w-auto sm:py-6 sm:pr-7">
-        <Link href="/radar" className="inline-flex min-h-11 items-center rounded-full border border-black/15 px-5 text-sm font-semibold text-primary transition-colors hover:bg-surface focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
-          Conhecer o Radar <span aria-hidden="true" className="ml-1">→</span>
+      <div className="flex w-full flex-wrap items-center gap-4 px-6 pb-6 sm:w-auto sm:flex-col sm:items-start sm:py-6 sm:pr-7">
+        <Link href="/projetos/radar" className="inline-flex min-h-11 items-center rounded-full bg-primary px-5 text-sm font-semibold text-white transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+          Ver o case completo <span aria-hidden="true" className="ml-1">→</span>
+        </Link>
+        <Link href="/radar" className="text-sm font-semibold text-primary underline-offset-4 hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">
+          Conhecer o Radar
         </Link>
       </div>
     </article>
