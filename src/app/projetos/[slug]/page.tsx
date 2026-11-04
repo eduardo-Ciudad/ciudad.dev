@@ -9,6 +9,9 @@ import { ScrollReveal } from "@/components/ScrollReveal";
 import { getProjeto, hasCase, projetos } from "@/data/projetos";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
+import { BlogArticleCta } from "@/components/BlogArticleCta";
+import { RadarTelaCase } from "@/components/ProdutoKelly";
+import { RadarIncluso, RadarMes } from "@/components/projetos/RadarCaseContent";
 import { formatPostDate, getPostsByCase } from "@/lib/blog";
 
 type ProjetoCasePageProps = {
@@ -37,7 +40,7 @@ export async function generateMetadata({
   if (!projeto || !hasCase(projeto)) return {};
 
   const title = `${projeto.nome} — Case | CiudadLab`;
-  const description = projeto.subtitulo ?? projeto.solucao;
+  const description = projeto.caseDescription ?? projeto.subtitulo ?? projeto.solucao;
   const url = `/projetos/${projeto.slug}`;
 
   return {
@@ -49,7 +52,9 @@ export async function generateMetadata({
       description,
       type: "article",
       url,
-      images: [{ url: projeto.heroImage, alt: `Case do projeto ${projeto.nome}` }],
+      ...(projeto.heroImage
+        ? { images: [{ url: projeto.heroImage, alt: `Case do projeto ${projeto.nome}` }] }
+        : {}),
     },
     twitter: {
       card: "summary_large_image",
@@ -66,96 +71,94 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
   if (!projeto || !hasCase(projeto)) notFound();
 
   const bastidores = getPostsByCase(projeto.slug);
+  const isRadar = projeto.slug === "radar";
+  const isKelly = projeto.slug === "kelly-academy";
+  const secoes = isRadar
+    ? [
+        ["#visao-geral", "Visão geral"],
+        ["#o-produto", "Como funciona"],
+        ["#um-mes-no-radar", "Um mês no Radar"],
+        ["#decisoes-tecnicas", "Decisões técnicas"],
+        ["#o-que-esta-incluso", "O que está incluso"],
+      ]
+    : [
+        ["#visao-geral", "Visão geral"],
+        ...(projeto.ciclo ? [["#o-produto", "O produto"]] : []),
+        ["#decisoes-tecnicas", "Decisões técnicas"],
+        ...(projeto.numeros ? [["#numeros", "Em números"]] : []),
+        ["#resultado", "Resultado"],
+        ...(bastidores.length > 0 ? [["#bastidores", "Bastidores"]] : []),
+      ];
+  const abertura = (
+    <>
+      <Link
+        href="/projetos"
+        className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-accent"
+      >
+        <ArrowLeft size={16} aria-hidden="true" /> Todos os projetos
+      </Link>
+      <ScrollReveal className="mb-10">
+        <span className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">
+          {projeto.caseLabel ?? categoriaLabel[projeto.categoria]}
+        </span>
+        <h1 className="mb-4 font-heading text-4xl font-bold tracking-[-0.5px] text-primary md:text-5xl">
+          {projeto.nome}
+        </h1>
+        <p className="max-w-[720px] text-lg leading-relaxed text-muted">
+          {projeto.subtitulo ?? "Case do projeto"}
+        </p>
+        {projeto.stack && (
+          <div className="mt-5 flex flex-wrap gap-2">
+            {projeto.stack.map((tecnologia) => (
+              <span key={tecnologia} className="rounded-full border border-card-border bg-card px-3 py-1 text-xs text-primary/80">
+                {tecnologia}
+              </span>
+            ))}
+            {projeto.status && (
+              <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isRadar ? "bg-[#FBF1DC] text-[#7A4E00]" : "bg-kelly-warning-bg text-kelly-warning"}`}>
+                {projeto.status}
+              </span>
+            )}
+          </div>
+        )}
+      </ScrollReveal>
+      <div className={isRadar ? "" : "mb-14"}>
+        {projeto.heroIlustracao === "radar" ? <RadarTelaCase /> : <DocImage src={projeto.heroImage} alt={`Visão geral do projeto ${projeto.nome}`} fallbackLabel={`Imagem principal do case ${projeto.nome} em breve`} />}
+      </div>
+    </>
+  );
 
   return (
     <div className="min-h-screen bg-surface">
       <Navbar />
 
-      <main className="mx-auto max-w-6xl px-6 pb-20 pt-28 md:pb-28 md:pt-32 lg:grid lg:grid-cols-[200px_1fr] lg:gap-16">
+      {isRadar && (
+        <section className="border-b border-card-border bg-card pb-16 pt-[120px] max-sm:pb-12 max-sm:pt-24">
+          <div className="mx-auto max-w-6xl px-6">{abertura}</div>
+        </section>
+      )}
+
+      <main className={`mx-auto max-w-6xl px-6 pb-20 md:pb-28 lg:grid lg:grid-cols-[200px_1fr] lg:gap-16 ${isRadar ? "pt-16" : "pt-28 md:pt-32"}`}>
         <aside className="hidden lg:block">
           <nav className="sticky top-24 flex flex-col gap-1 text-sm" aria-label="Seções do case">
-            <a href="#visao-geral" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
-              Visão geral
-            </a>
-            {projeto.ciclo && (
-              <a href="#o-produto" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
-                O produto
-              </a>
-            )}
-            <a href="#decisoes-tecnicas" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
-              Decisões técnicas
-            </a>
-            {projeto.numeros && (
-              <a href="#numeros" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
-                Em números
-              </a>
-            )}
-            <a href="#resultado" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
-              Resultado
-            </a>
-            {bastidores.length > 0 && (
-              <a href="#bastidores" className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">
-                Bastidores
-              </a>
-            )}
+            {secoes.map(([href, label]) => <a key={href} href={href} className="rounded-lg px-3 py-2 text-muted transition-colors hover:bg-card hover:text-primary">{label}</a>)}
           </nav>
         </aside>
 
         <article className="max-w-[720px]">
-          <Link
-            href="/projetos"
-            className="mb-8 inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-accent"
-          >
-            <ArrowLeft size={16} aria-hidden="true" /> Todos os projetos
-          </Link>
-          <ScrollReveal className="mb-10">
-            <span className="mb-3 block text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">
-              {categoriaLabel[projeto.categoria]}
-            </span>
-            <h1 className="mb-4 font-heading text-4xl font-bold tracking-[-0.5px] text-primary md:text-5xl">
-              {projeto.nome}
-            </h1>
-            <p className="text-lg leading-relaxed text-muted">
-              {projeto.subtitulo ?? "Case do projeto"}
-            </p>
-            {projeto.stack && (
-              <div className="mt-5 flex flex-wrap gap-2">
-                {projeto.stack.map((tecnologia) => (
-                  <span
-                    key={tecnologia}
-                    className="rounded-full border border-card-border bg-card px-3 py-1 text-xs text-primary/80"
-                  >
-                    {tecnologia}
-                  </span>
-                ))}
-                {projeto.status && (
-                  <span className="rounded-full bg-kelly-warning-bg px-3 py-1 text-xs font-semibold text-kelly-warning">
-                    {projeto.status}
-                  </span>
-                )}
-              </div>
-            )}
-          </ScrollReveal>
-
-          <div className="mb-14">
-            <DocImage
-              src={projeto.heroImage}
-              alt={`Visão geral do projeto ${projeto.nome}`}
-              fallbackLabel={`Imagem principal do case ${projeto.nome} em breve`}
-            />
-          </div>
+          {!isRadar && abertura}
 
           <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
             <section id="visao-geral" className="grid gap-10 md:grid-cols-2 md:gap-12">
               <div>
                 <h2 className="mb-4 font-heading text-2xl font-semibold tracking-[-0.5px] md:text-[28px]">
-                  O desafio
+                  {isRadar ? "O problema" : "O desafio"}
                 </h2>
                 <p className="text-[15px] leading-[1.8] text-primary/80">{projeto.problema}</p>
               </div>
               <div>
                 <h2 className="mb-4 font-heading text-2xl font-semibold tracking-[-0.5px] md:text-[28px]">
-                  O que construímos
+                  {isRadar ? "A solução" : "O que construímos"}
                 </h2>
                 <p className="text-[15px] leading-[1.8] text-primary/80">{projeto.solucao}</p>
               </div>
@@ -166,7 +169,7 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
             <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
               <section id="o-produto">
                 <h2 className="mb-6 font-heading text-2xl font-semibold tracking-[-0.5px] md:text-[28px]">
-                  O ciclo do treino
+                  {projeto.cicloTitulo ?? "O produto"}
                 </h2>
                 <ol className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
                   {projeto.ciclo.map((etapa, index) => (
@@ -183,6 +186,8 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
             </ScrollReveal>
           )}
 
+          {projeto.blocoProprio === "radar-mes" && <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20"><RadarMes /></ScrollReveal>}
+
           <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
             <section id="decisoes-tecnicas">
               <h2 className="mb-6 font-heading text-2xl font-semibold tracking-[-0.5px] md:text-[28px]">
@@ -197,7 +202,7 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
                 ))}
               </ul>
 
-              <figure>
+              {projeto.featureImage && <figure>
                 <DocImage
                   src={projeto.featureImage}
                   alt={`Funcionalidade em destaque do projeto ${projeto.nome}`}
@@ -208,7 +213,7 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
                     {projeto.featureImageCaption}
                   </figcaption>
                 )}
-              </figure>
+              </figure>}
             </section>
           </ScrollReveal>
 
@@ -234,7 +239,7 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
             </ScrollReveal>
           )}
 
-          <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
+          {projeto.resultado && <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
             <section id="resultado" className="rounded-xl border border-accent-border bg-accent-light p-6 md:p-8">
               <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-accent">
                 Resultado
@@ -243,7 +248,9 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
                 {projeto.resultado}
               </p>
             </section>
-          </ScrollReveal>
+          </ScrollReveal>}
+
+          {projeto.blocoProprio === "radar-mes" && <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20"><RadarIncluso /></ScrollReveal>}
 
           {bastidores.length > 0 && (
             <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
@@ -280,8 +287,16 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
             </ScrollReveal>
           )}
 
-          <section className="border-t border-divider pt-14 text-center">
-            {projeto.categoria === "produto" ? (
+          {isRadar ? (
+            <BlogArticleCta
+              title="Quer saber se o seu site está trazendo cliente?"
+              text="Conte sobre o seu site. A gente mostra o que o Radar leria nele."
+              whatsappMessage="Olá! Quero saber o que o Radar leria no meu site."
+              primaryLabel="Conversar sobre meu site"
+              location="projeto"
+            />
+          ) : <section className="border-t border-divider pt-14 text-center">
+            {isKelly ? (
               <div className="kelly-glow flex flex-wrap items-center gap-6 rounded-[22px] p-8 text-left md:p-10">
                 <div className="min-w-0 flex-1">
                   <h2 className="font-kelly-display text-3xl font-light tracking-tight text-white">
@@ -347,7 +362,7 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
             <Link href="/projetos" className="mt-7 inline-block text-sm font-medium text-muted transition-colors hover:text-accent">
               Ver todos os projetos
             </Link>
-          </section>
+          </section>}
         </article>
       </main>
 
