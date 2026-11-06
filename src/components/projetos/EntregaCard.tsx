@@ -5,8 +5,17 @@ export function EntregaCard({ projeto }: { projeto: Projeto }) {
   const nome = projeto.nomeCurto ?? projeto.nome;
   return (
     <article className="group flex h-full flex-wrap overflow-hidden rounded-[18px] border border-card-border bg-card">
-      <div className="min-w-0 basis-full sm:flex-[1_1_220px]">
-        {projeto.imagem && <CapaProjeto src={projeto.imagem} nome={nome} tamanho="md" aspecto="4/3" />}
+      <div className="min-w-0 basis-full sm:self-stretch sm:flex-[1_1_220px]">
+        {projeto.imagem && (
+          <CapaProjeto
+            src={projeto.imagem}
+            nome={nome}
+            tamanho="md"
+            aspecto="4/3"
+            posicao="left top"
+            preencherAltura
+          />
+        )}
       </div>
       <div className="flex min-w-0 flex-[1_1_240px] flex-col p-6">
         <p className="text-xs font-semibold uppercase tracking-[0.08em] text-accent">{projeto.segmento}</p>

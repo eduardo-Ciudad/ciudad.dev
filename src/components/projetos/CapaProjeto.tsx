@@ -7,6 +7,7 @@ type CapaProjetoProps = {
   aspecto?: "16/9" | "4/3";
   tema?: "claro" | "escuro";
   posicao?: string;
+  preencherAltura?: boolean;
 };
 
 const tamanhos = {
@@ -14,19 +15,19 @@ const tamanhos = {
     moldura: "px-7 pt-7",
     barra: "h-[26px] gap-1.5 px-3",
     bolinha: "size-2",
-    janela: "rounded-t-[10px]",
+    janela: "rounded-t-[12px]",
   },
   md: {
     moldura: "px-5 pt-5",
     barra: "h-[18px] gap-1 px-2.5",
     bolinha: "size-1.5",
-    janela: "rounded-t-lg",
+    janela: "rounded-t-[12px]",
   },
   sm: {
     moldura: "px-4 pt-4",
     barra: "h-3.5 gap-1 px-2",
     bolinha: "size-[5px]",
-    janela: "rounded-t-md",
+    janela: "rounded-t-[12px]",
   },
 } as const;
 
@@ -37,33 +38,37 @@ export function CapaProjeto({
   aspecto = "16/9",
   tema = "claro",
   posicao = "top",
+  preencherAltura = false,
 }: CapaProjetoProps) {
   const config = tamanhos[tamanho];
   const escuro = tema === "escuro";
 
   return (
     <div
-      className={`${config.moldura} overflow-hidden ${escuro ? "bg-[#12131b]" : "bg-[var(--color-cover)]"}`}
+      className={`${config.moldura} overflow-hidden ${preencherAltura ? "sm:flex sm:h-full sm:flex-col" : ""} ${escuro ? "bg-[#12131b]" : "bg-[var(--color-cover)]"}`}
     >
       <div
-        className={`${config.janela} overflow-hidden border shadow-[0_1px_2px_rgba(0,0,0,0.05)] ${
-          escuro ? "border-[#1f2130] bg-[#12131b]" : "border-black/[0.06] bg-white"
+        className={`${config.janela} overflow-hidden border border-black/[0.08] shadow-[0_1px_3px_rgba(0,0,0,0.06)] ${preencherAltura ? "sm:flex sm:flex-1 sm:flex-col" : ""} ${
+          escuro ? "bg-[#12131b]" : "bg-white"
         }`}
       >
         <div
           aria-hidden="true"
-          className={`${config.barra} flex items-center border-b ${
-            escuro ? "border-[#1f2130] bg-[#161825]" : "border-black/[0.06] bg-[#fbfaf7]"
-          }`}
+          className={`${config.barra} flex shrink-0 items-center border-b border-white/[0.05] bg-[#252830]`}
         >
-          {[0, 1, 2].map((item) => (
+          {["#FF5F57", "#FEBC2E", "#28C840"].map((cor) => (
             <span
-              key={item}
-              className={`${config.bolinha} rounded-full ${escuro ? "bg-[#2c2f42]" : "bg-[#d6cfc2]"}`}
+              key={cor}
+              className={`${config.bolinha} rounded-full`}
+              style={{ backgroundColor: cor }}
             />
           ))}
         </div>
-        <div className={`relative ${aspecto === "4/3" ? "aspect-[4/3]" : "aspect-video"}`}>
+        <div
+          className={`relative ${aspecto === "4/3" ? "aspect-[4/3]" : "aspect-video"} ${
+            preencherAltura ? "sm:min-h-[200px] sm:flex-1 sm:aspect-auto" : ""
+          }`}
+        >
           <Image
             fill
             src={src}
