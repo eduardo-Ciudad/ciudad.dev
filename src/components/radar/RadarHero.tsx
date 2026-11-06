@@ -17,12 +17,12 @@ export function RadarHero() {
   return (
     <section className="w-full" aria-labelledby="radar-hero-title">
       <ScrollReveal>
-        <div className="grid items-center gap-14 lg:grid-cols-2">
-          <div>
+        <div>
+          <div className="max-w-[760px]">
             <p className="text-xs font-semibold uppercase tracking-[0.14em] text-accent">{EYEBROW}</p>
             <h1
               id="radar-hero-title"
-              className="mt-4 font-heading text-[clamp(44px,5.4vw,68px)] font-semibold leading-[1.02] tracking-[-1.2px] text-primary"
+              className="mt-4 font-heading text-[clamp(44px,5.6vw,72px)] font-semibold leading-[1.02] tracking-[-1.2px] text-primary"
             >
               {TITLE}
             </h1>
@@ -52,7 +52,9 @@ export function RadarHero() {
             </div>
           </div>
 
-          <RadarTelaCase />
+          <div className="mt-12 md:mt-16">
+            <RadarTelaCase />
+          </div>
         </div>
       </ScrollReveal>
     </section>
