@@ -97,8 +97,8 @@ function DesktopTimeline() {
                 </p>
                 {step.badge && (
                   <Link
-                    href="/garantia"
-                    aria-label="Ver termos da garantia de 90 dias"
+                    href="/radar"
+                    aria-label="Conhecer o Radar, incluso nos 90 dias de garantia"
                     className="hover:brightness-95 transition"
                   >
                     <motion.span
@@ -198,8 +198,8 @@ function MobileTimeline() {
                 </p>
                 {step.badge && (
                   <Link
-                    href="/garantia"
-                    aria-label="Ver termos da garantia de 90 dias"
+                    href="/radar"
+                    aria-label="Conhecer o Radar, incluso nos 90 dias de garantia"
                     className="hover:brightness-95 transition"
                   >
                     <motion.span
