@@ -64,3 +64,11 @@ export const radar = {
   },
   cta: { title: "Quer o Radar no seu site?", label: "Falar no WhatsApp" },
 } as const;
+
+export const RADAR_STATUS = "No ar";
+
+export const RADAR_STATS = [
+  { valor: "06h", rotulo: "sincronização diária com o Google" },
+  { valor: "7·28·90", rotulo: "dias comparados com o período anterior" },
+  { valor: "131", rotulo: "testes automatizados" },
+] as const;
