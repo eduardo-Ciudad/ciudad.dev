@@ -12,6 +12,7 @@ import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { BlogArticleCta } from "@/components/BlogArticleCta";
 import { RadarTelaCase } from "@/components/ProdutoKelly";
 import { RadarIncluso, RadarMes } from "@/components/projetos/RadarCaseContent";
+import { RadarProducao } from "@/components/projetos/RadarProducao";
 import { formatPostDate, getPostsByCase } from "@/lib/blog";
 
 type ProjetoCasePageProps = {
@@ -78,8 +79,12 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
         ["#visao-geral", "Visão geral"],
         ["#o-produto", "Como funciona"],
         ["#um-mes-no-radar", "Um mês no Radar"],
+        ["#numeros", "Em números"],
+        ["#producao", "Do código à produção"],
         ["#decisoes-tecnicas", "Decisões técnicas"],
+        ["#resultado", "Resultado"],
         ["#o-que-esta-incluso", "O que está incluso"],
+        ...(bastidores.length > 0 ? [["#bastidores", "Bastidores"]] : []),
       ]
     : [
         ["#visao-geral", "Visão geral"],
@@ -115,7 +120,7 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
               </span>
             ))}
             {projeto.status && (
-              <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isRadar ? "bg-[#FBF1DC] text-[#7A4E00]" : "bg-kelly-warning-bg text-kelly-warning"}`}>
+              <span className={`rounded-full px-3 py-1 text-xs font-semibold ${isRadar ? "bg-[#E7F2EA] text-[#1F6B3A]" : "bg-kelly-warning-bg text-kelly-warning"}`}>
                 {projeto.status}
               </span>
             )}
@@ -126,6 +131,46 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
         {projeto.heroIlustracao === "radar" ? <RadarTelaCase /> : <DocImage src={projeto.heroImage} alt={`Visão geral do projeto ${projeto.nome}`} fallbackLabel={`Imagem principal do case ${projeto.nome} em breve`} />}
       </div>
     </>
+  );
+  const numerosSection = projeto.numeros && (
+    <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
+      <section id="numeros">
+        <h2 className="mb-6 font-heading text-2xl font-semibold tracking-[-0.5px] md:text-[28px]">
+          Em números
+        </h2>
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
+          {projeto.numeros.map((numero) => (
+            <div
+              key={numero.rotulo}
+              className={
+                isRadar
+                  ? "rounded-xl border border-card-border bg-card p-5"
+                  : "rounded-xl bg-kelly-bg p-5"
+              }
+            >
+              <p
+                className={
+                  isRadar
+                    ? "font-heading text-4xl font-semibold leading-none tabular-nums text-primary"
+                    : "font-kelly-display text-4xl font-light tracking-tight text-white"
+                }
+              >
+                {numero.valor}
+              </p>
+              <p
+                className={
+                  isRadar
+                    ? "mt-2 text-[13px] leading-snug text-muted"
+                    : "mt-2 font-kelly-body text-[13px] leading-snug text-kelly-text-2"
+                }
+              >
+                {numero.rotulo}
+              </p>
+            </div>
+          ))}
+        </div>
+      </section>
+    </ScrollReveal>
   );
 
   return (
@@ -188,6 +233,14 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
 
           {projeto.blocoProprio === "radar-mes" && <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20"><RadarMes /></ScrollReveal>}
 
+          {isRadar && numerosSection}
+
+          {isRadar && projeto.producao && (
+            <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
+              <RadarProducao producao={projeto.producao} />
+            </ScrollReveal>
+          )}
+
           <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
             <section id="decisoes-tecnicas">
               <h2 className="mb-6 font-heading text-2xl font-semibold tracking-[-0.5px] md:text-[28px]">
@@ -217,27 +270,7 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
             </section>
           </ScrollReveal>
 
-          {projeto.numeros && (
-            <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
-              <section id="numeros">
-                <h2 className="mb-6 font-heading text-2xl font-semibold tracking-[-0.5px] md:text-[28px]">
-                  Em números
-                </h2>
-                <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
-                  {projeto.numeros.map((numero) => (
-                    <div key={numero.rotulo} className="rounded-xl bg-kelly-bg p-5">
-                      <p className="font-kelly-display text-4xl font-light tracking-tight text-white">
-                        {numero.valor}
-                      </p>
-                      <p className="mt-2 font-kelly-body text-[13px] leading-snug text-kelly-text-2">
-                        {numero.rotulo}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </section>
-            </ScrollReveal>
-          )}
+          {!isRadar && numerosSection}
 
           {projeto.resultado && <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
             <section id="resultado" className="rounded-xl border border-accent-border bg-accent-light p-6 md:p-8">

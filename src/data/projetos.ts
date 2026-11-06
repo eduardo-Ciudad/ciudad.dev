@@ -1,4 +1,5 @@
 import { KELLY_URL } from "./kelly";
+import type { DocGroup } from "./services-docs";
 
 export type Projeto = {
   slug: string;
@@ -21,6 +22,11 @@ export type Projeto = {
   cicloTitulo?: string;
   ciclo?: { titulo: string; descricao: string }[];
   numeros?: { valor: string; rotulo: string }[];
+  producao?: {
+    titulo: string;
+    blocos: { titulo: string; descricao: string }[];
+    detalhes: DocGroup[];
+  };
   descricao: string[];
   problema?: string;
   solucao?: string;
@@ -52,7 +58,7 @@ export type ProjetoComCase = Projeto & {
       blocoProprio: "radar-mes";
       heroImage?: never;
       featureImage?: never;
-      resultado?: never;
+      resultado?: string;
     }
 );
 
@@ -80,6 +86,8 @@ const projetosBase: Projeto[] = [
     nome: "Kelly Academy",
     categoria: "produto",
     grupo: "produto",
+    segmento: "Produto próprio · Educação",
+    resumo: "Treino adaptativo para a redação do ENEM: corrige nas 5 competências, aponta o trecho que segurou a nota e diz o que treinar a seguir.",
     autoral: true,
     status: "Beta aberto",
     imagem: "/img/projetos/kelly-caso-hero.png",
@@ -263,11 +271,11 @@ const projetosBase: Projeto[] = [
     resumo: "Painel que lê o Google Analytics do seu site e mostra o que importa. Vem configurado em todo projeto, com 90 dias de leitura mensal dos números.",
     autoral: true,
     imagem: "/img/radar/radar-sites.png",
-    status: "Em implantação",
+    status: "No ar desde nov/2026",
     subtitulo: "O Google Analytics do seu site, traduzido para o que importa no seu negócio: de onde vem o cliente, que página funciona e onde ele desiste.",
     caseLabel: "Produto próprio · Analytics",
     caseDescription: "Radar CiudadLab: o Google Analytics do seu site traduzido em uma leitura simples do que trouxe cliente e do que precisa mudar.",
-    stack: ["Java 17 · Spring Boot", "Arquitetura hexagonal", "Google Analytics Data API", "PostgreSQL · Flyway", "Next.js"],
+    stack: ["Java 17 · Spring Boot", "Arquitetura hexagonal", "Google Analytics Data API", "PostgreSQL · Flyway", "Next.js", "Docker · Nginx", "Vercel", "GitHub Actions"],
     descricao: [
       "Painel próprio que puxa os dados do Google Analytics 4 dos sites da CiudadLab e dos clientes via API, com sincronização diária automática",
       "Backend em Java 17 + Spring Boot com arquitetura hexagonal, PostgreSQL/Flyway e autenticação JWT com papéis",
@@ -282,12 +290,44 @@ const projetosBase: Projeto[] = [
       { titulo: "Compara", descricao: "Últimos 7, 28 ou 90 dias, sempre lado a lado com o período anterior." },
       { titulo: "Traduz", descricao: "Uma leitura em linguagem simples, com o alerta do que merece atenção." },
     ],
+    numeros: [
+      { valor: "131", rotulo: "testes automatizados" },
+      { valor: "16", rotulo: "endpoints na API" },
+      { valor: "5", rotulo: "migrations versionadas" },
+      { valor: "06h", rotulo: "sincronização diária com o Google" },
+    ],
+    resultado: "No ar desde novembro de 2026, acompanhando todos os dias o próprio site da CiudadLab. O próximo passo é conectar os sites dos clientes que entram no acompanhamento.",
+    producao: {
+      titulo: "O mesmo cuidado de produção que vai para o seu projeto",
+      blocos: [
+        { titulo: "Onde roda", descricao: "A API e o banco ficam num servidor próprio, e o painel fica na Vercel, perto de São Paulo. O banco não fica acessível pela internet." },
+        { titulo: "Como protege", descricao: "Só o painel conversa com a API, o login tem limite de tentativas e uma sessão pode ser encerrada na hora, de qualquer lugar." },
+        { titulo: "Como é testado", descricao: "Cada mudança passa por 131 testes automáticos antes de ir ao ar, inclusive os de segurança." },
+        { titulo: "Como chega ao ar", descricao: "Tudo empacotado em containers, com HTTPS e certificado renovado sozinho. Atualizar o sistema é um comando." },
+      ],
+      detalhes: [
+        {
+          subtitle: "Infraestrutura e segurança",
+          items: [
+            "API Java/Spring Boot em container Docker, atrás de Nginx com HTTPS (Let's Encrypt, renovação automática)",
+            "PostgreSQL numa rede interna do Docker, sem porta exposta, com um usuário próprio sem privilégios de administrador",
+            "Frontend Next.js na Vercel (região São Paulo); o login passa pelo servidor do Next.js e o token fica num cookie httpOnly",
+            "A API só aceita chamadas do servidor do frontend e nega por padrão: toda rota nova nasce restrita ao administrador",
+            "Containers rodando sem root e com sistema de arquivos somente leitura",
+            "CI no GitHub Actions: testes unitários e de integração com PostgreSQL real e build da imagem a cada push",
+          ],
+        },
+      ],
+    },
     decisoesTecnicas: [
       "Acesso só de leitura: O Radar entra no Analytics por uma conta de serviço com papel de leitor. Ele não altera nada na conta do cliente e o acesso pode ser revogado a qualquer momento.",
       "Histórico próprio: Os números são sincronizados uma vez por dia e guardados em PostgreSQL. As telas leem do banco do Radar, sem chamar a API do Google a cada clique.",
       "Arquitetura hexagonal: O Google Analytics entra como adapter. A regra de comparar períodos e montar a leitura fica no domínio, sem depender da API.",
       "SQL onde faz sentido: As tabelas de métricas usam JDBC com consultas escritas à mão, que é mais simples para agregação por período. JPA fica para o módulo de leads.",
-      "Segurança: Spring Security com JWT, papéis de administrador e leitor, e a sincronização manual liberada só para o administrador. No frontend, o token fica num cookie httpOnly.",
+      "Segurança: Spring Security com JWT e acesso ao painel restrito ao administrador: o cliente recebe a leitura dos números, não um login. O login tem limite de tentativas, o token pode ser revogado na hora e, no frontend, fica num cookie httpOnly.",
+      "Sessão revogável: cada token carrega uma versão conferida no banco a cada requisição. Logout ou desativação encerram na hora todas as sessões do usuário.",
+      "Nega por padrão: toda rota nova nasce restrita ao administrador. O papel de leitor existe, mas só será liberado quando cada cliente estiver vinculado ao próprio site.",
+      "Só o frontend fala com a API: as chamadas passam pelo servidor do Next.js, que se identifica com uma chave própria. Requisições de fora são recusadas antes de chegar no login.",
     ],
     heroIlustracao: "radar",
     blocoProprio: "radar-mes",
