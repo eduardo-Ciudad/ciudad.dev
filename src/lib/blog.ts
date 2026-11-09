@@ -15,6 +15,11 @@ export type BlogPostMeta = {
   tags: string[];
   readingTime: number;
   caseSlug?: string;
+  layout?: "editorial";
+  serie?: string;
+  cta?: "radar";
+  relacionados?: string[];
+  draft?: boolean;
 };
 
 export type BlogPost = BlogPostMeta & {
@@ -46,6 +51,25 @@ function parsePost(fileName: string): BlogPost {
     throw new Error(`Frontmatter inválido em ${fileName}: "tags" deve ser uma lista de textos.`);
   }
 
+  if (data.layout !== undefined && data.layout !== "editorial") {
+    throw new Error(`Frontmatter inválido em ${fileName}: "layout" deve ser "editorial".`);
+  }
+  if (data.serie !== undefined && (typeof data.serie !== "string" || !data.serie.trim())) {
+    throw new Error(`Frontmatter inválido em ${fileName}: "serie" deve ser um texto.`);
+  }
+  if (data.cta !== undefined && data.cta !== "radar") {
+    throw new Error(`Frontmatter inválido em ${fileName}: "cta" deve ser "radar".`);
+  }
+  if (
+    data.relacionados !== undefined &&
+    (!Array.isArray(data.relacionados) || data.relacionados.some((slug) => typeof slug !== "string"))
+  ) {
+    throw new Error(`Frontmatter inválido em ${fileName}: "relacionados" deve ser uma lista de textos.`);
+  }
+  if (data.draft !== undefined && typeof data.draft !== "boolean") {
+    throw new Error(`Frontmatter inválido em ${fileName}: "draft" deve ser booleano.`);
+  }
+
   let caseSlug: string | undefined;
   if (data.case !== undefined) {
     const projeto = typeof data.case === "string" ? getProjeto(data.case) : undefined;
@@ -67,8 +91,17 @@ function parsePost(fileName: string): BlogPost {
     tags: data.tags,
     readingTime: getReadingTime(content),
     caseSlug,
+    layout: data.layout,
+    serie: data.serie,
+    cta: data.cta,
+    relacionados: data.relacionados,
+    draft: data.draft,
     content,
   };
+}
+
+function isPublished(post: BlogPost) {
+  return process.env.NODE_ENV !== "production" || post.draft !== true;
 }
 
 export function getAllPosts(): BlogPostMeta[] {
@@ -78,6 +111,7 @@ export function getAllPosts(): BlogPostMeta[] {
     .readdirSync(BLOG_DIRECTORY)
     .filter((fileName) => fileName.endsWith(".mdx"))
     .map(parsePost)
+    .filter(isPublished)
     .sort((a, b) => b.date.localeCompare(a.date))
     .map((post) => ({
       title: post.title,
@@ -87,6 +121,11 @@ export function getAllPosts(): BlogPostMeta[] {
       tags: post.tags,
       readingTime: post.readingTime,
       caseSlug: post.caseSlug,
+      layout: post.layout,
+      serie: post.serie,
+      cta: post.cta,
+      relacionados: post.relacionados,
+      draft: post.draft,
     }));
 }
 
@@ -105,7 +144,9 @@ export function getPostBySlug(slug: string): BlogPost | undefined {
       return data.slug === slug;
     });
 
-  return fileName ? parsePost(fileName) : undefined;
+  if (!fileName) return undefined;
+  const post = parsePost(fileName);
+  return isPublished(post) ? post : undefined;
 }
 
 export function formatPostDate(date: string) {
