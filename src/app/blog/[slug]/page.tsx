@@ -9,6 +9,8 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { BlogArticleCta } from "@/components/BlogArticleCta";
 import { blogMdxComponents } from "@/components/BlogMdxComponents";
+import { BarraProgressoLeitura, EditorialHeader, LeiaTambem, RadarCta, RevelarCapa, editorialComponents } from "@/components/blog/editorial";
+import { getPostExtras } from "@/components/blog/posts/registry";
 import { getProjeto, hasCase } from "@/data/projetos";
 import { formatPostDate, getAllPosts, getPostBySlug } from "@/lib/blog";
 
@@ -73,6 +75,48 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     author: { "@type": "Organization", name: "CiudadLab", url: baseUrl },
     publisher: { "@type": "Organization", name: "CiudadLab", url: baseUrl },
   };
+
+  if (post.layout === "editorial") {
+    const extras = getPostExtras(post.slug);
+    const relacionados = (post.relacionados ?? [])
+      .map((relatedSlug) => getPostBySlug(relatedSlug))
+      .filter((related): related is NonNullable<typeof related> => Boolean(related));
+    const Capa = extras.Capa;
+
+    return (
+      <>
+        <BarraProgressoLeitura />
+        <Navbar />
+        <main className="pb-24 pt-20 md:pb-32 md:pt-24">
+          <article>
+            <EditorialHeader post={post} />
+            {Capa && <RevelarCapa className="mx-auto max-w-[1040px] px-6"><Capa /></RevelarCapa>}
+            <div className="mx-auto mt-[72px] flex max-w-[1040px] flex-col gap-[72px] px-6">
+              <MDXRemote
+                source={post.content}
+                components={{ ...blogMdxComponents, ...editorialComponents, ...extras.componentes }}
+                options={{ mdxOptions: { remarkPlugins: [remarkGfm], rehypePlugins: [[rehypePrettyCode, { theme: "one-dark-pro" }]] } }}
+              />
+            </div>
+            <div className="mx-auto mt-[72px] flex max-w-[1040px] flex-col gap-5 px-6">
+              {projeto && (
+                <aside className="rounded-2xl border border-accent-border bg-accent-light p-6 md:p-8">
+                  <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-accent">Case relacionado</span>
+                  <p className="mt-3 font-heading text-2xl font-semibold text-primary md:text-[28px]">{projeto.nome}</p>
+                  <p className="mt-2 text-[15px] leading-[1.7] text-primary/80">{projeto.resultado}</p>
+                  <Link href={`/projetos/${projeto.slug}`} className="mt-5 inline-flex text-sm font-medium text-accent">Ver o case completo →</Link>
+                </aside>
+              )}
+              {post.cta === "radar" ? <RadarCta /> : <BlogArticleCta />}
+              <LeiaTambem posts={relacionados} />
+            </div>
+          </article>
+          <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+        </main>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
