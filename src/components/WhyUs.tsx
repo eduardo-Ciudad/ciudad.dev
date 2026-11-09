@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
-import { FileCheck, ShieldCheck, Clock, MapPin, Code2, ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
+import { FileCheck, ShieldCheck, Radar, MapPin, Code2, ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
 import { motion, useInView, useReducedMotion, useScroll, useSpring } from "framer-motion";
 import { ScrollReveal } from "./ScrollReveal";
 import { useDragScroll } from "@/hooks/useDragScroll";
@@ -21,15 +21,15 @@ const cards: WhyUsCardData[] = [
     description: "Antes de começar, você recebe por escrito o que vai ser feito, em quantas semanas e por quanto. Não cobro por hora: o valor da proposta é o valor final, do primeiro dia à entrega.",
   },
   {
+    icon: Radar,
+    title: "90 dias de garantia e de Radar",
+    description: "Qualquer defeito que aparecer nos primeiros 90 dias é corrigido sem custo. E, nesse período, o Radar acompanha os números do seu site e te manda uma leitura simples do que está trazendo cliente.",
+    link: { href: "/radar", label: "Conhecer o Radar" },
+  },
+  {
     icon: ShieldCheck,
     title: "Segurança desde o dia 1 — não depois",
     description: "Autenticação, validação de dados, proteção contra ataques e criptografia de webhooks já vêm no projeto. Não é camada extra cobrada à parte. O GabiKids, por exemplo, passou por uma auditoria de 21 pontos de segurança antes de ir ao ar.",
-  },
-  {
-    icon: Clock,
-    title: "Pronto em 2 a 4 semanas, com 90 dias de garantia",
-    description: "O prazo é curto porque não existe repasse entre equipes: quem orça é quem desenvolve. Depois que o projeto vai ao ar, qualquer defeito que aparecer em 90 dias é corrigido sem custo.",
-    link: { href: "/garantia", label: "Ver termos da garantia" },
   },
   {
     icon: MapPin,
