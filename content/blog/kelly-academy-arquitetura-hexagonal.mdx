@@ -1,0 +1,86 @@
+---
+title: "Por que a Kelly Academy usa arquitetura hexagonal (e quando eu não usaria)"
+description: "Arquitetura importa num SaaS na hora em que algo fora dele muda. Na Kelly, isso já aconteceu mais de uma vez."
+slug: "kelly-academy-arquitetura-hexagonal"
+date: "2026-11-09"
+tags: ["arquitetura", "kelly academy", "java"]
+case: "kelly-academy"
+layout: "editorial"
+serie: "Engenharia"
+relacionados: ["planos-gratis-pro-sem-if", "o-que-revisei-antes-de-colocar-o-radar-no-ar"]
+draft: true
+---
+
+<ResumoDoPost />
+
+<Secao numero="1" rotulo="O problema" titulo="Três coisas que eu não controlo" id="problema">
+A Kelly Academy corrige redações do ENEM com IA, cobra assinatura e manda e-mail. Qualquer um desses serviços pode mudar de preço, de versão ou de regra, e nenhum deles pergunta antes.
+
+<ServicosExternos />
+</Secao>
+
+<Secao numero="2" rotulo="A ideia" titulo="As regras no centro, o resto do lado de fora" id="ideia">
+A arquitetura hexagonal é uma forma de garantir que, quando algo de fora mudar, o que muda junto seja pequeno. O centro diz do que precisa. Quem entrega fica do lado de fora.
+</Secao>
+
+<Largo rolavel larguraMinima="760" legenda="Os nomes são os pacotes e as classes reais da Kelly Academy."><DiagramaHexagonal /></Largo>
+
+<Secao numero="3" rotulo="Na prática" titulo="Uma redação atravessando o hexágono" id="percurso">
+Quando o aluno envia um texto, ele passa por quatro lugares. Só o último sabe que o Gemini existe.
+</Secao>
+
+<Largo><PercursoRedacao /></Largo>
+
+<Margem>
+No caso de uso, a chamada é uma linha. Ele fala com a porta, não com o Gemini:
+
+```java title="application/usecase/EnviarRedacaoService.java"
+public RedacaoDetalhada enviar(UUID usuarioId, UUID temaId, TipoRedacao tipo,
+                               String texto, OrigemRedacao origem) {
+    // ...
+    var resultado = avaliacaoIA.avaliar(
+            new SolicitacaoAvaliacao(tema.titulo(), texto));
+    // ...
+}
+```
+</Margem>
+
+<Destaque>O domínio não sabe que o Gemini existe. É por isso que trocar o Gemini é barato.</Destaque>
+
+<Secao numero="4" rotulo="O retorno" titulo="Três vezes em que isso pagou a conta" id="retorno" />
+<Largo><GanhosArquitetura /></Largo>
+
+<Margem>
+O segundo é o meu favorito. O pagamento ainda não estava pronto, e o sistema precisava funcionar mesmo assim. Quando o Stripe ficou pronto, troquei o adaptador na configuração. É a mesma lógica do post sobre [planos Grátis e Pro sem if](/blog/planos-gratis-pro-sem-if).
+
+```java title="adapter/out/pagamento/PagamentoDesligadoAdapter.java"
+public class PagamentoDesligadoAdapter implements PagamentoGatewayPort {
+
+    static final String MENSAGEM = "Pagamento ainda não está disponível";
+
+    @Override
+    public SessaoCheckout criarSessaoCheckout(SolicitacaoCheckout solicitacao) {
+        throw desligado();
+    }
+}
+```
+</Margem>
+
+<Largo><DiffTrocaModelo /></Largo>
+
+<Secao numero="5" rotulo="O custo" titulo="O custo honesto" id="custo">
+Mais arquivos, mais interfaces e um mapper entre o banco e o domínio. Para uma tela de cadastro simples, isso é burocracia.
+
+<CustoSeisArquivos />
+
+No começo parece lento. O retorno aparece quando algo de fora muda e a mudança cabe num arquivo.
+</Secao>
+
+<Secao numero="6" rotulo="A decisão" titulo="Quando vale a pena num SaaS" id="quando" />
+<Largo><QuandoVale /></Largo>
+
+<Conclusao>
+Arquitetura não é sobre pastas bonitas. É sobre o tamanho do estrago quando algo que você não controla muda. Num SaaS, sempre muda.
+
+O Radar, que foi ao ar este mês, segue o mesmo desenho, porque também depende de um serviço de fora: o Google Analytics.
+</Conclusao>
