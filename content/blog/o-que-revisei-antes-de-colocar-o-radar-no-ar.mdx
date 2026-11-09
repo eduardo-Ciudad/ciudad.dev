@@ -1,0 +1,70 @@
+---
+title: "O que eu revisei antes de colocar o Radar no ar"
+description: "Seis decisões de segurança, o custo de cada uma e o erro que o pipeline encontrou antes de mim."
+slug: "o-que-revisei-antes-de-colocar-o-radar-no-ar"
+date: "2026-11-09"
+tags: ["segurança", "bastidores", "radar"]
+case: "radar"
+layout: "editorial"
+serie: "Série Radar · 3 de 3"
+relacionados: ["google-analytics-o-que-olhar-em-5-minutos", "kelly-academy-arquitetura-hexagonal"]
+draft: true
+---
+
+<ResumoDoPost />
+
+<Secao numero="1" rotulo="O contexto" titulo="Por que separar um dia só para revisar" id="contexto">
+
+O Radar lê dados de Analytics de clientes. Não são dados de cartão, mas são dados de negócio de outras pessoas, e isso muda o tamanho do cuidado.
+
+Os detalhes de configuração ficam de fora de propósito. Explicar a decisão ajuda quem está construindo; publicar o mapa ajuda quem quer entrar.
+
+</Secao>
+
+<Secao numero="2" rotulo="As decisões" titulo="Seis decisões, e o custo de cada uma" id="decisoes">
+
+Organizei em três frentes: quem acessa, onde ficam os dados e como o servidor roda.
+
+</Secao>
+
+<Largo>
+  <DecisoesSeguranca />
+</Largo>
+
+<Secao numero="3" rotulo="O pipeline" titulo="O erro que a integração contínua achou antes de mim" id="pipeline">
+
+Montei o pipeline achando que ele só ia confirmar o que eu já sabia. Na primeira execução, tudo ficou verde, menos uma linha: os testes que sobem um banco de verdade nunca tinham rodado no build.
+
+Eles passavam quando eu rodava um por um na minha máquina. O build simplesmente não os chamava.
+
+</Secao>
+
+<Largo>
+  <TestesIntegracaoAntesDepois />
+</Largo>
+
+<Destaque>Um teste que não roda no build é só um arquivo que dá segurança falsa.</Destaque>
+
+<Secao numero="4" rotulo="O que já estava no ar" titulo="Revisar os projetos antigos também" id="projetos-antigos">
+
+Publicar o Radar no mesmo servidor de projetos antigos me fez olhar para eles. Alguns estavam mais expostos do que precisavam. Fechei antes de subir o novo.
+
+É a parte menos bonita do trabalho, e provavelmente a mais útil: o projeto novo herda o cuidado, os antigos ganham de carona.
+
+</Secao>
+
+<Secao numero="5" rotulo="Em números" titulo="O Radar hoje" id="numeros">
+
+Nenhum desses números garante que nada vai dar errado. Eles garantem que, quando der, eu fico sabendo cedo.
+
+</Secao>
+
+<Largo>
+  <RadarEmNumeros />
+</Largo>
+
+<Conclusao>
+
+Segurança não é uma lista de ferramentas. É decidir, item por item, o que você aceita pagar em conveniência para ter controle, e escrever teste para cada decisão.
+
+</Conclusao>
