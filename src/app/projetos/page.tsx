@@ -7,10 +7,10 @@ import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { CaseClienteCard } from "@/components/projetos/CaseClienteCard";
 import { EntregaCard } from "@/components/projetos/EntregaCard";
 import { LaboratorioCard } from "@/components/projetos/LaboratorioCard";
-import { ProdutoDestaqueCard } from "@/components/projetos/ProdutoDestaqueCard";
-import { ProdutoRadarFaixa } from "@/components/projetos/ProdutoRadarFaixa";
+import { ProdutoCard } from "@/components/projetos/ProdutoCard";
 import { SecaoCabecalho } from "@/components/projetos/SecaoCabecalho";
 import { projetos } from "@/data/projetos";
+import { PRODUTO_PROVAS } from "@/data/produtos-provas";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 
 export const metadata: Metadata = {
@@ -60,9 +60,27 @@ export default function ProjetosPage() {
         </section>
 
         <section id="produtos" className="mx-auto mt-28 max-w-6xl scroll-mt-24 px-6 md:mt-32">
-          <SecaoCabecalho eyebrow="Produtos próprios" titulo="Não é só portfólio. É produto rodando." apoio="Idealizados, construídos e mantidos pela CiudadLab, com o mesmo cuidado de um projeto de cliente." />
-          <ScrollReveal className="mt-9"><ProdutoDestaqueCard projeto={kelly} /></ScrollReveal>
-          <ScrollReveal className="mt-5" delay={0.08}><ProdutoRadarFaixa projeto={radar} /></ScrollReveal>
+          <SecaoCabecalho eyebrow="Produtos próprios" titulo="Não é só portfólio. São produtos rodando." apoio="Idealizados, construídos e mantidos pela CiudadLab, com o mesmo cuidado de um projeto de cliente." />
+          <div className="mt-9 grid grid-cols-1 gap-7 md:grid-cols-2">
+            <ScrollReveal className="h-full">
+              <ProdutoCard
+                projeto={kelly}
+                provas={PRODUTO_PROVAS["kelly-academy"]}
+                linkProduto={{
+                  label: "kellyacademy.com.br",
+                  href: kelly.ctaPrincipal?.url ?? "",
+                  externo: true,
+                }}
+              />
+            </ScrollReveal>
+            <ScrollReveal className="h-full" delay={0.08}>
+              <ProdutoCard
+                projeto={radar}
+                provas={PRODUTO_PROVAS.radar}
+                linkProduto={{ label: "Conhecer o Radar", href: "/radar" }}
+              />
+            </ScrollReveal>
+          </div>
         </section>
 
         <section id="entregas" className="mx-auto mt-28 max-w-6xl scroll-mt-24 px-6 md:mt-32">
