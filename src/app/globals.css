@@ -90,37 +90,37 @@ body {
   line-height: 1.8;
 }
 
-.blog-prose > * + * { margin-top: 1.5rem; }
-.blog-prose h2,
-.blog-prose h3 {
+.blog-prose > :not(:where(.not-prose, .not-prose *)) + :not(:where(.not-prose, .not-prose *)) { margin-top: 1.5rem; }
+.blog-prose h2:not(:where(.not-prose, .not-prose *)),
+.blog-prose h3:not(:where(.not-prose, .not-prose *)) {
   font-family: var(--font-heading);
   font-weight: 600;
   line-height: 1.12;
   letter-spacing: -0.025em;
   text-wrap: balance;
 }
-.blog-prose h2 { margin-top: 3.75rem; font-size: clamp(1.9rem, 5vw, 2.5rem); }
-.blog-prose h3 { margin-top: 2.75rem; font-size: clamp(1.45rem, 4vw, 1.85rem); }
-.blog-prose p,
-.blog-prose li { color: var(--color-muted); }
-.blog-prose strong { color: var(--color-primary); font-weight: 600; }
-.blog-prose ul,
-.blog-prose ol { padding-left: 1.4rem; }
-.blog-prose ul { list-style: disc; }
-.blog-prose ol { list-style: decimal; }
-.blog-prose li { padding-left: 0.35rem; }
-.blog-prose li + li { margin-top: 0.55rem; }
-.blog-prose a { color: var(--color-accent); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent-border); text-underline-offset: 0.22em; transition: text-decoration-color 180ms ease; }
-.blog-prose a:hover { text-decoration-color: var(--accent); }
-.blog-prose blockquote { border-left: 3px solid var(--accent); padding-left: 1.25rem; font-family: var(--font-heading); font-size: 1.35rem; line-height: 1.5; }
-.blog-prose .table-scroll { margin: 2rem calc(50% - 50vw); overflow-x: auto; padding-inline: max(1.5rem, calc((100vw - 48rem) / 2)); overscroll-behavior-inline: contain; }
-.blog-prose table { width: 100%; min-width: 38rem; border-collapse: collapse; border: 1px solid var(--color-divider); background: var(--color-card); font-size: 0.875rem; line-height: 1.5; }
-.blog-prose th,
-.blog-prose td { border-bottom: 1px solid var(--color-divider); padding: 0.85rem 1rem; text-align: left; vertical-align: top; }
-.blog-prose th { background: var(--color-accent-light); color: var(--color-primary); font-weight: 600; }
-.blog-prose td { color: var(--color-muted); }
-.blog-prose tr:last-child td { border-bottom: 0; }
-.blog-prose code {
+.blog-prose h2:not(:where(.not-prose, .not-prose *)) { margin-top: 3.75rem; font-size: clamp(1.9rem, 5vw, 2.5rem); }
+.blog-prose h3:not(:where(.not-prose, .not-prose *)) { margin-top: 2.75rem; font-size: clamp(1.45rem, 4vw, 1.85rem); }
+.blog-prose p:not(:where(.not-prose, .not-prose *)),
+.blog-prose li:not(:where(.not-prose, .not-prose *)) { color: var(--color-muted); }
+.blog-prose strong:not(:where(.not-prose, .not-prose *)) { color: var(--color-primary); font-weight: 600; }
+.blog-prose ul:not(:where(.not-prose, .not-prose *)),
+.blog-prose ol:not(:where(.not-prose, .not-prose *)) { padding-left: 1.4rem; }
+.blog-prose ul:not(:where(.not-prose, .not-prose *)) { list-style: disc; }
+.blog-prose ol:not(:where(.not-prose, .not-prose *)) { list-style: decimal; }
+.blog-prose li:not(:where(.not-prose, .not-prose *)) { padding-left: 0.35rem; }
+.blog-prose li:not(:where(.not-prose, .not-prose *)) + li:not(:where(.not-prose, .not-prose *)) { margin-top: 0.55rem; }
+.blog-prose a:not(:where(.not-prose, .not-prose *)) { color: var(--color-accent); font-weight: 600; text-decoration: underline; text-decoration-color: var(--accent-border); text-underline-offset: 0.22em; transition: text-decoration-color 180ms ease; }
+.blog-prose a:not(:where(.not-prose, .not-prose *)):hover { text-decoration-color: var(--accent); }
+.blog-prose blockquote:not(:where(.not-prose, .not-prose *)) { border-left: 3px solid var(--accent); padding-left: 1.25rem; font-family: var(--font-heading); font-size: 1.35rem; line-height: 1.5; }
+.blog-prose .table-scroll:not(:where(.not-prose, .not-prose *)) { margin: 2rem calc(50% - 50vw); overflow-x: auto; padding-inline: max(1.5rem, calc((100vw - 48rem) / 2)); overscroll-behavior-inline: contain; }
+.blog-prose table:not(:where(.not-prose, .not-prose *)) { width: 100%; min-width: 38rem; border-collapse: collapse; border: 1px solid var(--color-divider); background: var(--color-card); font-size: 0.875rem; line-height: 1.5; }
+.blog-prose th:not(:where(.not-prose, .not-prose *)),
+.blog-prose td:not(:where(.not-prose, .not-prose *)) { border-bottom: 1px solid var(--color-divider); padding: 0.85rem 1rem; text-align: left; vertical-align: top; }
+.blog-prose th:not(:where(.not-prose, .not-prose *)) { background: var(--color-accent-light); color: var(--color-primary); font-weight: 600; }
+.blog-prose td:not(:where(.not-prose, .not-prose *)) { color: var(--color-muted); }
+.blog-prose tr:not(:where(.not-prose, .not-prose *)):last-child td:not(:where(.not-prose, .not-prose *)) { border-bottom: 0; }
+.blog-prose code:not(:where(.not-prose, .not-prose *)) {
   font-family: var(--font-code), ui-monospace, monospace;
   font-size: 0.86em;
   color: var(--color-primary);
@@ -130,7 +130,7 @@ body {
   overflow-wrap: anywhere;
 }
 .window-frame,
-.blog-prose figure[data-rehype-pretty-code-figure] {
+.blog-prose figure[data-rehype-pretty-code-figure]:not(:where(.not-prose, .not-prose *)) {
   position: relative;
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.08);
@@ -141,7 +141,7 @@ body {
   border-bottom: 0;
   border-radius: 12px 12px 0 0;
 }
-.blog-prose figure[data-rehype-pretty-code-figure] { background: #2b2e37; }
+.blog-prose figure[data-rehype-pretty-code-figure]:not(:where(.not-prose, .not-prose *)) { background: #2b2e37; }
 .window-frame-bar {
   position: relative;
   display: flex;
@@ -170,7 +170,17 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.blog-prose figcaption[data-rehype-pretty-code-title] {
+.window-frame-light {
+  border-color: rgba(0, 0, 0, 0.08);
+  background: #fbf8f3;
+  box-shadow: 0 1px 2px rgba(0,0,0,.04), 0 8px 24px rgba(0,0,0,.05);
+}
+.window-frame-bar-light { border-bottom-color: rgba(0,0,0,.08); background: #e7dfd1; }
+.window-frame-bar-light .window-frame-address { color: #6b6b6b; }
+.blog-prose-editorial p:not(:where(.not-prose, .not-prose *)),
+.blog-prose-editorial li:not(:where(.not-prose, .not-prose *)) { color: #2b2b2b; font-size: 18px; line-height: 1.75; }
+.blog-prose-editorial code:not(:where(.not-prose, .not-prose *)) { background: #ebe4d7; }
+.blog-prose figcaption[data-rehype-pretty-code-title]:not(:where(.not-prose, .not-prose *)) {
   position: absolute;
   top: 0;
   left: 50%;
@@ -186,27 +196,44 @@ body {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.blog-prose pre {
+.blog-prose pre:not(:where(.not-prose, .not-prose *)) {
   margin: 0;
   overflow-x: auto;
   background: #2b2e37 !important;
-  padding: 20px 24px 22px;
+  padding: 20px 24px 28px;
   font-family: var(--font-code), ui-monospace, monospace;
   font-size: 14px;
   line-height: 1.75;
   white-space: pre;
   overscroll-behavior-inline: contain;
+  scrollbar-width: thin;
+  scrollbar-color: #4b5263 transparent;
 }
-.blog-prose pre code {
+.blog-prose pre:not(:where(.not-prose, .not-prose *))::-webkit-scrollbar,
+.scroll-escuro::-webkit-scrollbar { height: 8px; }
+.blog-prose pre:not(:where(.not-prose, .not-prose *))::-webkit-scrollbar-track,
+.scroll-escuro::-webkit-scrollbar-track { background: transparent; }
+.blog-prose pre:not(:where(.not-prose, .not-prose *))::-webkit-scrollbar-thumb,
+.scroll-escuro::-webkit-scrollbar-thumb {
+  border: 2px solid #2b2e37;
+  border-radius: 999px;
+  background: #3e4451;
+}
+.blog-prose pre:not(:where(.not-prose, .not-prose *))::-webkit-scrollbar-thumb:hover,
+.scroll-escuro::-webkit-scrollbar-thumb:hover { background: #4b5263; }
+.blog-prose pre:not(:where(.not-prose, .not-prose *))::-webkit-scrollbar-button,
+.scroll-escuro::-webkit-scrollbar-button { display: none; }
+.scroll-escuro { scrollbar-width: thin; scrollbar-color: #4b5263 transparent; }
+.blog-prose pre code:not(:where(.not-prose, .not-prose *)) {
   background: none;
   color: inherit;
   padding: 0;
   font-size: inherit;
   overflow-wrap: normal;
 }
-.blog-prose pre code span { background: transparent !important; }
+.blog-prose pre:not(:where(.not-prose, .not-prose *)) code:not(:where(.not-prose, .not-prose *)) span:not(:where(.not-prose, .not-prose *)) { background: transparent !important; }
 
 @media (min-width: 768px) {
   .blog-prose { font-size: 1.0625rem; }
-  .blog-prose .table-scroll { margin-inline: -4rem; padding-inline: 4rem; }
+  .blog-prose .table-scroll:not(:where(.not-prose, .not-prose *)) { margin-inline: -4rem; padding-inline: 4rem; }
 }
