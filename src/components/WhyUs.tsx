@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useRef, useState, type RefObject } from "react";
 import { FileCheck, ShieldCheck, Radar, MapPin, Code2, ChevronLeft, ChevronRight, type LucideIcon } from "lucide-react";
 import { motion, useInView, useReducedMotion, useScroll, useSpring } from "framer-motion";
+import { springSnap } from "@/lib/motion";
 import { ScrollReveal } from "./ScrollReveal";
 import { useDragScroll } from "@/hooks/useDragScroll";
 
@@ -45,22 +46,26 @@ const cards: WhyUsCardData[] = [
 
 const initialScrollState = { canScrollLeft: false, canScrollRight: true, activeIndex: 0 };
 
-function WhyUsCard({ card, delay, trackRef, index }: {
+function WhyUsCard({ card, delay, trackRef, index, isDragging }: {
   card: WhyUsCardData;
   delay: number;
   trackRef: RefObject<HTMLDivElement | null>;
   index: number;
+  isDragging: boolean;
 }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const isVisible = useInView(cardRef, { root: trackRef, amount: 0.55 });
+  const reducedMotion = useReducedMotion();
 
   return (
     <ScrollReveal delay={delay} className="why-us-card w-[280px] shrink-0 snap-start md:w-[300px]">
-      <div
+      <motion.div
         ref={cardRef}
         role="group"
         aria-roledescription="slide"
         aria-label={`${index + 1} de ${cards.length}`}
+        whileTap={card.link && !reducedMotion && !isDragging ? { scale: 0.97 } : undefined}
+        transition={springSnap}
         className={`h-full transition-opacity duration-300 hover:opacity-100 ${isVisible ? "opacity-100" : "opacity-60"}`}
       >
         <div className="group relative h-full cursor-default overflow-hidden rounded-lg border border-card-border bg-card px-8 py-10 transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-[0_20px_45px_-20px_rgba(37,99,235,0.25)] hover:ring-1 hover:ring-accent-border motion-reduce:hover:translate-y-0">
@@ -80,19 +85,20 @@ function WhyUsCard({ card, delay, trackRef, index }: {
             </Link>
           )}
         </div>
-      </div>
+      </motion.div>
     </ScrollReveal>
   );
 }
 
 export function WhyUs() {
   const trackRef = useRef<HTMLDivElement>(null);
+  const elasticRef = useRef<HTMLDivElement>(null);
   const stateRef = useRef(initialScrollState);
   const [scrollState, setScrollState] = useState(initialScrollState);
   const reducedMotion = useReducedMotion();
   const { scrollXProgress } = useScroll({ container: trackRef });
   const progress = useSpring(scrollXProgress, { stiffness: 180, damping: 28, mass: 0.35 });
-  const { isDragging, dragHandlers } = useDragScroll({ containerRef: trackRef, itemSelector: ".why-us-card", reducedMotion: Boolean(reducedMotion) });
+  const { isDragging, dragHandlers, scrollBySnap, scrollToSnap } = useDragScroll({ containerRef: trackRef, elasticRef, itemSelector: ".why-us-card", reducedMotion: Boolean(reducedMotion) });
 
   const getItems = useCallback(() => Array.from(trackRef.current?.querySelectorAll<HTMLElement>(".why-us-card") ?? []), []);
 
@@ -121,19 +127,9 @@ export function WhyUs() {
     return () => resizeObserver.disconnect();
   }, [updateScrollState]);
 
-  const scrollToIndex = useCallback((index: number) => {
-    getItems()[index]?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "nearest", inline: "start" });
-  }, [getItems, reducedMotion]);
+  const scrollToIndex = scrollToSnap;
 
-  const scrollByCard = (direction: 1 | -1) => {
-    const track = trackRef.current;
-    const items = getItems();
-    if (!track || items.length < 2) return;
-    track.scrollBy({
-      left: (items[1].offsetLeft - items[0].offsetLeft) * direction,
-      behavior: reducedMotion ? "auto" : "smooth",
-    });
-  };
+  const scrollByCard = scrollBySnap;
 
   return (
     <section className="overflow-x-clip py-16 md:py-24">
@@ -157,9 +153,11 @@ export function WhyUs() {
               if (event.key === "ArrowLeft") { event.preventDefault(); scrollByCard(-1); }
               else if (event.key === "ArrowRight") { event.preventDefault(); scrollByCard(1); }
             }}
-            className={`no-scrollbar flex gap-5 overflow-x-auto overflow-y-hidden py-6 snap-x snap-mandatory outline-none focus-visible:ring-2 focus-visible:ring-accent ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
+            className={`no-scrollbar touch-pan-y overflow-x-auto overflow-y-hidden snap-x snap-mandatory outline-none focus-visible:ring-2 focus-visible:ring-accent ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
           >
-            {cards.map((card, index) => <WhyUsCard key={card.title} card={card} delay={index * 0.1} trackRef={trackRef} index={index} />)}
+            <div ref={elasticRef} className="flex gap-5 py-6 will-change-transform">
+              {cards.map((card, index) => <WhyUsCard key={card.title} card={card} delay={index * 0.1} trackRef={trackRef} index={index} isDragging={isDragging} />)}
+            </div>
           </div>
 
           {scrollState.canScrollLeft && (
