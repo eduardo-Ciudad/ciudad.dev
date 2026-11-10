@@ -4,7 +4,9 @@ import * as React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import { animate, motion, useReducedMotion, type AnimationPlaybackControls } from "framer-motion";
 import { cn } from "@/lib/utils";
+import { FLICK_VELOCITY_THRESHOLD, nearestSnap, project, recentVelocity, rubberband, springFlick, springMove, springSnap, type MotionSample } from "@/lib/motion";
 
 const useIsoLayoutEffect =
   typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
@@ -68,18 +70,20 @@ export function CoverflowCarousel({
 }: CoverflowCarouselProps) {
   const count = slides.length;
   const router = useRouter();
+  const shouldReduceMotion = useReducedMotion();
   const frameRef = React.useRef<HTMLDivElement>(null);
   const cardRefs = React.useRef<(HTMLDivElement | null)[]>([]);
   const posRef = React.useRef(0);
   const targetRef = React.useRef(0);
   const widthRef = React.useRef(0);
-  const rafRef = React.useRef<number | null>(null);
+  const animationRef = React.useRef<AnimationPlaybackControls | null>(null);
   const dragRef = React.useRef<{
     id: number;
     x: number;
+    y: number;
     pos: number;
-    v: number;
-    t: number;
+    samples: MotionSample[];
+    intent: "pending" | "horizontal" | "vertical";
   } | null>(null);
   const [selected, setSelected] = React.useState(0);
   const [lightboxIndex, setLightboxIndex] = React.useState<number | null>(null);
@@ -124,27 +128,35 @@ export function CoverflowCarousel({
   }, [count, depth, fade, falloff, gap, imageSizes, loop, rotate]);
 
   const settle = React.useCallback(
-    (target: number) => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+    (target: number, velocity = 0, fromGesture = false) => {
+      animationRef.current?.stop();
       setWillChange("transform");
       targetRef.current = target;
       setSelected(indexAt(target));
-      const step = () => {
-        const remaining = target - posRef.current;
-        if (Math.abs(remaining) < 0.0004) {
+      if (shouldReduceMotion) {
+        posRef.current = target;
+        paint();
+        setWillChange("auto");
+        return;
+      }
+      const velocityPx = velocity * widthRef.current * (1 + gap);
+      const hasImpulse = fromGesture && Math.abs(velocityPx) >= FLICK_VELOCITY_THRESHOLD;
+      animationRef.current = animate(posRef.current, target, {
+        ...(hasImpulse ? springFlick : springMove),
+        velocity,
+        onUpdate: (value) => {
+          posRef.current = value;
+          paint();
+        },
+        onComplete: () => {
           posRef.current = target;
           paint();
           setWillChange("auto");
-          rafRef.current = null;
-          return;
-        }
-        posRef.current += remaining * 0.16;
-        paint();
-        rafRef.current = requestAnimationFrame(step);
-      };
-      rafRef.current = requestAnimationFrame(step);
+          animationRef.current = null;
+        },
+      });
     },
-    [indexAt, paint, setWillChange],
+    [gap, indexAt, paint, setWillChange, shouldReduceMotion],
   );
 
   const clamp = React.useCallback(
@@ -166,33 +178,47 @@ export function CoverflowCarousel({
   );
 
   const onPointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (rafRef.current !== null) {
-      cancelAnimationFrame(rafRef.current);
-      rafRef.current = null;
-    }
+    if (event.button !== 0) return;
+    animationRef.current?.stop();
+    animationRef.current = null;
     setWillChange("transform");
-    event.currentTarget.setPointerCapture(event.pointerId);
     targetRef.current = posRef.current;
     dragDistanceRef.current = 0;
     dragRef.current = {
       id: event.pointerId,
       x: event.clientX,
+      y: event.clientY,
       pos: posRef.current,
-      v: 0,
-      t: performance.now(),
+      samples: [{ position: posRef.current, time: performance.now() }],
+      intent: "pending",
     };
   };
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     const drag = dragRef.current;
     if (!drag || drag.id !== event.pointerId) return;
-    dragDistanceRef.current += Math.abs(event.clientX - drag.x);
+    const deltaX = event.clientX - drag.x;
+    const deltaY = event.clientY - drag.y;
+    if (drag.intent === "pending" && Math.max(Math.abs(deltaX), Math.abs(deltaY)) >= 8) {
+      drag.intent = Math.abs(deltaX) > Math.abs(deltaY) ? "horizontal" : "vertical";
+      if (drag.intent === "horizontal") event.currentTarget.setPointerCapture(event.pointerId);
+    }
+    if (drag.intent !== "horizontal") return;
+    event.preventDefault();
+    dragDistanceRef.current = Math.abs(deltaX);
     const pitch = widthRef.current * (1 + gap);
     if (!pitch) return;
     const now = performance.now();
-    const previous = posRef.current;
-    posRef.current = clamp(drag.pos - (event.clientX - drag.x) / pitch);
-    drag.v = ((posRef.current - previous) / Math.max(now - drag.t, 1)) * 1000;
-    drag.t = now;
+    const rawPosition = drag.pos - deltaX / pitch;
+    if (shouldReduceMotion || loop || (rawPosition >= 0 && rawPosition <= count - 1)) {
+      posRef.current = clamp(rawPosition);
+    } else {
+      const boundary = rawPosition < 0 ? 0 : count - 1;
+      const overshootPx = (rawPosition - boundary) * pitch;
+      const dimension = frameRef.current?.clientWidth ?? pitch;
+      posRef.current = boundary + rubberband(overshootPx, dimension) / pitch;
+    }
+    drag.samples.push({ position: posRef.current, time: now });
+    drag.samples = drag.samples.filter((sample) => now - sample.time <= 80);
     const index = indexAt(posRef.current);
     if (index !== selected) setSelected(index);
     paint();
@@ -201,6 +227,7 @@ export function CoverflowCarousel({
     const drag = dragRef.current;
     if (!drag || drag.id !== event.pointerId) return;
     dragRef.current = null;
+    if (drag.intent === "vertical") return;
 
     if (enableLightbox && dragDistanceRef.current <= 6) {
       const target = document
@@ -214,8 +241,14 @@ export function CoverflowCarousel({
       }
     }
 
-    const carried = Math.max(-2, Math.min(2, drag.v * 0.18));
-    settle(clamp(Math.round(posRef.current + carried)));
+    const now = performance.now();
+    const velocity = recentVelocity(drag.samples, now);
+    const pitch = widthRef.current * (1 + gap);
+    const projected = shouldReduceMotion
+      ? posRef.current
+      : posRef.current + project(velocity * pitch) / pitch;
+    const snapPoints = Array.from({ length: count }, (_, index) => index);
+    settle(clamp(nearestSnap(projected, snapPoints)), velocity, true);
   };
 
   useIsoLayoutEffect(() => {
@@ -233,12 +266,7 @@ export function CoverflowCarousel({
     return () => observer.disconnect();
   }, [paint]);
 
-  React.useEffect(
-    () => () => {
-      if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
-    },
-    [],
-  );
+  React.useEffect(() => () => animationRef.current?.stop(), []);
 
   React.useEffect(() => {
     if (lightboxIndex === null) return;
@@ -353,12 +381,12 @@ export function CoverflowCarousel({
 
         {showNavigation && (
           <>
-            <button type="button" aria-label="Projeto anterior" onClick={() => nudge(-1)} className="absolute left-2 top-1/2 z-[200] -translate-y-1/2 rounded-full border border-card-border bg-card/80 p-2 text-primary shadow-sm backdrop-blur transition hover:bg-card focus-visible:outline-2 focus-visible:outline-accent sm:left-3">
+            <motion.button type="button" aria-label="Projeto anterior" onClick={() => nudge(-1)} whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }} transition={springSnap} className="absolute left-2 top-1/2 z-[200] -translate-y-1/2 rounded-full border border-card-border bg-card/80 p-2 text-primary shadow-sm backdrop-blur transition hover:bg-card focus-visible:outline-2 focus-visible:outline-accent sm:left-3">
               <ChevronLeft className="size-5" />
-            </button>
-            <button type="button" aria-label="Próximo projeto" onClick={() => nudge(1)} className="absolute right-2 top-1/2 z-[200] -translate-y-1/2 rounded-full border border-card-border bg-card/80 p-2 text-primary shadow-sm backdrop-blur transition hover:bg-card focus-visible:outline-2 focus-visible:outline-accent sm:right-3">
+            </motion.button>
+            <motion.button type="button" aria-label="Próximo projeto" onClick={() => nudge(1)} whileTap={shouldReduceMotion ? undefined : { scale: 0.97 }} transition={springSnap} className="absolute right-2 top-1/2 z-[200] -translate-y-1/2 rounded-full border border-card-border bg-card/80 p-2 text-primary shadow-sm backdrop-blur transition hover:bg-card focus-visible:outline-2 focus-visible:outline-accent sm:right-3">
               <ChevronRight className="size-5" />
-            </button>
+            </motion.button>
           </>
         )}
       </div>
