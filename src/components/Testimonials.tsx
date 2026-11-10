@@ -59,6 +59,7 @@ export function Testimonials() {
 
         <CoverflowCarousel
           slides={slides}
+          loop
           showCaption
           showPagination
           showNavigation
