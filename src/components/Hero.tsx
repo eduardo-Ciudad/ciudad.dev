@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 import { STATUS_STATS } from "@/data/stats";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
+import { springMove } from "@/lib/motion";
 
 const metrics: readonly {
   label: string;
@@ -75,7 +76,7 @@ export function Hero() {
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={springMove}
             className="font-heading font-bold text-4xl md:text-5xl lg:text-5xl leading-[1.15] tracking-[-0.03em] max-w-[520px]"
           >
             <span className="text-neutral-900">
@@ -89,7 +90,7 @@ export function Hero() {
           <motion.p
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.15 }}
+            transition={{ ...springMove, delay: 0.15 }}
             className="mt-5 text-lg font-medium text-neutral-800 max-w-md mx-auto lg:mx-0"
           >
             Software sob medida para transformar suas ideias em soluções que
@@ -99,7 +100,7 @@ export function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ ...springMove, delay: 0.3 }}
             className="mt-7"
           >
             <WhatsAppLink
@@ -116,7 +117,7 @@ export function Hero() {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
+          transition={{ ...springMove, delay: 0.4 }}
           className="w-[320px] md:w-[340px]"
         >
           <div className="rounded-lg overflow-hidden shadow-[0_8px_32px_rgba(0,0,0,0.06)] border border-card-border rotate-1 hover:rotate-0 hover:shadow-xl transition-all duration-500">
