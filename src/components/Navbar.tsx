@@ -8,6 +8,7 @@ import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { navegacao } from "@/data/navegacao";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
+import { reducedMotionFade, springSnap } from "@/lib/motion";
 
 type MenuGroup = "servicos" | "projetos" | "comoTrabalhamos";
 
@@ -219,10 +220,7 @@ export function Navbar() {
                 scale: shouldReduceMotion ? 1 : 0.98,
                 filter: shouldReduceMotion ? "blur(0px)" : "blur(4px)",
               }}
-              transition={{
-                duration: shouldReduceMotion ? 0.12 : 0.22,
-                ease: [0.25, 0.9, 0.3, 1],
-              }}
+              transition={shouldReduceMotion ? reducedMotionFade : springSnap}
               style={{ width: 320 }}
               className="glass-strong absolute left-0 top-full mt-2 max-w-[calc(100vw-2rem)] origin-top-left rounded-[20px] p-1.5"
               onMouseEnter={clearCloseTimer}
@@ -390,9 +388,8 @@ export function Navbar() {
       initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{
-        duration: shouldReduceMotion ? 0.1 : 0.22,
+        ...(shouldReduceMotion ? reducedMotionFade : springSnap),
         delay: shouldReduceMotion ? 0 : index * 0.03,
-        ease: [0.25, 0.9, 0.3, 1],
       }}
     >
       {child}
@@ -473,10 +470,7 @@ export function Navbar() {
             initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.98 }}
-            transition={{
-              duration: shouldReduceMotion ? 0.12 : 0.22,
-              ease: [0.25, 0.9, 0.3, 1],
-            }}
+            transition={shouldReduceMotion ? reducedMotionFade : springSnap}
             className="glass-strong absolute top-[calc(100%+0.5rem)] left-0 right-0 max-h-[calc(100dvh-5rem)] origin-top overflow-y-auto rounded-[20px] md:hidden"
           >
             <div className="flex flex-col gap-2 px-3 py-3 sm:px-4 sm:py-4">
