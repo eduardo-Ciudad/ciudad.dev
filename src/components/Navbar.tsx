@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ChevronDown, Menu, X } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { navegacao } from "@/data/navegacao";
 import { WHATSAPP_CONTACT_URL } from "@/data/whatsapp";
@@ -286,7 +286,9 @@ export function Navbar() {
         onClick={mobile ? closeMobile : undefined}
         className={`relative px-4 py-2 text-sm font-medium hover:text-primary hover:bg-primary/[0.06] rounded-lg transition-all duration-200 ${
           active ? "text-primary" : floating ? "text-primary" : "text-muted"
-        } ${active && floating ? "bg-primary/[0.06]" : ""}`}
+        } ${active && floating ? "bg-primary/[0.06]" : ""} ${
+          mobile ? "flex min-h-11 items-center" : ""
+        }`}
       >
         {link.label}
         {renderActiveDot(active)}
@@ -300,41 +302,47 @@ export function Navbar() {
     const panelId = `mobile-${groupKey}-menu`;
 
     return (
-      <div key={groupKey}>
+      <div
+        key={groupKey}
+        className="liquid-group relative rounded-2xl"
+        data-open={isOpen}
+      >
+        <span className="liquid-pool" aria-hidden="true" />
         <button
           type="button"
           aria-expanded={isOpen}
           aria-controls={panelId}
           onClick={() =>
             setMobileGroups((current) => ({
-              ...current,
+              servicos: false,
+              projetos: false,
+              comoTrabalhamos: false,
               [groupKey]: !current[groupKey],
             }))
           }
-          className={`flex w-full items-center justify-between py-2 text-left text-sm font-medium transition-colors hover:text-primary ${
+          className={`relative z-10 flex min-h-11 w-full items-center justify-between rounded-2xl px-3 py-2 text-left text-sm font-medium transition-colors hover:text-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent ${
             floating ? "text-primary" : "text-muted"
           }`}
         >
           {group.label}
-          <ChevronDown
-            aria-hidden="true"
-            size={16}
-            className={`transition-transform duration-200 motion-reduce:transition-none ${
-              isOpen ? "rotate-180" : ""
-            }`}
-          />
+          <span className="liquid-icon" aria-hidden="true" />
         </button>
-        <AnimatePresence initial={false}>
-          {isOpen && (
-            <motion.div
-              id={panelId}
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: shouldReduceMotion ? 0 : 0.18 }}
-              className="overflow-hidden"
+        <div
+          id={panelId}
+          aria-hidden={!isOpen}
+          inert={!isOpen}
+          className={`relative z-10 grid transition-[grid-template-rows] duration-500 ease-[cubic-bezier(.25,.9,.3,1)] motion-reduce:duration-0 ${
+            isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"
+          }`}
+        >
+          <div className="min-h-0 overflow-hidden">
+            <div
+              className={`space-y-1 px-3 pb-3 pl-5 transition-[opacity,transform] duration-250 ease-[cubic-bezier(.25,.9,.3,1)] motion-reduce:transform-none motion-reduce:duration-100 ${
+                isOpen
+                  ? "translate-y-0 opacity-100 delay-100 motion-reduce:delay-0"
+                  : "-translate-y-1.5 opacity-0 delay-0"
+              }`}
             >
-              <div className="space-y-1 border-l border-divider py-1 pl-4">
                 {group.items.map((item) => {
                   const itemActive = isPathActive(pathname, item.href);
                   return (
@@ -343,7 +351,7 @@ export function Navbar() {
                       href={item.href}
                       aria-current={itemActive ? "page" : undefined}
                       onClick={closeMobile}
-                      className={`flex items-baseline justify-between gap-4 rounded-lg px-3 py-2 transition-colors hover:bg-card ${
+                      className={`flex min-h-11 items-center justify-between gap-4 rounded-lg px-3 py-2 transition-colors hover:bg-card ${
                         itemActive ? "text-primary" : "text-muted"
                       }`}
                     >
@@ -365,18 +373,31 @@ export function Navbar() {
                         : undefined
                     }
                     onClick={closeMobile}
-                    className="block rounded-lg px-3 py-2 text-sm font-medium text-accent transition-colors hover:bg-card"
+                    className="flex min-h-11 items-center rounded-lg px-3 py-2 text-sm font-medium text-accent transition-colors hover:bg-card"
                   >
                     {navegacao[groupKey].footer.label}
                   </Link>
                 )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
+
+  const renderMobileEntry = (index: number, child: ReactNode) => (
+    <motion.div
+      initial={shouldReduceMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: shouldReduceMotion ? 0.1 : 0.22,
+        delay: shouldReduceMotion ? 0 : index * 0.03,
+        ease: [0.25, 0.9, 0.3, 1],
+      }}
+    >
+      {child}
+    </motion.div>
+  );
 
   return (
     <nav
@@ -415,13 +436,33 @@ export function Navbar() {
         <button
           ref={mobileButtonRef}
           type="button"
-          className="md:hidden text-primary"
+          className="-mr-2 flex size-11 items-center justify-center text-primary md:hidden"
           onClick={() => setMobileOpen((current) => !current)}
           aria-expanded={mobileOpen}
           aria-controls="mobile-navigation-menu"
           aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
         >
-          {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+          <span className="relative block size-6" aria-hidden="true">
+            <span
+              className={`absolute left-0.5 h-0.5 w-5 rounded-full bg-current transition-[top,transform,opacity] duration-300 ease-[cubic-bezier(.25,.9,.3,1)] motion-reduce:transition-none ${
+                mobileOpen
+                  ? "top-[11px] rotate-45"
+                  : "top-[5px] rotate-0"
+              }`}
+            />
+            <span
+              className={`absolute left-0.5 top-[11px] h-0.5 w-5 rounded-full bg-current transition-opacity duration-200 motion-reduce:transition-none ${
+                mobileOpen ? "opacity-0" : "opacity-100"
+              }`}
+            />
+            <span
+              className={`absolute left-0.5 h-0.5 w-5 rounded-full bg-current transition-[top,transform,opacity] duration-300 ease-[cubic-bezier(.25,.9,.3,1)] motion-reduce:transition-none ${
+                mobileOpen
+                  ? "top-[11px] -rotate-45"
+                  : "top-[17px] rotate-0"
+              }`}
+            />
+          </span>
         </button>
       </div>
 
@@ -438,19 +479,22 @@ export function Navbar() {
             }}
             className="glass-strong absolute top-[calc(100%+0.5rem)] left-0 right-0 max-h-[calc(100dvh-5rem)] origin-top overflow-y-auto rounded-[20px] md:hidden"
           >
-            <div className="flex flex-col px-6 py-4 gap-2">
-              {renderMobileGroup("servicos")}
-              {renderMobileGroup("projetos")}
-              {renderMobileGroup("comoTrabalhamos")}
-              {renderDesktopLink(0, true)}
-              <WhatsAppLink
-                href={WHATSAPP_CONTACT_URL}
-                location="navbar"
-                className="text-sm font-semibold bg-accent text-white px-6 py-2.5 rounded-full hover:brightness-110 transition-all duration-200 text-center mt-1 w-full"
-                onClick={closeMobile}
-              >
-                {navegacao.cta}
-              </WhatsAppLink>
+            <div className="flex flex-col gap-2 px-3 py-3 sm:px-4 sm:py-4">
+              {renderMobileEntry(0, renderMobileGroup("servicos"))}
+              {renderMobileEntry(1, renderMobileGroup("projetos"))}
+              {renderMobileEntry(2, renderMobileGroup("comoTrabalhamos"))}
+              {renderMobileEntry(3, renderDesktopLink(0, true))}
+              {renderMobileEntry(
+                4,
+                <WhatsAppLink
+                  href={WHATSAPP_CONTACT_URL}
+                  location="navbar"
+                  className="mt-1 flex min-h-11 w-full items-center justify-center rounded-full bg-accent px-6 py-2.5 text-center text-sm font-semibold text-white transition-all duration-200 hover:brightness-110"
+                  onClick={closeMobile}
+                >
+                  {navegacao.cta}
+                </WhatsAppLink>,
+              )}
             </div>
           </motion.div>
         )}
