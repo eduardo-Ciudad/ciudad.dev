@@ -1,9 +1,10 @@
 "use client";
 
-import type { AnchorHTMLAttributes } from "react";
+import { motion, useReducedMotion, type HTMLMotionProps } from "framer-motion";
 import { trackWhatsappClick, type CtaLocation } from "@/lib/analytics";
+import { springSnap } from "@/lib/motion";
 
-type WhatsAppLinkProps = AnchorHTMLAttributes<HTMLAnchorElement> & {
+type WhatsAppLinkProps = HTMLMotionProps<"a"> & {
   href: string;
   location: CtaLocation;
 };
@@ -15,18 +16,22 @@ export function WhatsAppLink({
   children,
   ...props
 }: WhatsAppLinkProps) {
+  const reducedMotion = useReducedMotion();
+
   return (
-    <a
+    <motion.a
       {...props}
       href={href}
       target="_blank"
       rel="noopener noreferrer"
+      whileTap={reducedMotion ? undefined : { scale: 0.97 }}
+      transition={springSnap}
       onClick={(event) => {
         trackWhatsappClick(location);
         onClick?.(event);
       }}
     >
       {children}
-    </a>
+    </motion.a>
   );
 }
