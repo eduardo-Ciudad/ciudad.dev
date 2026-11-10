@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
+import { LiquidAccordion } from "@/components/ui/liquid-glass-accordion";
 
 type FaqItem = {
   question: string;
@@ -57,12 +57,6 @@ const faqs: FaqItem[] = [
 ];
 
 export function Faq() {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
-
-  const toggle = (index: number) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
-
   return (
     <section className="py-20 md:py-24">
       <div className="max-w-3xl mx-auto px-6">
@@ -76,58 +70,30 @@ export function Faq() {
           Perguntas frequentes
         </motion.h2>
 
-        <div>
-          {faqs.map((faq, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{
-                duration: 0.4,
-                ease: "easeOut",
-                delay: i * 0.08,
-              }}
-              className="border-b border-neutral-200"
-            >
-              <button
-                onClick={() => toggle(i)}
-                className="w-full flex justify-between items-center py-5 text-left cursor-pointer group"
-              >
-                <span className="text-base font-semibold text-neutral-900">
-                  {faq.question}
-                </span>
-                <span className="text-neutral-400 text-xl transition-transform duration-300 group-hover:text-accent shrink-0 ml-4">
-                  {openIndex === i ? "×" : "+"}
-                </span>
-              </button>
-
-              <AnimatePresence initial={false}>
-                {openIndex === i && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: "auto", opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    transition={{ duration: 0.3, ease: "easeInOut" }}
-                    className={`overflow-hidden ${faq.link ? "pb-5" : ""}`}
+        <LiquidAccordion
+          items={faqs.map((faq, i) => ({
+            id: `faq-${i + 1}`,
+            question: faq.question,
+            answer: (
+              <>
+                <p>{faq.answer}</p>
+                {faq.link && (
+                  <Link
+                    href={faq.link.href}
+                    className="mt-4 inline-flex items-center gap-1 font-medium text-accent transition-opacity hover:opacity-80"
                   >
-                    <p className={`text-sm leading-relaxed text-neutral-500 ${faq.link ? "" : "pb-5"}`}>
-                      {faq.answer}
-                    </p>
-                    {faq.link && (
-                      <Link
-                        href={faq.link.href}
-                        className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-accent transition-opacity hover:opacity-80"
-                      >
-                        {faq.link.label} <span aria-hidden="true">→</span>
-                      </Link>
-                    )}
-                  </motion.div>
+                    {faq.link.label} <span aria-hidden="true">→</span>
+                  </Link>
                 )}
-              </AnimatePresence>
-            </motion.div>
-          ))}
-        </div>
+              </>
+            ),
+          }))}
+          defaultOpen={null}
+          collapsible
+          headingLevel={3}
+          tone="light"
+          sound={false}
+        />
       </div>
     </section>
   );
