@@ -46,6 +46,7 @@ export function Navbar() {
     comoTrabalhamos: false,
   });
   const [scrolled, setScrolled] = useState(false);
+  const floating = scrolled || mobileOpen;
   const navRef = useRef<HTMLElement>(null);
   const mobileButtonRef = useRef<HTMLButtonElement>(null);
   const triggerRefs = useRef<Record<MenuGroup, HTMLButtonElement | null>>({
@@ -82,10 +83,24 @@ export function Navbar() {
   };
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
+    let frame: number | null = null;
+
+    const updateScrolled = () => {
+      frame = null;
+      setScrolled(window.scrollY > 12);
+    };
+    const onScroll = () => {
+      if (frame !== null) return;
+      frame = window.requestAnimationFrame(updateScrolled);
+    };
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      if (frame !== null) {
+        window.cancelAnimationFrame(frame);
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -175,8 +190,8 @@ export function Navbar() {
             setDesktopOpen(isOpen ? null : groupKey);
           }}
           className={`relative flex items-center gap-1 px-4 py-2 text-sm font-medium hover:text-primary hover:bg-primary/[0.06] rounded-lg transition-all duration-200 ${
-            active ? "text-primary" : "text-muted"
-          }`}
+            active ? "text-primary" : floating ? "text-primary" : "text-muted"
+          } ${active && floating ? "bg-primary/[0.06]" : ""}`}
         >
           {group.label}
           <ChevronDown
@@ -193,12 +208,23 @@ export function Navbar() {
           {isOpen && (
             <motion.div
               id={panelId}
-              initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -6 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -6 }}
-              transition={{ duration: 0.15 }}
+              initial={{
+                opacity: 0,
+                scale: shouldReduceMotion ? 1 : 0.98,
+                filter: shouldReduceMotion ? "blur(0px)" : "blur(4px)",
+              }}
+              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+              exit={{
+                opacity: 0,
+                scale: shouldReduceMotion ? 1 : 0.98,
+                filter: shouldReduceMotion ? "blur(0px)" : "blur(4px)",
+              }}
+              transition={{
+                duration: shouldReduceMotion ? 0.12 : 0.22,
+                ease: [0.25, 0.9, 0.3, 1],
+              }}
               style={{ width: 320 }}
-              className="absolute left-0 top-full mt-2 max-w-[calc(100vw-2rem)] rounded-2xl border border-divider bg-card p-1.5 shadow-[0_20px_45px_-20px_rgba(0,0,0,0.18)]"
+              className="glass-strong absolute left-0 top-full mt-2 max-w-[calc(100vw-2rem)] origin-top-left rounded-[20px] p-1.5"
               onMouseEnter={clearCloseTimer}
               onMouseLeave={scheduleDesktopClose}
             >
@@ -259,8 +285,8 @@ export function Navbar() {
         aria-current={active ? "page" : undefined}
         onClick={mobile ? closeMobile : undefined}
         className={`relative px-4 py-2 text-sm font-medium hover:text-primary hover:bg-primary/[0.06] rounded-lg transition-all duration-200 ${
-          active ? "text-primary" : "text-muted"
-        }`}
+          active ? "text-primary" : floating ? "text-primary" : "text-muted"
+        } ${active && floating ? "bg-primary/[0.06]" : ""}`}
       >
         {link.label}
         {renderActiveDot(active)}
@@ -285,7 +311,9 @@ export function Navbar() {
               [groupKey]: !current[groupKey],
             }))
           }
-          className="flex w-full items-center justify-between py-2 text-left text-sm font-medium text-muted transition-colors hover:text-primary"
+          className={`flex w-full items-center justify-between py-2 text-left text-sm font-medium transition-colors hover:text-primary ${
+            floating ? "text-primary" : "text-muted"
+          }`}
         >
           {group.label}
           <ChevronDown
@@ -353,8 +381,10 @@ export function Navbar() {
   return (
     <nav
       ref={navRef}
-      className={`fixed top-0 left-0 right-0 z-50 h-16 flex items-center transition-all duration-300 ${
-        scrolled ? "bg-surface/80 backdrop-blur-md shadow-sm" : "bg-transparent"
+      className={`fixed left-0 right-0 z-50 mx-auto flex items-center transition-[top,left,right,max-width,height,border-radius,background-color,box-shadow,backdrop-filter,opacity] duration-400 ease-[cubic-bezier(.25,.9,.3,1)] motion-reduce:transition-[background-color,box-shadow,backdrop-filter,opacity] motion-reduce:duration-150 ${
+        floating
+          ? "glass-nav top-3 left-2.5 right-2.5 h-[52px] max-w-6xl rounded-full md:left-3 md:right-3"
+          : "top-0 h-16 max-w-none rounded-none bg-transparent"
       }`}
       aria-label="Navegação principal"
     >
@@ -399,11 +429,14 @@ export function Navbar() {
         {mobileOpen && (
           <motion.div
             id="mobile-navigation-menu"
-            initial={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: shouldReduceMotion ? 0 : -10 }}
-            transition={{ duration: 0.2 }}
-            className="absolute top-16 left-0 right-0 max-h-[calc(100dvh-4rem)] overflow-y-auto bg-surface/95 backdrop-blur-md border-t border-divider md:hidden shadow-lg"
+            initial={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: shouldReduceMotion ? 1 : 0.98 }}
+            transition={{
+              duration: shouldReduceMotion ? 0.12 : 0.22,
+              ease: [0.25, 0.9, 0.3, 1],
+            }}
+            className="glass-strong absolute top-[calc(100%+0.5rem)] left-0 right-0 max-h-[calc(100dvh-5rem)] origin-top overflow-y-auto rounded-[20px] md:hidden"
           >
             <div className="flex flex-col px-6 py-4 gap-2">
               {renderMobileGroup("servicos")}
