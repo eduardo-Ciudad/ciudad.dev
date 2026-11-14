@@ -82,10 +82,9 @@ const indicadores = [
   { rotulo: "CONVERSÕES", valor: "19", variacao: "−3", cor: "text-[#B45309]" },
 ] as const;
 
-export function RadarTelaIlustrativa() {
+export function RadarTelaConteudo({ className }: { className?: string }) {
   return (
-    <WindowFrame variant="card-cover" address="radar.ciudadlab.com.br" role="img" aria-label="Tela ilustrativa do Radar com o resumo do mês, indicadores e o gráfico de sessões">
-      <div aria-hidden="true" className="flex h-[340px] min-w-0 overflow-hidden bg-surface text-primary">
+    <div aria-hidden="true" className={`flex ${className ?? "h-[340px]"} min-w-0 overflow-hidden bg-surface text-primary`}>
         <aside className="hidden w-[118px] shrink-0 border-r border-black/7 px-3 py-4 sm:block">
           <p className="mb-6 font-heading text-[15px] font-bold">Ciudad<span className="text-accent">Lab</span></p>
           <nav className="flex flex-col gap-1 text-[10.5px] text-[#5A5A5A]">
@@ -110,7 +109,14 @@ export function RadarTelaIlustrativa() {
             </svg>
           </div>
         </div>
-      </div>
+    </div>
+  );
+}
+
+export function RadarTelaIlustrativa() {
+  return (
+    <WindowFrame variant="card-cover" address="radar.ciudadlab.com.br" role="img" aria-label="Tela ilustrativa do Radar com o resumo do mês, indicadores e o gráfico de sessões">
+      <RadarTelaConteudo />
     </WindowFrame>
   );
 }
@@ -209,7 +215,7 @@ export function ProdutoKelly() {
             <ProdutoCard capa={<KellyTelaIlustrativa />} rotulo="Correção de redação do ENEM" selo={<span className="rounded-full bg-[#FBF1DC] px-2.5 py-1 text-xs font-semibold text-[#7A4E00]">{KELLY_STATUS}</span>} titulo="Kelly Academy" descricao="Plataforma de treino para a redação do ENEM. Corrige competência por competência, aponta o trecho que segurou a nota e mostra o que treinar a seguir." blocoDoMeio={<dl className="grid grid-cols-3 border-y border-divider py-5">{KELLY_STATS.map((stat, index) => <div key={stat.rotulo} className={index === 0 ? "pr-2" : "border-l border-divider px-2 sm:px-4"}><dt className="font-heading text-[40px] font-semibold leading-none tabular-nums text-primary">{stat.valor}</dt><dd className="mt-2 text-[13px] leading-tight text-muted">{stat.rotulo}</dd></div>)}</dl>} acoes={<><Link href="/projetos/kelly-academy" className="inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-card transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Ver o case completo <span aria-hidden="true" className="ml-1">→</span></Link><a href={KELLY_URL} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-11 items-center text-sm font-semibold text-primary underline-offset-4 hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">Conhecer a Kelly <span aria-hidden="true" className="ml-1">↗</span></a></>} />
           </ScrollReveal>
           <ScrollReveal className="h-full" delay={0.08}>
-            <ProdutoCard capa={<RadarTelaIlustrativa />} rotulo="Analytics em português" selo={<div className="flex gap-1.5"><span className="rounded-full bg-[#E7F2EA] px-2.5 py-1 text-xs font-semibold text-[#1F6B3A]">{RADAR_STATUS}</span><span className="rounded-full bg-accent-light px-2.5 py-1 text-xs font-semibold text-[#1D4ED8]">Incluso no pós-entrega</span></div>} titulo="Radar CiudadLab" descricao="Painel que lê o Google Analytics do seu site e te conta, em português, o que trouxe cliente e o que precisa mudar." blocoDoMeio={<dl className="grid grid-cols-3 border-y border-divider py-5">{RADAR_STATS.map((stat, index) => <div key={stat.rotulo} className={index === 0 ? "pr-2" : "border-l border-divider px-2 sm:px-4"}><dt className={`font-heading font-semibold leading-none tabular-nums text-primary ${stat.valor === "7·28·90" ? "text-[34px]" : "text-[40px]"}`}>{stat.valor}</dt><dd className="mt-2 text-[13px] leading-tight text-muted">{stat.rotulo}</dd></div>)}</dl>} acoes={<><Link href="/projetos/radar" className="inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-card transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Ver o case completo <span aria-hidden="true" className="ml-1">→</span></Link><Link href="/radar" className="inline-flex min-h-11 items-center text-sm font-semibold text-primary underline-offset-4 hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">Conhecer o Radar</Link></>} />
+            <ProdutoCard capa={<RadarTelaIlustrativa />} rotulo="Analytics em português" selo={<div className="flex gap-1.5"><span className="rounded-full bg-[#E7F2EA] px-2.5 py-1 text-xs font-semibold text-[#1F6B3A]">{RADAR_STATUS}</span><span className="rounded-full bg-accent-light px-2.5 py-1 text-xs font-semibold text-[#1D4ED8]">Incluso no pós-entrega</span></div>} titulo="Radar CiudadLab" descricao="Painel que lê o Google Analytics do seu site e te conta, em português, o que trouxe cliente e o que precisa mudar." blocoDoMeio={<dl className="grid grid-cols-3 border-y border-divider py-5">{RADAR_STATS.map((stat, index) => <div key={stat.rotulo} className={index === 0 ? "pr-2" : "border-l border-divider px-2 sm:px-4"}><dt className="font-heading text-[40px] font-semibold leading-none tabular-nums text-primary">{stat.valor}</dt><dd className="mt-2 text-[13px] leading-tight text-muted">{stat.rotulo}</dd></div>)}</dl>} acoes={<><Link href="/projetos/radar" className="inline-flex min-h-11 items-center justify-center rounded-full bg-primary px-5 text-sm font-semibold text-card transition-opacity hover:opacity-85 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">Ver o case completo <span aria-hidden="true" className="ml-1">→</span></Link><Link href="/radar" className="inline-flex min-h-11 items-center text-sm font-semibold text-primary underline-offset-4 hover:text-accent hover:underline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent">Conhecer o Radar</Link></>} />
           </ScrollReveal>
         </div>
         <p className="mt-4 text-[12.5px] text-muted">Telas ilustrativas, com dados de exemplo.</p>
