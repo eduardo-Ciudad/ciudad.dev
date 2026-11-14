@@ -13,7 +13,7 @@ import { BlogArticleCta } from "@/components/BlogArticleCta";
 import { RadarTelaCase } from "@/components/ProdutoKelly";
 import { RadarIncluso, RadarMes } from "@/components/projetos/RadarCaseContent";
 import { RadarProducao } from "@/components/projetos/RadarProducao";
-import { formatPostDate, getPostsByCase } from "@/lib/blog";
+import { formatPostDate, getAllPosts, getPostsByCase } from "@/lib/blog";
 
 type ProjetoCasePageProps = {
   params: Promise<{ slug: string }>;
@@ -72,6 +72,18 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
   if (!projeto || !hasCase(projeto)) notFound();
 
   const bastidores = getPostsByCase(projeto.slug);
+  const leiaTambem = getAllPosts()
+    .filter(
+      (post) =>
+        post.tags.includes(projeto.slug) &&
+        !bastidores.some((bastidor) => bastidor.slug === post.slug),
+    )
+    .sort((a, b) => {
+      if (!a.serie) return b.serie ? 1 : 0;
+      if (!b.serie) return -1;
+      return a.serie.localeCompare(b.serie);
+    })
+    .slice(0, 2);
   const isRadar = projeto.slug === "radar";
   const isKelly = projeto.slug === "kelly-academy";
   const secoes = isRadar
@@ -273,7 +285,7 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
           {!isRadar && numerosSection}
 
           {projeto.resultado && <ScrollReveal className="mb-16 scroll-mt-24 md:mb-20">
-            <section id="resultado" className="rounded-xl border border-accent-border bg-accent-light p-6 md:p-8">
+            <section id="resultado" className="rounded-xl bg-[var(--color-cover)] p-6 md:p-8">
               <span className="text-[10px] font-semibold uppercase tracking-[0.12em] text-accent">
                 Resultado
               </span>
@@ -316,6 +328,40 @@ export default async function ProjetoCasePage({ params }: ProjetoCasePageProps) 
                     </Link>
                   ))}
                 </div>
+                {leiaTambem.length > 0 && (
+                  <>
+                    <p className="mb-4 mt-10 text-xs font-semibold uppercase tracking-[0.12em] text-muted">
+                      Leia também
+                    </p>
+                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                      {leiaTambem.map((post) => (
+                        <Link
+                          key={post.slug}
+                          href={`/blog/${post.slug}`}
+                          className="group rounded-xl border border-divider bg-card p-5 transition-colors hover:border-accent-border"
+                        >
+                          <div className="flex flex-wrap items-center gap-2 text-xs text-muted">
+                            <span className="rounded-full bg-accent-light px-2.5 py-1 text-[11px] font-semibold text-accent">
+                              Guia
+                            </span>
+                            <span>
+                              <time dateTime={post.date}>{formatPostDate(post.date)}</time>
+                              <span aria-hidden="true"> · </span>
+                              <span>{post.readingTime} min</span>
+                            </span>
+                          </div>
+                          <h3 className="mt-3 font-heading text-lg font-semibold text-primary transition-colors group-hover:text-accent md:text-xl">
+                            {post.title}
+                          </h3>
+                          <p className="mt-2 text-sm leading-relaxed text-muted">{post.description}</p>
+                          <span className="mt-4 inline-flex text-sm font-medium text-accent">
+                            Ler o guia <span aria-hidden="true">→</span>
+                          </span>
+                        </Link>
+                      ))}
+                    </div>
+                  </>
+                )}
               </section>
             </ScrollReveal>
           )}
