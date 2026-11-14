@@ -1,4 +1,5 @@
 import { KELLY_URL } from "./kelly";
+import { RADAR_TESTES } from "./radar";
 import type { DocGroup } from "./services-docs";
 
 export type Projeto = {
@@ -291,7 +292,7 @@ const projetosBase: Projeto[] = [
       { titulo: "Traduz", descricao: "Uma leitura em linguagem simples, com o alerta do que merece atenção." },
     ],
     numeros: [
-      { valor: "131", rotulo: "testes automatizados" },
+      { valor: String(RADAR_TESTES), rotulo: "testes automatizados" },
       { valor: "16", rotulo: "endpoints na API" },
       { valor: "5", rotulo: "migrations versionadas" },
       { valor: "06h", rotulo: "sincronização diária com o Google" },
@@ -302,7 +303,7 @@ const projetosBase: Projeto[] = [
       blocos: [
         { titulo: "Onde roda", descricao: "A API e o banco ficam num servidor próprio, e o painel fica na Vercel, perto de São Paulo. O banco não fica acessível pela internet." },
         { titulo: "Como protege", descricao: "Só o painel conversa com a API, o login tem limite de tentativas e uma sessão pode ser encerrada na hora, de qualquer lugar." },
-        { titulo: "Como é testado", descricao: "Cada mudança passa por 131 testes automáticos antes de ir ao ar, inclusive os de segurança." },
+        { titulo: "Como é testado", descricao: `Cada mudança passa por ${RADAR_TESTES} testes automáticos antes de ir ao ar, inclusive os de segurança.` },
         { titulo: "Como chega ao ar", descricao: "Tudo empacotado em containers, com HTTPS e certificado renovado sozinho. Atualizar o sistema é um comando." },
       ],
       detalhes: [
