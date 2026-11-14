@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Check } from "lucide-react";
 import { ScrollReveal } from "@/components/ScrollReveal";
+import { RADAR_TESTES } from "@/data/radar";
 
 const EYEBROW = "Seus dados";
 const TITLE = "Seus números continuam seus";
@@ -21,7 +22,7 @@ const ITEMS = [
   },
   {
     title: "Infraestrutura cuidada",
-    text: "Servidor próprio, conexão protegida e 131 testes automáticos a cada mudança.",
+    text: `Servidor próprio, conexão protegida e ${RADAR_TESTES} testes automáticos a cada mudança.`,
   },
 ] as const;
 
