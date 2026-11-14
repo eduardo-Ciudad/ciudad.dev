@@ -9,8 +9,10 @@ export const radar = {
 
 export const RADAR_STATUS = "No ar";
 
+export const RADAR_TESTES = 131;
+
 export const RADAR_STATS = [
   { valor: "06h", rotulo: "sincronização diária com o Google" },
-  { valor: "7·28·90", rotulo: "dias comparados com o período anterior" },
-  { valor: "131", rotulo: "testes automatizados" },
+  { valor: "3", rotulo: "períodos comparados: 7, 28 e 90 dias" },
+  { valor: String(RADAR_TESTES), rotulo: "testes automatizados" },
 ] as const;
