@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Footer } from "@/components/Footer";
 import { Navbar } from "@/components/Navbar";
+import { RadarTelaConteudo } from "@/components/ProdutoKelly";
 import { ScrollReveal } from "@/components/ScrollReveal";
 import { WhatsAppLink } from "@/components/WhatsAppLink";
 import { CaseClienteCard } from "@/components/projetos/CaseClienteCard";
@@ -76,11 +77,17 @@ export default function ProjetosPage() {
             <ScrollReveal className="h-full" delay={0.08}>
               <ProdutoCard
                 projeto={radar}
+                capa={
+                  <div role="img" aria-label="Tela ilustrativa do Radar com o resumo do mês, indicadores e o gráfico de sessões" className="h-full">
+                    <RadarTelaConteudo className="h-full" />
+                  </div>
+                }
                 provas={PRODUTO_PROVAS.radar}
                 linkProduto={{ label: "Conhecer o Radar", href: "/radar" }}
               />
             </ScrollReveal>
           </div>
+          <p className="mt-4 text-[12.5px] text-muted">Telas ilustrativas, com dados de exemplo.</p>
         </section>
 
         <section id="entregas" className="mx-auto mt-28 max-w-6xl scroll-mt-24 px-6 md:mt-32">
