@@ -1,10 +1,12 @@
 import Link from "next/link";
+import type { ReactNode } from "react";
 import type { Projeto } from "@/data/projetos";
 import { CapaProjeto } from "./CapaProjeto";
 import { PROJECT_CARD_HOVER_CLASS } from "./cardHover";
 
 type ProdutoCardProps = {
   projeto: Projeto;
+  capa?: ReactNode;
   provas: string[];
   linkProduto: {
     label: string;
@@ -13,16 +15,20 @@ type ProdutoCardProps = {
   };
 };
 
-export function ProdutoCard({ projeto, provas, linkProduto }: ProdutoCardProps) {
+export function ProdutoCard({ projeto, capa, provas, linkProduto }: ProdutoCardProps) {
   const seloRadar = projeto.slug === "radar";
 
   return (
     <article
       className={`group flex h-full flex-col overflow-hidden rounded-[18px] border border-card-border bg-card ${PROJECT_CARD_HOVER_CLASS}`}
     >
-      {projeto.imagem && (
+      {capa ? (
+        <CapaProjeto nome={projeto.nome} tamanho="lg">
+          {capa}
+        </CapaProjeto>
+      ) : projeto.imagem ? (
         <CapaProjeto src={projeto.imagem} nome={projeto.nome} tamanho="lg" />
-      )}
+      ) : null}
 
       <div className="flex flex-1 flex-col gap-4 p-7">
         <div className="flex items-start justify-between gap-4">
